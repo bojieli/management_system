@@ -6,6 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes');
+var config = require('./config');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var app = express();
 
@@ -20,8 +23,21 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Configuration in session
+app.use(require('cookie-parser')(config.session_secret));
+app.use(session({
+  secret: config.session_secret,
+  key: 'sid',
+  store: new MongoStore({
+    db: config.db_name
+  }),
+  resave: true,
+  saveUninitialized: true,
+}));
+
+
 routes(app);
-app.listen(1919);
+app.listen(config.port);
 
 
 

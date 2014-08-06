@@ -17,7 +17,6 @@ var Schema = mongoose.Schema;
 var OrderSchema = new Schema({
   orderID : String,
   openID : String,
-  confirmTel : String,
   shopOnce : [{
     id : String,
     number : Number
@@ -33,8 +32,27 @@ var OrderSchema = new Schema({
   date : { type : Date, default : Date.now },
   cashUse : Number,
   voucherUse : Number,
-  status : Number, //(0:未收货,1:已收货,未处理，)
-  totalPrice : Number
+  status : Number, 
+  totalPrice : Number //指的是货到付款时需要支付的现金
 },{ autoindex : false });
+/*
+订单的生命周期：
 
+status:
+
+1 下单
+
+2 未处理订单
+  21 疑难订单（沟通不顺畅，电话打不通等等）
+  22 删除订单（号码有误，地址有误）
+
+3 未发货订单
+
+4 已发货订单
+  41 暂时无法派送订单
+  42 派送失败，取消订单
+
+5 已收货订单
+
+*/
 mongoose.model('Order',OrderSchema);
