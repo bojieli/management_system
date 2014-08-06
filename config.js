@@ -7,6 +7,14 @@ var config = {
 	appid : 'wxd8c15c2734dacb07',
 	secret : '188081716b20d3d655ed14328dcf7e90',
 	host : 'http://kf.519.today',
+    /*
+  *some important errorCode
+  */
+  errCode_find : 50001,
+  errorCode_update : 50002,
+  errorCode_create : 50003,
+  errorCode_account_notfound : 50004,
+  errorCode_password_error : 50005
 }
 
 module.exports = config;

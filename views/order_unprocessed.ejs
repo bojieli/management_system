@@ -1,0 +1,75 @@
+<div class="order_item">
+    <div class ="unprocessed_summaryinfo row">
+        <div class="ordertime col-xs-3"><label>订单时间：</label><b><span><%=date%></span></b></div>
+        <div class="orderid col-xs-6"><label>订单编号：</label><b><span><%=orderID%></span></b></div>
+        <div class="orderstatus col-xs-3"><label>订单状态：</label><span style="color: #CC0033;"><b>未处理</b></span></div>
+    </div>
+    <div class="orderinfo row">
+        <div class="col-xs-8">
+            <div class ="orderdetails">
+                <label>订单详情：</label>
+                <ul class ="detaillist">
+                 <% for(var i = 0;i < shopOnce.length;i++){%>
+                    <li>
+                        <div class ="row">
+                            <div class ="wineinfo col-xs-6">
+                                <%= shopOnce[i].describe %>
+                            </div>
+                            <div class ="wineprice col-xs-3">
+                                单价(元)：<span><%= shopOnce[i].wechatPrice %></span>
+                            </div>
+                            <div class ="winenumber col-xs-3">
+                                数量：<span><%= shopOnce[i].number %></span>
+                            </div>
+                        </div>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class ="pricedetails row">
+            <div class ="col-xs-4 totalprice">
+                <label>总价(元)：<span><%= totalPrice %></span></label>
+            </div>
+            <div class ="col-xs-4 cashuse">
+                <label>现金券(元)：<span><%= cashUse %></span></label>
+            </div>
+            <div class ="col-xs-4 cashneeded">
+                <label>需付现金(元)：<span><%= cashNeeded %></span></label>
+            </div>
+            </div>
+        </div>
+        <div class ="col-xs-4">
+            <div class ="form-group">
+                <label>联系方式</label>
+                <input type="tel" class ="form-control" readonly="true" value ="<%= address.tel %>" required/>
+            </div>
+        </div>
+    </div>
+    <div class ="addressinfo row">
+        <div class ="form-group col-xs-5">
+            <label>地址：</label>
+            <textarea  class ="form-control"><%= address %></textarea>
+        </div>
+        <div class ="col-xs-3">
+            <button class="btn btn-sm btn-primary">保存修改</button>
+        </div>
+        <div class ="col-xs-4">
+            <label>选择快递：</label>
+            <select class ="form-control" required aria-selected ="false" >
+                <option hidden ="hidden"></option>
+                <option>1号卡车</option>
+                <option>2号卡车</option>
+                <option>3号卡车</option>
+                <option>4号卡车</option>
+            </select>
+        </div>
+    </div>
+    <div class ="orderaction row">
+        <div class ="col-xs-3 col-xs-offset-4">
+            <button class ="btn btn-success">确认订单</button>
+        </div>
+        <div class ="col-xs-3">
+            <button class ="btn btn-danger">删除订单</button>
+        </div>
+    </div>
+</div>
