@@ -2,6 +2,9 @@ var congfig = require('../config');
 var errUtil = require('./wrap_error');
 var models = require('../models');
 var Order = models.Order;
+var async = require('async');
+var Wine = require('../proxy').Wine;
+var config = require('../config');
 
 
 /**用户提交订单以后保存订单信息
@@ -11,82 +14,85 @@ var Order = models.Order;
 * req:传入的订单参数
 */
 
-exports.createOrder = function(req,cb){
+exports.createOrder = function(openID,info,cb){
   var orderID = getOrderID();
-  var info = req.body;
   var order = {};
-  if(info.dialComfirm){//使用电话确认
-    order = {
-      orderID : orderID,
-      openID : req.session.openID,
-      confirmTel : info.confirmTel,
-      shopOnce : info.shopOnce,
-      address : {},
-      cashUse : info.cashUse || 0,
-      voucherUse : info.voucherUse || 0,
-      status : 0,
-      totalPrice : info.totalPrice
-    };
-  }else{
-    order = {
-      orderID : orderID,
-      openID : req.session.openID,
-      confirmTel : info.address.tel,//确认电话默认地址中的联系方式
-      shopOnce : info.shopOnce,
-      address : info.address,
-      cashUse : info.cashUse || 0,
-      voucherUse : info.voucherUse || 0,
-      status : 0,
-      totalPrice : info.totalPrice
-    };
-  }
-  Order.create(order,afterCreate);
-
-  function afterCreate(err,order){
-    if(err){
-      errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
-      return cb(er,null);
-    }else{
-      cb(err,order);
+  async.waterfall([
+    function _isFirst (callback){
+      Order.findOne({'address.tel' : info.address.tel}, callback);
+    },
+    function createorder(order, callback){
+      var isFirst;
+      if(order)
+        isFirst = false;
+      else
+        isFirst = true;
+      order = {
+        orderID : orderID,
+        openID : openID,
+        shopOnce : info.shopOnce,
+        address : info.address,
+        cashUse : info.cashUse || 0,
+        voucherUse : info.voucherUse || 0,
+        status : 1,
+        isFirst : isFirst,
+        totalPrice : info.totalPrice,
+      };
+      Order.create(order, callback);
+    }],
+    function afterCreate(err,order){
+      if(err){
+        errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
+        return cb(err);
+      }else{
+        cb(err,order);
+      }
     }
-  }
+  ); 
 }
 
-
-function getRandom(length){
-  return Math.floor(Math.random() * Math.pow(10,length));
+exports.findOneOrder = function (cb){
+  Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},cb);
 }
 
-function leftPadString(value,length){
-  var valueString = value.toString();
-  if(valueString.length >= length){
-    return valueString.substr(0,length);
-  }else{
-    var pad = "";
-    for(var i = 0;i < length - valueString.length; i++){
-      pad = pad + "0";
-    }
-    return pad + valueString;
-  }
+exports.setStatus = function (orderID, status, cb){
+  Order.update({'orderID' : orderID},{'status' : status}, cb);
 }
 
-
-function getOrderID(){
-  var randomLength = 4;
-  var date = new Date();
-  var datePart = date.getUTCFullYear().toString() +
-                    (date.getUTCMonth() + 1).toString() +
-                    date.getUTCDate().toString() +
-                    date.getUTCHours().toString() +
-                    date.getUTCMinutes().toString() +
-                    date.getUTCSeconds().toString() +
-                    date.getUTCMilliseconds().toString();
-
-  var randomPart = leftPadString(getRandom(randomLength),randomLength);
-
-  return 'f' + datePart + '_' + randomPart;
+exports.setNotes = function(orderID , notes, cb){
+  Order.update({'orderID' : orderID},{'notes' : notes}, cb);
 }
 
-exports.getOrderByID = function (orderID, cb){
-  Order.findOne({orderID: orderID}, cb);
+exports.setDispatchCenter = function(orderID, dispatchCenter, cb){
+  Order.update({'orderID' : orderID},{'dispatchCenter' : dispatchCenter}, cb);
 }
+
+exports.setShipStaff = function(orderID, shipStaff, cb){
+  Order.update({'orderID' : orderID},{'shipStaff' : shipStaff}, cb);
+}
+exports.setCustomerService = function(orderID, customerService, cb){
+  Order.update({'orderID' : orderID},{'customerService' : customerService}, cb);
+}
+
+exports.setShipDate = function(orderID, cb){
+  Order.update({'orderID' : orderID},{'shipDate' : new Date()}, cb);
+}
+exports.setReceiveDate = function(orderID, cb){
+  Order.update({'orderID' : orderID},{'receiveDate' : new Date()}, cb);
+}
+
+exports.findbyOrderID = function(orderID, cb){
+  Order.find({'orderID' : orderID},cb);
+}
+
+exports.getNumberbystatus = function(status, cb){
+  Order.find({'status' : status},{'_id' : 1}, function(err, orders){
+    if(err) return cb(err);
+    cb(null, orders.length);
+  });
+}
+
+exports.findUnshipped = function (cb){
+  Order.find({'status' : 3},'orderID date dispatchCenter', cb);
+}
+
