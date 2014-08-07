@@ -1,7 +1,41 @@
+    </div>    <!-- Leftdiv Ends-->
+    <div class="span2 rightdiv">
+      <div class="panel panel-success" name="alert_delete">
+            <div class="panel-heading">
+                <h3 class="panel-title" id="urgency">信息提示栏</h3>
+            </div>
+            <div id="urgent_form">
+              <ul class="list-group">
+                <li class="list-group-item list-head" id="urgent_form_head">
+                  <span class="label label-danger">急需解决</span>
+                </li>
+                <% for(var i = 0;i < urgentprocess.length;i++){%>
+                <li class="list-group-item">
+                  <a href="#">订单号：<%= urgentprocess[i].orderID %></a><br>
+                  <p class="urgentform_text">问题描述：</p>
+                  <p class="urgentform_text"><%= urgentprocess[i].note %></p>
+                </li>
+                <%}%>
+              </ul>
+
+
+              <ul class="list-group" style="padding-bottom:0px">
+                <li class="list-group-item list-head" id="urgent_form_head">
+                  <span class="label label-warning">已经解决</span>
+                </li>
+                <% for(var i = 0;i < urgentprocessed.length;i++){%>
+                <li class="list-group-item">
+                  <a href="#">订单号：<%= urgentprocessed[i].orderID %></a><br>
+                  <p class="urgentform_text">问题描述：</p>
+                  <p class="urgentform_text"><%= urgentprocessed[i].note %></p>
+                </li>
+                <%}%>
+              </ul>
+            </div>
+        </div> <!-- panel ends -->
+    </div>    <!-- right div ends-->
+  </div>
 </div>
-    <!--all the javascripts-->
-     <script src ="../Lib/js/jquery-2.0.3.min.js"></script>
-     <script src ="../Lib/js/bootstrap.min.js"></script>
-     <script src ="../js/main.js"></script>
-  </body>
+
+</body>
 </html>

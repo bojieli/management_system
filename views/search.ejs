@@ -1,0 +1,30 @@
+<%include layoutTop%>
+<script type ="text/javascript">
+  $(document).ready(function(){
+    $("li.search_li").addClass('active');
+  });
+</script>
+<form class ="search row"  action = "/search" method ="get">
+    <div class ="col-xs-6" >
+        <label>查询方式：</label>
+        <div class = 'factor_inline'>
+            <div style="display:inline-block">
+                <input type ="radio" tabindex ="1" id="withorderid" name ="searchmethod" value="0" checked ="checked"/>
+                <label for ="withorderid">订单号查询</label>
+            </div>
+            <div style="display:inline-block">
+                <input type ="radio" tabindex ="2" id="withphone" name ="searchmethod" value ="1"/>
+                <label for ="withphone">手机号查询</label>
+            </div>
+        </div>
+    </div>
+    <div class ="col-xs-6">
+        <div class="input-group">
+            <input type ="text" tabindex ="3" class ="form-control" name ="inputnumber" placeholder="订单号或手机号" required/>
+            <span class="input-group-btn">
+                <button tabindex ="4" class="btn btn-primary" type="submit" >搜索</button>
+            </span>
+        </div>
+    </div>
+</form>
+<%include layoutBottom%>

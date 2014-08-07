@@ -1,0 +1,16 @@
+.check_head{
+	text-align: center;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.factor_inline{
+	display: inline-block;
+}
+
+.input_num{
+	width: 200px;
+	margin-left: 26px;
+	padding-left: 10px;
+	border-radius: 3px 3px 3px 3px;
+}

@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('cookie-parser')(config.session_secret));
 app.use(session({
   secret: config.session_secret,
+  cookie:{ maxAge:1800000 },
   key: 'sid',
   store: new MongoStore({
     db: config.db_name

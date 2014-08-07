@@ -32,7 +32,8 @@ var OrderSchema = new Schema({
   date : { type : Date, default : Date.now },
   cashUse : Number,
   voucherUse : Number,
-  status : Number, 
+  status : Number,
+  isFirst : Boolean,
   totalPrice : Number //指的是货到付款时需要支付的现金
 },{ autoindex : false });
 /*

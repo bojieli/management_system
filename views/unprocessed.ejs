@@ -1,6 +1,8 @@
 <%include layoutTop%>
-<script src="/javascripts/application.js" type="text/javascript" charset="utf-8" async defer>
-  $("li.unprocessed_li").addClass('active');
+<script type ="text/javascript">
+  $(document).ready(function(){
+    $("li.unprocessed_li").addClass('active');
+  });
 </script>
 
 <%include order_unprocessed%>

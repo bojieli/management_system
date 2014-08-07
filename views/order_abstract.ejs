@@ -1,0 +1,10 @@
+<li>
+  <div class="panel-heading form_head">
+    <span>订单编号：<%= order_abstract.orderID %></span>
+    <span class="form_head_date">下单时间：<%= order_abstract.date.year %>-<%= order_abstract.date.month %>-<%= order_abstract.date.day %>&ensp;<%= order_abstract.date.hour %> : <%= order_abstract.date.minute %> </span>
+    <div class="orderinline text_right">
+        <strong>快递点：</strong>
+        <span class="label label-warning form_state"><%= order_abstract.dispatch%></span>
+    </div>
+  </div>
+</li>

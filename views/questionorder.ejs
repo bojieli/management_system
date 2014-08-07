@@ -1,0 +1,15 @@
+<%include layoutTop%>
+<script type ="text/javascript">
+  $(document).ready(function(){
+    $("li.question_li").addClass('active');
+  });
+</script>
+
+<div>
+  <ul id = "orderlist">
+  <% questionorders.forEach(function(order_abstract){ %>
+    <% include order_abstract %>
+  <%})%>
+  </ul>
+</div>
+<%include layoutBottom%>

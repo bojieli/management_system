@@ -1,0 +1,60 @@
+body {
+}
+
+#mainbody {
+	margin-top:80px;
+}
+
+.navbar-brand {
+	font-size:24px;
+	color:#000;
+	font-weight:bolder;
+	pointer-events:none;
+	cursor:default;
+}
+
+.navbar-right label {
+	color:#5F2AE8;
+}
+ul > li {
+	list-style:none;
+}
+
+ul#orderlist > li {
+	border-style:inset;
+	border-color:#d0d0d0;
+	border-width:1px;
+	border-radius:10px;
+	margin-top:15px;
+}
+
+label {
+	font-size:16px;
+}
+
+#actionclass {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#unshipped,#shipped,#received {
+	display:none;
+}
+
+
+.menu_head{
+	font-size: 24px;
+	text-align: center;
+}
+
+.formnum{
+	display: inline;
+
+}
+
+form.search{
+	border-bottom: inset 1px;
+	padding-bottom: 10px;
+}
+
+

@@ -1,4 +1,4 @@
-var congfig = require('../config');
+var config = require('../config');
 var errUtil = require('./wrap_error');
 var models = require('../models');
 var ServiceStaff = models.ServiceStaff;
@@ -27,11 +27,12 @@ exports.getStaffInfoByAccount = function(account,cb){
 
 
 exports.loginAuthorize = function(account,password,cb){
+  console.log("===========loginAuthorize========");
   ServiceStaff.findOne({account : account},"password",staffFind);
 
   function staffFind(err,staff){
     if(err) {
-      errUtil.wrapError(err,config.errorCode_find,"loginAuthorize()","/proxy/service_staff",{
+      errUtil.wrapError(err,config.errCode_find,"loginAuthorize()","/proxy/service_staff",{
         account:account,
         password:password
       });
@@ -44,7 +45,7 @@ exports.loginAuthorize = function(account,password,cb){
            cb({errCode : config.errCode_password_error},false);
         }
       }else{
-        cb({errCode : config.errorCode_account_notfound},false);
+        cb({errCode : config.errCode_account_notfound},false);
       }
     }
   }

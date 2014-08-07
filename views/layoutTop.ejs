@@ -12,7 +12,15 @@
     <link rel = "stylesheet" type = "text/css" href = "../Lib/css/bootstrap.min.css"/>
     <link rel = "stylesheet" type = "text/css" href = "../Lib/css/bootstrap-theme.min.css"/>
     <link rel = "stylesheet" type = "text/css" href = "../css/mu_main.css" />
-
+    <link rel = "stylesheet" type = "text/css" href = "../css/mu_unshipped.css" />
+    <link rel = "stylesheet" type = "text/css" href = "../css/mu_shipped.css" />
+    <link rel = "stylesheet" type = "text/css" href = "../css/mu_unprocessed.css" />
+    <link rel = "stylesheet" type = "text/css" href = "../css/mu_search.css" />
+    <link rel = "stylesheet" type = "text/css" href = "../css/mu_received.css" />
+    <link rel = "stylesheet" type = "text/css" href = "../css/flatUI.css" />
+    <script src ="Lib/js/jquery-2.0.3.min.js"></script>
+    <script src ="Lib/js/bootstrap.min.js"></script>
+    <script src ="js/main.js"></script>
   </head>
   <body>
 
@@ -35,9 +43,9 @@
                   <li class = "unshipped_li"><a href="/unshipped">未发货</a></li>
                   <li class = "shipped_li"><a href="/shipped">已发货</a></li>
                   <li class = "received_li"><a href="/received">已收货</a></li>
-                  <li class = "search_li"><a href="/searchorder">查询</a></li>
+                  <li class = "search_li"><a href="/search">查询</a></li>
                   <li class = "question_li"><a href="/questionorder">疑难订单</a></li>
-                  <li class = "create_li"><a href="/neworder">创建订单</a></li>
+                  <li class = "new_li"><a href="/neworder">创建订单</a></li>
               </ul>
               <div class="navbar-right" style="padding-top:14px">
                     <div style="display:inline-block">
@@ -59,3 +67,5 @@
       <!--main body for different tab-->
 
       <div id = "mainbody" class ="container">
+        <div class="row">
+          <div class="span10 leftdiv">

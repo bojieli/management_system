@@ -11,10 +11,10 @@ var config = {
   *some important errorCode
   */
   errCode_find : 50001,
-  errorCode_update : 50002,
-  errorCode_create : 50003,
-  errorCode_account_notfound : 50004,
-  errorCode_password_error : 50005
+  errCode_update : 50002,
+  errCode_create : 50003,
+  errCode_account_notfound : 50004,
+  errCode_password_error : 50005
 }
 
 module.exports = config;

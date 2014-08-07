@@ -1,0 +1,116 @@
+.form_head_num{
+	display: inline;
+	font-size: 20px;
+}
+
+.form_head_date{
+	padding: 40px;
+}
+
+.orderinline{
+	display:inline;
+}
+
+.orderid{
+	padding: 0px;
+}
+
+.ordertime{
+	padding: 20px;
+}
+
+.rightdiv{
+	background-color: #ECF0F1;
+    width: 20%;	
+	float: right;
+	
+	border-radius: 3px 3px 3px 3px;
+}
+.leftdiv{
+	margin-right: 3%;
+    width: 77%;
+	float: left;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.form_state{
+	padding: 10px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.text_right{
+	float: right;
+	margin-right: 20px;
+}
+
+.button_onright{
+	float: right;
+}
+
+
+.button_check{
+	width: 120px;
+}
+
+.button_margin{
+	margin: 10px;
+}
+.center{
+	 margin: 0 auto;
+}
+
+.table_text{
+	font-weight: normal;
+	padding: 0px;
+}
+
+#urgency{
+	text-align: center;
+	font-weight: bold;
+	font-size: 24px;
+
+}
+
+#urgent_form{
+	
+}
+
+#urgent_form_head{
+	text-align: center;
+	font-size: 30px;
+	padding-top:5px;
+	padding-bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#textarea_else{
+	
+}
+
+.text_inline{
+	display: inline-block;
+}
+
+.select_inline{
+	display: inline-block;
+	width: 100px;
+}
+
+.alert_text{
+	color: white;
+	font-size: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+.urgentform_text{
+	display: inline-block;
+	font-weight: normal;
+}
+
+.urgentmessage_text{
+	display: inline-block;
+	font-weight: bold;
+	margin: auto;
+}
