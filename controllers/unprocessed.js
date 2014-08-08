@@ -22,7 +22,7 @@ exports.load = function(req,res,next){
         DispatchCenter.getAllCenterInfo(callback);
       },
       _findOneOrder : function(callback){
-        Order.findOneOrder(callback);
+        Order.findOneOrder(req.session.user, callback);
       },
       _getAllCenterInfo : function(callback){
         DispatchCenter.getAllCenterInfo(callback);
@@ -68,7 +68,6 @@ exports.load = function(req,res,next){
       data.numberUnprocessed = results._getnumberUnprocessed;
       data.numberProcessedToday = results._getnumberProcessedToday;
       data.numberQuestion = results._getnumberQuestion;
-      console.log("======results" + results._getnumberQuestion);
       data.orderID = order.orderID;
       var date = {
         year : order.date.getUTCFullYear(),

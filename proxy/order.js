@@ -55,7 +55,6 @@ exports.createOrder = function(openID,info,cb){
 exports.findOneOrder = function (customerService, cb){
   Order.findOne({'status' : 2, 'customerService' : customerService}, function(err, order){
     if(order){
-      console.log('===============================status : 2');
       return cb(null, order);
     }
     findStatus1();
@@ -64,6 +63,7 @@ exports.findOneOrder = function (customerService, cb){
 
 
   function findStatus1(){
+
     Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},function(err, order){
       if(order.length==0)
         return cb(null,null);
@@ -72,8 +72,6 @@ exports.findOneOrder = function (customerService, cb){
         function(err){
           if(err)
             return cb(err);
-          console.log('===============================status : 1');
-          console.log(order.customerService);
           cb(null,order[0]);
         });
       
