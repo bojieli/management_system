@@ -10,7 +10,7 @@ var Order = require('../proxy').Order;
 // 	console.log(num);
 // })
 
-
+global.orderID_increment = 0;
 
 var info = {
 	shopOnce : [
