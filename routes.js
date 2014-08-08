@@ -10,7 +10,7 @@ var neworder = require('./controllers/neworder');
 
 module.exports = function (app) {
 
-	app.all('*',access.authorize)
+	//app.all('*',access.authorize)
 
 	app.get('/',function(req ,res, next){
 		res.redirect('./unprocessed');

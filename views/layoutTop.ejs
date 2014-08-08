@@ -21,7 +21,34 @@
 
       <!-- navbar on the top -->
 
-      <div class ="navbar navbar-default navbar-fixed-top" role ="navigation">
+      <div class="masthead">
+        <h3 class="text-muted topbrand">安徽1919<span style="padding-left:30px;">客服平台<span></h3>
+        <ul class="nav nav-justified">
+          <li class = "unprocessed_li">
+            <a href="/unprocessed">未处理
+              <span class="badge"><%= numberUnprocessed%></span>
+            </a>
+          </li>
+          <li class = "unshipped_li"><a href="/unshipped">未发货</a></li>
+          <li class = "shipped_li"><a href="/shipped">已发货</a></li>
+          <li class = "received_li"><a href="/received">已收货</a></li>
+          <li class = "search_li"><a href="/search">查询</a></li>
+          <li class = "question_li">
+            <a href="/questionorder">疑难订单
+              <span class="badge">TBD</span>
+            </a>
+          </li>
+          <li class = "new_li"><a href="/neworder">创建订单</a></li>
+        </ul>
+      </div>
+
+    
+      <!-- Following codes are top navbar in past.
+           Above style is better.
+           Won't influence data and interaction with background, just for style. -->
+
+      <!--
+      <div class ="navbar " role ="navigation" style="">
         <div class = "container">
             <div class = "navbar-header">
                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -54,7 +81,7 @@
                 </div>
             </div>
         </div>
-      </div>  <!-- navbar ends-->
+      </div>  -->
 
 
 
