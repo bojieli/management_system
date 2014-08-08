@@ -48,11 +48,35 @@ exports.createOrder = function(openID,info,cb){
         cb(err,order);
       }
     }
-  ); 
+  );
 }
+//1、查找status = 2，如果有直接返回
+//2、查找status = 1, 并且放置customerService
+exports.findOneOrder = function (customerService, cb){
+  Order.findOne({'status' : 2, 'customerService' : customerService}, function(err, order){
+    if(order){
+      return cb(null, order);
+    }
+    findStatus1();
+    
+  });
 
-exports.findOneOrder = function (cb){
-  Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},cb);
+
+  function findStatus1(){
+
+    Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},function(err, order){
+      if(order.length==0)
+        return cb(null,null);
+      Order.update({'orderID' : order[0].orderID},
+        {'status' : 2, 'customerService' : customerService},
+        function(err){
+          if(err)
+            return cb(err);
+          cb(null,order[0]);
+        });
+      
+    });
+  }
 }
 
 exports.setStatus = function (orderID, status, cb){
@@ -91,8 +115,39 @@ exports.getNumberbystatus = function(status, cb){
     cb(null, orders.length);
   });
 }
-
 exports.findUnshipped = function (cb){
   Order.find({'status' : 3},'orderID date dispatchCenter', cb);
 }
 
+
+
+function leftPadString(value,length){
+  var valueString = value.toString();
+  if(valueString.length >= length){
+    return valueString.substr(0,length);
+  }else{
+    var pad = "";
+    for(var i = 0;i < length - valueString.length; i++){
+      pad = pad + "0";
+    }
+    return pad + valueString;
+  }
+}
+
+
+function getOrderID(){
+  var date = new Date();
+
+  var orderID_increment1 = ++ global.orderID_increment;
+  if(global.orderID_increment > 9990)
+    global.orderID_increment = 0;
+
+  var datePart = leftPadString(date.getUTCFullYear().toString(),1) +
+                    leftPadString(date.getUTCMonth() + 1,2) +
+                    leftPadString(date.getUTCDate(),2) +
+                    leftPadString(date.getUTCHours(),2) +
+                    leftPadString(date.getUTCMinutes(),2) +
+                    leftPadString(date.getUTCSeconds(),2) +
+                    leftPadString(orderID_increment1,4)
+  return 'f' + datePart;
+}

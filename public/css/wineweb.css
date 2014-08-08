@@ -14,7 +14,9 @@
   pointer-events:none;
   cursor:default;
 }
-
+span.badge{
+  background-color : #ee0000;
+}
 ul > li {
   list-style:none;
 }
@@ -163,7 +165,6 @@ label {
   border: 1px solid #DDDDDD;
   border-radius: 4px 4px 4px 4px;
   height: 30px;
-  width: 100px;
   padding-left: 10px;
 }
 

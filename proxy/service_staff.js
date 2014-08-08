@@ -27,7 +27,7 @@ exports.getStaffInfoByAccount = function(account,cb){
 
 
 exports.loginAuthorize = function(account,password,cb){
-  console.log("===========loginAuthorize========");
+  //console.log("===========loginAuthorize========");
   ServiceStaff.findOne({account : account},"password",staffFind);
 
   function staffFind(err,staff){
@@ -49,4 +49,16 @@ exports.loginAuthorize = function(account,password,cb){
       }
     }
   }
+}
+
+exports.getOrderNumberToday = function (account,cb){
+  ServiceStaff.findOne({'account' : account},'orderNumberToday', function(err, serviceStaff){
+    if(err)
+      return cb(err);
+    if(serviceStaff){
+     cb(null,serviceStaff.orderNumberToday);
+    }else{
+     cb(null);
+    }
+  });
 }
