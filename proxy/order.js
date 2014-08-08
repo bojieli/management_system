@@ -48,7 +48,7 @@ exports.createOrder = function(openID,info,cb){
         cb(err,order);
       }
     }
-  ); 
+  );
 }
 //1、查找status = 2，如果有直接返回
 //2、查找status = 1, 并且放置customerService
@@ -143,7 +143,7 @@ function getOrderID(){
   var orderID_increment1 = ++ global.orderID_increment;
   if(global.orderID_increment > 9990)
     global.orderID_increment = 0;
- 
+
   var datePart = leftPadString(date.getUTCFullYear().toString(),1) +
                     leftPadString(date.getUTCMonth() + 1,2) +
                     leftPadString(date.getUTCDate(),2) +
