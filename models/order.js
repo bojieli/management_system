@@ -29,12 +29,22 @@ var OrderSchema = new Schema({
     name : String,  //收件人
     tel : String
   },
-  date : { type : Date, default : Date.now },
+  date : { type : Date, default : Date.now }, //下单时间
+  shipDate : { type : Date, default : Date.now }, //派送时间
+  receiveDate : { type : Date, default : Date.now }, //收货时间
+
   cashUse : Number,
   voucherUse : Number,
-  status : Number,
-  isFirst : Boolean,
-  totalPrice : Number //指的是货到付款时需要支付的现金
+
+  status : Number,  //订单状态，状态码见下面
+  
+  isFirst : Boolean, // 是否是首次下单
+  totalPrice : Number, //指的是货到付款时需要支付的现金
+
+  customerService : {type : String, default : ''}, // 处理该订单的客服
+  shipStaff: {type : String, default : ''},// 派送该订单的快递
+  dispatchCenter: {type : String, default : ''},// 派送该订单的快递中心
+  notes : {type : String, default : ''} // 备注
 },{ autoindex : false });
 /*
 订单的生命周期：
