@@ -11,7 +11,7 @@
                 </li>
                 <% for(var i = 0;i < urgentprocess.length;i++){%>
                 <li class="list-group-item">
-                  <a href="#">订单号：<%= urgentprocess[i].orderID %></a><br>
+                  <a href="#" class = 'question_orderID'>订单号：<span><%= urgentprocess[i].orderID %></span></a><br>
                   <p class="urgentform_text">问题描述：</p>
                   <p class="urgentform_text"><%= urgentprocess[i].notes %></p>
                 </li>
@@ -25,7 +25,7 @@
                 </li>
                 <% for(var i = 0;i < urgentprocessed.length;i++){%>
                 <li class="list-group-item">
-                  <a href="#">订单号：<%= urgentprocessed[i].orderID %></a><br>
+                  <a href="#" class = 'question_orderID'>订单号：<span><%= urgentprocessed[i].orderID %></span></a><br>
                   <p class="urgentform_text">问题描述：</p>
                   <p class="urgentform_text"><%= urgentprocessed[i].notes %></p>
                 </li>
@@ -36,6 +36,13 @@
     </div>    <!-- right div ends-->
   </div>
 </div>
-
+<!--模态框-->
+<div class="modal fade" id="alert_delete" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+  </div>
+</div>
 </body>
 </html>
