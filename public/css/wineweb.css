@@ -15,7 +15,7 @@
   cursor:default;
 }
 span.badge{
-  background-color : red;
+  background-color : #ee0000;
 }
 ul > li {
   list-style:none;
