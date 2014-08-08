@@ -11,9 +11,9 @@
                 </li>
                 <% for(var i = 0;i < urgentprocess.length;i++){%>
                 <li class="list-group-item">
-                  <a href="#">订单号：<%= urgentprocess[i].orderID %></a><br>
+                  <a href="#" class = 'question_orderID'>订单号：<span><%= urgentprocess[i].orderID %></span></a><br>
                   <p class="urgentform_text">问题描述：</p>
-                  <p class="urgentform_text"><%= urgentprocess[i].note %></p>
+                  <p class="urgentform_text"><%= urgentprocess[i].notes %></p>
                 </li>
                 <%}%>
               </ul>
@@ -25,15 +25,34 @@
                 </li>
                 <% for(var i = 0;i < urgentprocessed.length;i++){%>
                 <li class="list-group-item">
-                  <a href="#">订单号：<%= urgentprocessed[i].orderID %></a><br>
+                  <a href="#" class = 'question_orderID'>订单号：<span><%= urgentprocessed[i].orderID %></span></a><br>
                   <p class="urgentform_text">问题描述：</p>
-                  <p class="urgentform_text"><%= urgentprocessed[i].note %></p>
+                  <p class="urgentform_text"><%= urgentprocessed[i].notes %></p>
                 </li>
                 <%}%>
               </ul>
             </div>
         </div> <!-- panel ends -->
     </div>    <!-- right div ends-->
+  </div>
+</div>
+<!--模态框-->
+<div class="modal fade" id = 'detail_modal'tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#E8A35A;">
+                <button type="button" class="close"
+                   data-dismiss="modal" aria-hidden="true">
+                      &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align:center;">
+                  <span class="alert_text">订单详情</span>
+                </h4>
+        </div> <!-- modal header ends-->
+        <div class="modal-body">
+        </div>
+      </div>
   </div>
 </div>
 

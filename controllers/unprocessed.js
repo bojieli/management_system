@@ -94,8 +94,6 @@ exports.load = function(req,res,next){
         alldispatches.push(results._getAllCenterInfo[i].address);
       };
       data.alldispatches = alldispatches
-      console.log('---------------------data--------------------------');
-      console.log(data);
       res.render('unprocessed',data);
     });
     

@@ -39,17 +39,17 @@ exports.load = function(req, res, next){
 
       urgentprocess : [{
           orderID : 409245928034545,
-          note : '收货出现问题'
+          notes : '收货出现问题'
         },{
           orderID : 405245928034545,
-          note : '发货出现问题'
+          notes : '发货出现问题'
       }],
       urgentprocessed : [{
         orderID : 409245928034545,
-        note : '收货出现问题'
+        notes : '收货出现问题'
       },{
         orderID : 405245928034545,
-        note : '发货出现问题'
+        notes : '发货出现问题'
       }]
     };
     res.render('shipped',data);
