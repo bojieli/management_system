@@ -1,10 +1,12 @@
 <div class="panel panel-default">
   <div class="panel-heading summaryinfo row">
     <div class = "col-xs-4">
-    <span>订单编号：<%= orderID %></span>
+    <span  class="order_num">订单编号:</strong>
+    <span><%= orderID %></span>
     </div>
     <div class = "col-xs-4">
-      <span class="form_head_date">下单时间：<%= date.year %>-<%= date.month %>-<%= date.day %>&ensp;<%= date.hour %> : <%= date.minute %> </span>
+      <span class="order_date">下单时间:</span>
+      <span style="font-weight:bold;"><%= date.year %>-<%= date.month %>-<%= date.day %>&ensp;<%= date.hour %>:<%= date.minute %> </span>
     </div>
     <div class="col-xs-4 text_right">
         <strong>订单状态：</strong>
@@ -25,7 +27,14 @@
       <div class="col-xs-9 col-md-6">
           <ul class="list-group">
             <li class="list-group-item list_head"><strong>顾客信息</strong></li>
-
+            <li class="list-group-item">
+              顾客姓名：
+              <input class="username_input" name="username" id="username" type="text" value="<%= address.name %>">
+            </li>
+            <li class="list-group-item">
+              联系电话：
+              <input class="username_input" name="username" id="username" type="text" value="TBD">
+            </li>
 
             <li class="list-group-item">
                 送酒地址：
