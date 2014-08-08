@@ -27,7 +27,7 @@ exports.getStaffInfoByAccount = function(account,cb){
 
 
 exports.loginAuthorize = function(account,password,cb){
-  console.log("===========loginAuthorize========");
+  //console.log("===========loginAuthorize========");
   ServiceStaff.findOne({account : account},"password",staffFind);
 
   function staffFind(err,staff){

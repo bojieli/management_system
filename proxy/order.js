@@ -50,16 +50,33 @@ exports.createOrder = function(openID,info,cb){
     }
   );
 }
-
-exports.findOneOrder = function (cb){
-  Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},function(err, order){
-    // console.log('------------------------------------');
-    // console.log(order);
-    // console.log(order.length);
-    if(order.length==0)
-      return cb(null,null);
-    cb(null,order[0]);
+//1、查找status = 2，如果有直接返回
+//2、查找status = 1, 并且放置customerService
+exports.findOneOrder = function (customerService, cb){
+  Order.findOne({'status' : 2, 'customerService' : customerService}, function(err, order){
+    if(order){
+      return cb(null, order);
+    }
+    findStatus1();
+    
   });
+
+
+  function findStatus1(){
+
+    Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},function(err, order){
+      if(order.length==0)
+        return cb(null,null);
+      Order.update({'orderID' : order[0].orderID},
+        {'status' : 2, 'customerService' : customerService},
+        function(err){
+          if(err)
+            return cb(err);
+          cb(null,order[0]);
+        });
+      
+    });
+  }
 }
 
 exports.setStatus = function (orderID, status, cb){
@@ -120,7 +137,8 @@ function leftPadString(value,length){
 
 function getOrderID(){
   var date = new Date();
-  var orderID_increment = ++ global.orderID_increment;
+
+  var orderID_increment1 = ++ global.orderID_increment;
   if(global.orderID_increment > 9990)
     global.orderID_increment = 0;
 
@@ -130,6 +148,6 @@ function getOrderID(){
                     leftPadString(date.getUTCHours(),2) +
                     leftPadString(date.getUTCMinutes(),2) +
                     leftPadString(date.getUTCSeconds(),2) +
-                    leftPadString(orderID_increment,4)
+                    leftPadString(orderID_increment1,4)
   return 'f' + datePart;
 }
