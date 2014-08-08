@@ -7,6 +7,7 @@ var received = require('./controllers/received');
 var search = require('./controllers/search');
 var questionorder = require('./controllers/questionorder');
 var neworder = require('./controllers/neworder');
+var orderdetail = require('./controllers/orderdetail');
 
 module.exports = function (app) {
 
@@ -33,4 +34,6 @@ module.exports = function (app) {
 	app.get('/questionorder',questionorder.load)
 
 	app.get('/neworder', neworder.load)
+
+	app.post('/orderdetail', orderdetail.load)
 }
