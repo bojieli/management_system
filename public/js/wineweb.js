@@ -1,72 +1,81 @@
-$('a.question_orderID').click(function(){
-  var orderID = $('a.question_orderID > span').text();
-  $.post('/orderdetail',
-  {
-    orderID : orderID
-  },
-  function(data,status){
-
-  });
-});
+$(document).ready(function(){
 
 
-(function unprocessed_post(){
+  var flag = 0;
+  var address;
+  var notes;
 
-  var m_username;
-  var m_usertel;
-  var m_area;
-  var m_detailOfLoc;
-  var m_detailOfNotes;
+  alert("function");
 
-  $("#username").change(function(){
-    m_username = $(this).text();
-  });
+  function getOrderDetail(orderID){
+    $.post('/orderdetail',
+    {
+      orderID : orderID
+    },
+    function(data,status){
+      if(status == 'success'){
+        $('div#detail_modal div.modal-body').html(data);
+        $('div#detail_modal').modal('show');
+        $('div#alert_delete').css('z-index',2000);
+      }else{
+        $('div#detail_modal div.modal-body').text('查找订单出错');
+        $('div#detail_modal').modal('show');
+      }
+    });
+  }
 
-  $("#usertel").change(function(){
-    m_usertel = $(this).text();
-  });
-
-  $("#area").change(function(){
-    m_area = $(this).value();
-  });
-
-  $("detailOfLoc").change(function(){
-    m_detailOfLoc = $(this).text();
+  $('a.question_orderID').click(function(){
+    var orderID = $(this).children('span').text();
+    getOrderDetail(orderID);
   });
 
-  $
+  $('li.order_abstract_item').click(function(){
+    var orderID =  $(this).find('span.orderID_abstract').text();
+    getOrderDetail(orderID);
+  });
+
+  /* listen if form info changed. S*/
+
+  $(".editable").change(function(){
+  	flag = 1;
+  });
 
   /* click check button*/
 
   $("button#check").click(function() {
 
-    
-    $.post(
-      "dongdong_background_file",
-      {
-        address.name: m_username,
-        address.tel: m_usertel
-      },
+  	alert(" button check");
 
-      function(){
-        $.get(
-          "dongdong_background_file",
-          function(data){
-            $("#orderID").text(order.orderID);
-          });        
+    if (flag){
+    
+    alert("flag enter");
+
+    $.post(
+      "/orderdetail",
+      {
+      	/* Data form description:
+		   1. area, dispatch -- value
+		   2. Is textarea form - text?
+		   3. TODO! address.xxx right?
+      	*/
+      	address: {
+      		//area: $("#area").value(),
+      		detail: $("#detailOfLoc").text(),
+        	name: $("#username").text(),
+        	tel: $("#usertel").text()
+        },
+        //dispatchCenter: $("#dispatch").value(),
+        notes: $("#detailOfNotes").text()
+      
+      },
+      function(data, status){
+      	if(status == 'success'){
+      	alert('get data status is success!');
+      	$.get("/unprocessed");
+      	}
       });
+	}
   });
 
+  /* listen E*/
 });
-
-
-/*
-  $.post(
-    'dongdong_background_file',
-    DATA,
-    function(data, status){
-      $('#username').html(data);
-      SHOW()
-    },
-    "text";
-  );
