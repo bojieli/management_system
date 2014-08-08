@@ -1,70 +1,104 @@
-<div class="order_item">
-    <div class ="shipped_summaryinfo row">
-        <div class="ordertime col-xs-3"><label>订单时间：</label><b><span>2014-07-25</span></b></div>
-        <div class="orderid col-xs-6"><label>订单编号：</label><b><span>f20140725213849478322</span></b></div>
-        <div class="orderstatus col-xs-3"><label>订单状态：</label><span style="color: #CC0033;"><b>已收货</b></span></div>
+<div class="panel panel-default">
+  <div class="panel-heading summaryinfo row">
+    <div class = "col-xs-4">
+    <span>订单编号：<%= orderID %></span>
     </div>
-    <div class="orderinfo row">
-        <div class="col-xs-8">
-            <div class ="orderdetails">
-                <label>订单详情：</label>
-                <ul class ="detaillist">
-                    <li>
-                        <div class ="row">
-                            <div class ="wineinfo col-xs-6">
-                                51度口子窖500ml装
-                            </div>
-                            <div class ="wineprice col-xs-3">
-                                单价(元)：<span>128</span>
-                            </div>
-                            <div class ="winenumber col-xs-3">
-                                数量：<span>5</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class ="row">
-                            <div class ="wineinfo col-xs-6">
-                                51度口子窖500ml装
-                            </div>
-                            <div class ="wineprice col-xs-3">
-                                单价(元)：<span>128</span>
-                            </div>
-                            <div class ="winenumber col-xs-3">
-                                数量：<span>5</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class ="pricedetails row">
-            <div class ="col-xs-4 totalprice">
-                <label>总价(元)：<span>1000</span></label>
-            </div>
-            <div class ="col-xs-4 cashuse">
-                <label>现金券(元)：<span>200</span></label>
-            </div>
-            <div class ="col-xs-4 cashneeded">
-                <label>需付现金(元)：<span>800</span></label>
-            </div>
-            </div>
-        </div>
-        <div class ="col-xs-4">
-            <div class ="form-group">
-                <label>联系方式</label>
-                <input type="tel" class ="form-control" readonly="true" value ="13898999892" required/>
-            </div>
-        </div>
+    <div class = "col-xs-4">
+      <span class="form_head_date">下单时间：<%= date.year %>-<%= date.month %>-<%= date.day %>&ensp;<%= date.hour %> : <%= date.minute %> </span>
     </div>
-    <div class ="addressinfo row">
-        <div class ="form-group col-xs-5">
-            <label>地址：</label>
-            <textarea  class ="form-control" readonly ="readonly">阜阳市颖下县人民政府</textarea>
-        </div>
+    <div class="col-xs-4 text_right">
+        <strong>订单状态：</strong>
+        <span class="label label-warning form_state">已收货</span>
+        <span class="label label-default form_state"><%= isFirst ? "首次下单" : "非首次下单"%></span>
+    </div>
+  </div>
 
-        <div class ="col-xs-4,col-xs-offset-1">
-            <label>选择快递：</label>
-            <input type="tel" class ="form-control" readonly="true" value ="一号快递车" required/>
-        </div>
-    </div>
-</div>
+      <!--
+      <div class="panel-body">
+      </div>
+      -->
+
+  <div class="row">
+
+      <!-- Following show user info-->
+
+      <div class="col-xs-9 col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item list_head"><strong>顾客信息</strong></li>
+            <li class="list-group-item">
+              顾客姓名：
+              <input name="username" id="username" type="text" value="<%= address.name %>" readonly>
+            </li>
+            <li class="list-group-item">
+              联系电话：
+              <input name="username" id="usertel" type="tel" value="<%= address.tel %>"readonly>
+            </li>
+            <li class="list-group-item">
+                送酒地址：
+                <span class="text_inline">阜阳市</span>
+                <select class ="form-control select_inline"required aria-selected ="false" readonly>
+                    <option hidden ="hidden"></option>
+                    <option selected = '<%= address.area == '颍州区' ? 'selected' : ''%>'>颍州区</option>
+                    <option selected = '<%= address.area == '颍泉区' ? 'selected' : ''%>'>颍泉区</option>
+                    <option selected = '<%= address.area == '颍东区' ? 'selected' : ''%>'>颍东区</option>
+                </select>
+                <textarea  class ="form-control address_area" style="margin-top:10px; height:35px" readonly><%= address.detail %></textarea>
+            </li>
+            <li class="list-group-item">
+              <strong>发货时间：</strong>
+              <span class="form_head_date"><%= shipDate.year %>-<%= shipDate.month %>-<%= shipDate.day %>&ensp;<%= shipDate.hour %> : <%= shipDate.minute %> </span>
+            </li>
+            <li class="list-group-item">
+              <strong>收货时间：</strong>
+              <span class="form_head_date"><%= receiveDate.year %>-<%= receiveDate.month %>-<%= receiveDate.day %>&ensp;<%= receiveDate.hour %> : <%= receiveDate.minute %> </span>
+            </li>
+            <li class="list-group-item">
+              备注：
+              <textarea  class ="form-control" id="textarea_else" readonly><%= notes %></textarea>
+            </li>
+          </ul>
+      </div>    <!-- User Info Ends-->
+
+      <!-- Following show Commodity Info-->
+
+      <div class="col-xs-9 col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item list_head"><strong>酒水信息</strong></li>
+
+            <!-- Table to show specific wine info-->
+
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                      <th>酒种类</th>
+                      <th>单价</th>
+                      <th>数量</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <%for(var i = 0;i < shopOnce.length;i++){%>
+                  <tr>
+                      <th><%= shopOnce[i].describe %></th>
+                      <th><%= shopOnce[i].wechatPrice %></th>
+                      <th><%= shopOnce[i].number %></th>
+                  </tr>
+                <%}%>
+                </tbody>
+            </table>
+
+            <li class="list-group-item">
+              <strong>需付现金：</strong><span><%= cashNeeded %></span>
+              <span style="padding-left:10px">(总价：</span><span><%= cashTotal %></span>
+              <span>, 现金券：</span><span><%= coupon %></span><span></span>,代金券：</span><span><%= voucher %></span><span>)</span>
+            <li class="list-group-item">
+              <strong>快递点：</strong>
+                 <span><%= dispatchCenter %></span>
+            </li>
+            <li class="list-group-item">
+              <strong>快递员：</strong>
+                 <span><%= shipStaff %></span>
+            </li>
+          </ul>
+      </div>    <!-- Commodity Info Ends-->
+  </div>  <!-- row ends-->
+</div>   <!-- Panel: Form Info Ends-->

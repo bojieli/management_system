@@ -17,7 +17,7 @@ exports.load = function(req,res,next){
         area : "颍东区",
         detail : "人民政府"
       },
-      note : "加急快件",
+      notes : "加急快件",
       shopOnce :[{
         describe : "51度口子窖200ml装",
         wechatPrice : 128,
@@ -33,17 +33,17 @@ exports.load = function(req,res,next){
       voucher : 10,
       urgentprocess : [{
         orderID : '409245928034545',
-        note : '收货出现问题'
+        notes : '收货出现问题'
       },{
         orderID : '405245928034545',
-        note : '发货出现问题'
+        notes : '发货出现问题'
       }],
       urgentprocessed : [{
         orderID :'409245928034545',
-        note : '收货出现问题'
+        notes : '收货出现问题'
       },{
         orderID : '405245928034545',
-        note : '发货出现问题'
+        notes : '发货出现问题'
       }],
       alldispatches:['1号车','2号车','3号车']
     };
