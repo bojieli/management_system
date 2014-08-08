@@ -55,6 +55,10 @@ exports.getOrderNumberToday = function (account,cb){
   ServiceStaff.findOne({'account' : account},'orderNumberToday', function(err, serviceStaff){
     if(err)
       return cb(err);
-    cb(null,serviceStaff.orderNumberToday);
+    if(serviceStaff){
+     cb(null,serviceStaff.orderNumberToday);
+    }else{
+     cb(null);
+    }
   });
 }

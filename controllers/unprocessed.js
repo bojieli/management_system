@@ -4,12 +4,6 @@ var ServiceStaff = require('../proxy').ServiceStaff;
 var DispatchCenter = require('../proxy').DispatchCenter;
 var Wine = require('../proxy').Wine;
 
-
-
-
-
-
-
 exports.load = function(req,res,next){
 
     var data = {};
@@ -17,6 +11,9 @@ exports.load = function(req,res,next){
     async.auto({
       _getnumberUnprocessed : function(callback){
         Order.getNumberbystatus(1, callback);
+      },
+      _getnumberQuestion : function(callback){
+        Order.getNumberbystatus(21,callback);
       },
       _getnumberProcessedToday : function(callback){
         ServiceStaff.getOrderNumberToday(req.session.user, callback);
@@ -63,13 +60,15 @@ exports.load = function(req,res,next){
       }]
     },function(err, results){
       if(err){
-        console.log(err); 
+        console.log(err);
         return next(err);
       }
       if(!order)
           return res.send('恭喜你处理完了');
       data.numberUnprocessed = results._getnumberUnprocessed;
       data.numberProcessedToday = results._getnumberProcessedToday;
+      data.numberQuestion = results._getnumberQuestion;
+      console.log("======results" + results._getnumberQuestion);
       data.orderID = order.orderID;
       var date = {
         year : order.date.getUTCFullYear(),
@@ -81,7 +80,7 @@ exports.load = function(req,res,next){
       data.date = date;
       data.isFirst = order.isFirst;
       data.address = order.address;
-      data.note = order.note||'';
+      data.notes = order.notes||'';
       data.cashNeeded = order.totalPrice;
       data.cashTotal = order.cashUse + order.voucherUse + order.totalPrice;
       data.coupon = order.cashUse;
@@ -96,7 +95,7 @@ exports.load = function(req,res,next){
       data.alldispatches = alldispatches
       res.render('unprocessed',data);
     });
-    
+
 }
 
 
@@ -109,7 +108,7 @@ exports.load = function(req,res,next){
 //       numberProcessedToday: 80,  //getnumberProcessedToday
 
 
-//       orderID : 40725678234823,  
+//       orderID : 40725678234823,
 //       date:{
 //         year : 2014,
 //         month : 8,

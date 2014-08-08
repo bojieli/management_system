@@ -48,7 +48,7 @@ exports.createOrder = function(openID,info,cb){
         cb(err,order);
       }
     }
-  ); 
+  );
 }
 
 exports.findOneOrder = function (cb){
@@ -123,7 +123,7 @@ function getOrderID(){
   var orderID_increment = ++ global.orderID_increment;
   if(global.orderID_increment > 9990)
     global.orderID_increment = 0;
- 
+
   var datePart = leftPadString(date.getUTCFullYear().toString(),1) +
                     leftPadString(date.getUTCMonth() + 1,2) +
                     leftPadString(date.getUTCDate(),2) +
