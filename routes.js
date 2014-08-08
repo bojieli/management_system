@@ -17,23 +17,23 @@ module.exports = function (app) {
 		res.redirect('./unprocessed');
 	})
 
-	app.get('/login',login.load)
+	app.get('/login',login.load);
 
-	app.post('/login',login.authorize)
+	app.post('/login',login.authorize);
 
-	app.get('/unprocessed',unprocessed.load)
+	app.get('/unprocessed',unprocessed.load);
 
-	app.get('/unshipped',unshipped.load)
+	app.get('/unshipped',unshipped.load);
 
-	app.get('/shipped',shipped.load)
+	app.get('/shipped',shipped.load);
 
-	app.get('/received', received.load)
+	app.get('/received', received.load);
 
-	app.get('/search',search.load)
+	app.get('/search',search.load);
 
-	app.get('/questionorder',questionorder.load)
+	app.get('/questionorder',questionorder.load);
 
-	app.get('/neworder', neworder.load)
+	app.get('/neworder', neworder.load);
 
-	app.post('/orderdetail', orderdetail.load)
+	app.post('/orderdetail', orderdetail.load);
 }

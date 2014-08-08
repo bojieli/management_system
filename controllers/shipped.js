@@ -1,56 +1,53 @@
-exports.load = function(req, res, next){
-    var data = {
-      numberUnprocessed:50,
-      numberProcessedToday: 80,
-      shiporders:[{
-        orderID : 'f2342523452345',
-        status : '已发货',
-        date: {
-          year : 2014,
-          month : 7,
-          day : 24,
-          hour : 17,
-          minute : 30
-        },
-        dispatchCenter : '1号车'
-        },{
-          orderID : 'f23242523452345',
-          status : '已发货',
-          date: {
-            year : 2014,
-            month : 7,
-            day : 20,
-            hour : 15,
-            minute : 20
-          },
-          dispatchCenter : '2号车'
-        },{
-          orderID : 'f2332434523452345',
-          status : '已发货',
-          date: {
-            year : 2014,
-            month : 7,
-            day : 14,
-            hour : 16,
-            minute : 30
-          },
-          dispatchCenter : '3号车'
-      }],
+var async = require('async');
+var Order = require('../proxy').Order;
+var DispatchCenter = require('../proxy').DispatchCenter;
 
-      urgentprocess : [{
-          orderID : 409245928034545,
-          notes : '收货出现问题'
-        },{
-          orderID : 405245928034545,
-          notes : '发货出现问题'
-      }],
-      urgentprocessed : [{
-        orderID : 409245928034545,
-        notes : '收货出现问题'
-      },{
-        orderID : 405245928034545,
-        notes : '发货出现问题'
-      }]
-    };
-    res.render('shipped',data);
+
+
+exports.load = function(req, res, next){
+    var data = {};
+    async.auto({
+      _getnumberUnprocessed : function(callback){
+        Order.getNumberbystatus(1, callback);
+      },
+      _getnumberQuestion : function(callback){
+        Order.getNumberbystatus(21,callback);
+      },
+      _orders : function(callback){
+        Order.findOrdersInShipped(req.session.user, callback);
+      } 
+      },function(err, results){
+        if(err){
+          console.log('---------shipped error---------------');
+          console.log(err);
+          return next(err);
+        }
+        data.numberUnprocessed = results._getnumberUnprocessed;
+        data.numberQuestion = results._getnumberQuestion;
+        var shiporders = [];
+        for (var i = 0; i < results._orders.length; i++) {
+          var shiporder = {};
+          shiporder.orderID = results._orders[i].orderID;
+          shiporder.status = '已发货';
+          var date = {
+            year : results._orders[i].shipDate.getUTCFullYear(),
+            month : results._orders[i].shipDate.getUTCMonth() + 1,
+            day : results._orders[i].shipDate.getUTCDate(),
+            hour : results._orders[i].shipDate.getUTCHours(),
+            minute : results._orders[i].shipDate.getUTCMinutes()
+          }
+          shiporder.date = date;
+          shiporder.dispatchCenter = results._orders[i].dispatchCenter||'';
+          shiporders.push(shiporder);
+        };
+        data.shiporders = shiporders;
+        data.urgentprocess = [];
+        data.urgentprocessed = [];
+        console.log('---------data---------------');
+        console.log(JSON.stringify(data));
+        res.render('shipped',data);
+      }
+    )
+
+    
   }

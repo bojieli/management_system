@@ -60,6 +60,7 @@ exports.load = function(req,res,next){
       }]
     },function(err, results){
       if(err){
+        console.log('---------unprocessed error---------------');
         console.log(err);
         return next(err);
       }
