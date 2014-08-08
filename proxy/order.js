@@ -52,7 +52,14 @@ exports.createOrder = function(openID,info,cb){
 }
 
 exports.findOneOrder = function (cb){
-  Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},cb);
+  Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},function(err, order){
+    // console.log('------------------------------------');
+    // console.log(order);
+    // console.log(order.length);
+    if(order.length==0)
+      return cb(null,null);
+    cb(null,order[0]);
+  });
 }
 
 exports.setStatus = function (orderID, status, cb){
@@ -91,8 +98,38 @@ exports.getNumberbystatus = function(status, cb){
     cb(null, orders.length);
   });
 }
-
 exports.findUnshipped = function (cb){
   Order.find({'status' : 3},'orderID date dispatchCenter', cb);
 }
 
+
+
+function leftPadString(value,length){
+  var valueString = value.toString();
+  if(valueString.length >= length){
+    return valueString.substr(0,length);
+  }else{
+    var pad = "";
+    for(var i = 0;i < length - valueString.length; i++){
+      pad = pad + "0";
+    }
+    return pad + valueString;
+  }
+}
+
+
+function getOrderID(){
+  var date = new Date();
+  var orderID_increment = ++ global.orderID_increment;
+  if(global.orderID_increment > 9990)
+    global.orderID_increment = 0;
+ 
+  var datePart = leftPadString(date.getUTCFullYear().toString(),1) +
+                    leftPadString(date.getUTCMonth() + 1,2) +
+                    leftPadString(date.getUTCDate(),2) +
+                    leftPadString(date.getUTCHours(),2) +
+                    leftPadString(date.getUTCMinutes(),2) +
+                    leftPadString(date.getUTCSeconds(),2) +
+                    leftPadString(orderID_increment,4)
+  return 'f' + datePart;
+}

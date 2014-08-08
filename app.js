@@ -11,6 +11,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
 var app = express();
+global.orderID_increment = 0;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

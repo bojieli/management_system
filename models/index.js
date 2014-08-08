@@ -13,7 +13,9 @@ mongoose.connect(config.db,function dberr(err){
 require('./order');
 require('./service_staff');
 require('./dispatch_center');
+require('./wine')
 
 exports.Order = mongoose.model('Order');
 exports.ServiceStaff = mongoose.model('ServiceStaff');
 exports.DispatchCenter = mongoose.model('DispatchCenter');
+exports.Wine = mongoose.model('Wine');

@@ -50,3 +50,11 @@ exports.loginAuthorize = function(account,password,cb){
     }
   }
 }
+
+exports.getOrderNumberToday = function (account,cb){
+  ServiceStaff.findOne({'account' : account},'orderNumberToday', function(err, serviceStaff){
+    if(err)
+      return cb(err);
+    cb(null,serviceStaff.orderNumberToday);
+  });
+}
