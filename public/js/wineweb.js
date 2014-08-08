@@ -1,4 +1,11 @@
-$(function(){
+$(document).ready(function(){
+
+
+  var flag = 0;
+  var address;
+  var notes;
+
+  alert("function");
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -27,4 +34,48 @@ $(function(){
     getOrderDetail(orderID);
   });
 
+  /* listen if form info changed. S*/
+
+  $(".editable").change(function(){
+  	flag = 1;
+  });
+
+  /* click check button*/
+
+  $("button#check").click(function() {
+
+  	alert(" button check");
+
+    if (flag){
+    
+    alert("flag enter");
+
+    $.post(
+      "/orderdetail",
+      {
+      	/* Data form description:
+		   1. area, dispatch -- value
+		   2. Is textarea form - text?
+		   3. TODO! address.xxx right?
+      	*/
+      	address: {
+      		//area: $("#area").value(),
+      		detail: $("#detailOfLoc").text(),
+        	name: $("#username").text(),
+        	tel: $("#usertel").text()
+        },
+        //dispatchCenter: $("#dispatch").value(),
+        notes: $("#detailOfNotes").text()
+      
+      },
+      function(data, status){
+      	if(status == 'success'){
+      	alert('get data status is success!');
+      	$.get("/unprocessed");
+      	}
+      });
+	}
+  });
+
+  /* listen E*/
 });
