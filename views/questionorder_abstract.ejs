@@ -1,0 +1,23 @@
+<li>
+  <div class="panel-heading form_head row">
+      <div class='col-xs-3' style = "padding-right:0px">
+        <span>订单编号：<%= order_abstract.orderID %></span>
+      </div>
+      <div class='col-xs-3'>
+        <span >
+        <%= order_abstract.status=='已收货'?'收货时间': (order_abstract.status=='已发货'?'发货时间':'下单时间')%>：
+        <%= order_abstract.date.year %>-<%= order_abstract.date.month %>-<%= order_abstract.date.day %>&ensp;<%= order_abstract.date.hour %>:<%= order_abstract.date.minute %>
+        </span>
+      </div>
+      <div class='col-xs-3 text_right'>
+        <strong>订单状态：</strong>
+        <span class="label label-warning form_state">
+          <%= order_abstract.status %>
+        </span>
+      </div>
+      <div class="col-xs-3 text_right">
+          <strong>快递点：</strong>
+          <span class="label label-warning form_state"><%= order_abstract.dispatchCenter %></span>
+      </div>
+  </div>
+</li>

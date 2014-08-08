@@ -9,18 +9,13 @@
     <meta name="author" content="gewuit">
 
     <title>安徽1919,全国首家白酒直营店</title>
-    <link rel = "stylesheet" type = "text/css" href = "../Lib/css/bootstrap.min.css"/>
-    <link rel = "stylesheet" type = "text/css" href = "../Lib/css/bootstrap-theme.min.css"/>
-    <link rel = "stylesheet" type = "text/css" href = "../css/mu_main.css" />
-    <link rel = "stylesheet" type = "text/css" href = "../css/mu_unshipped.css" />
-    <link rel = "stylesheet" type = "text/css" href = "../css/mu_shipped.css" />
-    <link rel = "stylesheet" type = "text/css" href = "../css/mu_unprocessed.css" />
-    <link rel = "stylesheet" type = "text/css" href = "../css/mu_search.css" />
-    <link rel = "stylesheet" type = "text/css" href = "../css/mu_received.css" />
-    <link rel = "stylesheet" type = "text/css" href = "../css/flatUI.css" />
+    <link rel = "stylesheet" type = "text/css" href = "Lib/css/bootstrap.min.css"/>
+    <link rel = "stylesheet" type = "text/css" href = "Lib/css/bootstrap-theme.min.css"/>
+    <link rel = "stylesheet" type = "text/css" href = "css/wineweb.css" />
     <script src ="Lib/js/jquery-2.0.3.min.js"></script>
+
     <script src ="Lib/js/bootstrap.min.js"></script>
-    <script src ="js/main.js"></script>
+    <script src ="js/wineweb.js"></script>
   </head>
   <body>
 
@@ -50,11 +45,11 @@
               <div class="navbar-right" style="padding-top:14px">
                     <div style="display:inline-block">
                         <label>未处理数：</label>
-                        <span>200</span>
+                        <span><%= numberUnprocessed%></span>
                     </div>
                     <div style="display:inline-block;padding-left:20px">
                         <label>今日已处理数：</label>
-                        <span>100</span>
+                        <span><%= numberProcessedToday%></span>
                     </div>
                 </div>
             </div>
