@@ -34,7 +34,7 @@ exports.createOrder = function(openID,info,cb){
         address : info.address,
         cashUse : info.cashUse || 0,
         voucherUse : info.voucherUse || 0,
-        status : 1,
+        status : 22,
         isFirst : isFirst,
         totalPrice : info.totalPrice,
       };
@@ -107,6 +107,27 @@ exports.setReceiveDate = function(orderID, cb){
 
 exports.findbyOrderID = function(orderID, cb){
   Order.find({'orderID' : orderID},cb);
+}
+
+exports.findOrdersInUnship = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 3},
+    'orderID date dispatchCenter' ,cb);
+}
+exports.findOrdersInShipped = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 4},
+    'orderID shipDate dispatchCenter' ,cb);
+}
+exports.findOrdersInReceived = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 5},
+    'orderID receiveDate dispatchCenter' ,cb);
+}
+exports.findOrdersInQuestion2 = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 21},
+    'orderID date dispatchCenter' ,cb);
+}
+exports.findOrdersInQuestion4 = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 41},
+    'orderID shipDate dispatchCenter' ,cb);
 }
 
 exports.getNumberbystatus = function(status, cb){

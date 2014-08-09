@@ -19,12 +19,13 @@ $(document).ready(function(){
   }
 
   $('a.question_orderID').click(function(){
+    alert('click');
     var orderID = $(this).children('span').text();
     getOrderDetail(orderID);
   });
 
   $('li.order_abstract_item').click(function(){
-
+     alert('click');
     var orderID =  $(this).find('span.orderID_abstract').text();
     getOrderDetail(orderID);
   });

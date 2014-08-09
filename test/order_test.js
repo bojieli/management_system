@@ -1,4 +1,5 @@
 var Order = require('../proxy').Order;
+var _Order = require('../models').Order;
 
 
 // Order.findOneOrder(function(err, order){
@@ -41,8 +42,12 @@ var info = {
 }
 var openID = 'owaixtwzZUF3Qma5s8xH0N__mwK0c';
 
-for(var i = 0; i< 10 ; i++){
-	Order.createOrder(openID,info,function(err,order){
-		console.log(JSON.stringify(order));
+// for(var i = 0; i< 5 ; i++){
+// 	Order.createOrder(openID,info,function(err,order){
+// 		console.log(JSON.stringify(order));
+// 	})
+// }
+_Order.update({'status' : 3},{'dispatchCenter': '阜阳市中心3号车'},
+	{ multi: true },function (err, numberAffected, raw){
+		console.log(numberAffected);
 	})
-}
