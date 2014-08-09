@@ -39,7 +39,7 @@ label {
 }
 
 .text_right{
-  text-align: right;
+  float: right;
   padding-right: 30px;
 }
 
@@ -146,7 +146,7 @@ label {
   }
 }
 
-
+.
 /*unprocessed*/
 
 .order_num{
@@ -167,42 +167,6 @@ label {
   height: 30px;
   padding-left: 10px;
 }
-
-/* 用于表达的样式 S */
-.bs-docs-example:after {
-    background-color: #F5F5F5;
-    border: 1px solid #DDDDDD;
-    border-radius: 4px 0 4px 0;
-    color: #9DA0A4;
-    content: "示例：";
-    font-size: 12px;
-    font-weight: bold;
-    left: -1px;
-    padding: 3px 7px;
-    position: absolute;
-    top: -1px;
-}
-form.bs-docs-example {
-    padding-bottom: 19px;
-}
-.bs-docs-example {
-    background-color: #FFFFFF;
-    border: 1px solid #DDDDDD;
-    border-radius: 4px 4px 4px 4px;
-    margin: 15px 0;
-    padding: 39px 19px 14px;
-    position: relative;
-}
-.bs-docs-example-submenus .dropup > .dropdown-menu, .bs-docs-example-submenus .dropdown > .dropdown-menu {
-    display: block;
-    margin-bottom: 5px;
-    position: static;
-}
-.bs-docs-example-submenus {
-    min-height: 180px;
-}
-/* 用于表达的样式 E */
-
 
 .button_check{
   width: 120px;
@@ -234,6 +198,25 @@ form.bs-docs-example {
 div#detail_modal div.modal-dialog{
   width:77%;
 }
+
+.form-control{
+  margin-top: 6px;
+}
+
+.table_text > tr > th{
+  font-weight: 100;
+}
+
+.list_head{
+  padding-left: auto;
+}
+
+#radios > label{
+  padding: 2px 0px 2px 20px;
+  font-weight: 100;
+}
+
+
 
 /* unshipped */
 

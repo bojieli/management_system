@@ -1,4 +1,8 @@
 $(document).ready(function(){
+
+
+
+  var flag = 0;
   var modify_flag = false;
 
   function getOrderDetail(orderID){
@@ -65,12 +69,44 @@ $(document).ready(function(){
 
   /* click check button*/
 
+
+  $("button#check").click(function() {
+
+
+    if (flag){
+    
+    $.post(
+      "/orderdetail",
+      {
+      	/* Data form description:
+		   1. area, dispatch -- value
+		   2. Is textarea form - text?
+		   3. TODO! address.xxx right?
+      	*/
+      	address: {
+      		//area: $("#area").value(),
+      		detail: $("#detailOfLoc").text(),
+        	name: $("#username").text(),
+        	tel: $("#usertel").text()
+        },
+        //dispatchCenter: $("#dispatch").value(),
+        notes: $("#detailOfNotes").text()
+      
+      },
+      function(data, status){
+      	if(status == 'success'){
+      	alert('get data status is success!');
+      	$.get("/unprocessed");
+      	}
+      });
+	}
   $("button#order_confirm").click(function() {
     orderProcess('confirm');
 	});
 
   $("button#order_delete").click(function(){
     orderProcess('delete');
+
   });
 
   $("button#order_wait").click(function(){

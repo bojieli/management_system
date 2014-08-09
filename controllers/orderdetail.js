@@ -6,6 +6,7 @@ var Wine = require('../proxy').Wine;
 
 exports.load = function(req,res,next){
   console.log('==========='+req.body['orderID']);
+
   var data = {};
   var order = {};
   async.auto({
@@ -15,7 +16,7 @@ exports.load = function(req,res,next){
     _order : function(callback){
       Order.findbyOrderID(req.body['orderID'], callback);
     },
-    _findWineByIDs : ['_findOneOrder', function(callback, results) {
+    _findWineByIDs : ['_order', function(callback, results) {
       order = results._order;
       if(!order)
         return callback(null, null);
@@ -51,8 +52,6 @@ exports.load = function(req,res,next){
       console.log(err);
       return next(err);
     }
-    if(!order)
-        return res.send('恭喜你处理完了');
     data.orderID = order.orderID;
     var date = {
       year : order.date.getUTCFullYear(),
@@ -75,6 +74,13 @@ exports.load = function(req,res,next){
       alldispatches.push(results._getAllCenterInfo[i].address);
     };
     data.alldispatches = alldispatches
-    res.render('unprocessed',data);
+    if(order.status == 2)
+      res.render('order_unprocessed',data);
+    else if(order.status == 3)
+      res.render('order_unshipped',data);
+    else if(order.status == 4)
+      res.render('order_',data);
+    else if(order.status == 5)
+      res.render('order_unprocessed',data);
   });
 }

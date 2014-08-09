@@ -49,7 +49,7 @@
                         <select class ="winedescribe" required aria-selected ="false">
                           <option hidden ="hidden"></option>
                           <%for(var i = 0;i < wines.length; i++){ %>
-                          <option><%=wines[i].describe%></option>
+                          <option value="<%=wines[i].id%>"><%=wines[i].describe%></option>
                           <% } %>
                         </select>
                       </th>

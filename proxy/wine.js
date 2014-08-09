@@ -101,3 +101,7 @@ exports.findRecommend = function(cb){
     }
   }
 }
+
+exports.findAllWines = function(cb){
+  Wine.find({},'id describe wechatPrice', cb);
+}

@@ -41,8 +41,6 @@ exports.load = function (req, res, next){
         data.receiveorders = receiveorders;
         data.urgentprocess = [];
         data.urgentprocessed = [];
-        console.log('---------data---------------');
-        console.log(JSON.stringify(data));
         res.render('received',data);
       }
     )

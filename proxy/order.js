@@ -34,9 +34,41 @@ exports.createOrder = function(openID,info,cb){
         address : info.address,
         cashUse : info.cashUse || 0,
         voucherUse : info.voucherUse || 0,
-        status : 22,
+        status : 1,
         isFirst : isFirst,
         totalPrice : info.totalPrice,
+      };
+      Order.create(order, callback);
+    }],
+    function afterCreate(err,order){
+      if(err){
+        errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
+        return cb(err);
+      }else{
+        cb(err,order);
+      }
+    }
+  );
+}
+
+exports.createOrderbyCS = function(customerService,info,cb){
+  var orderID = getOrderID();
+  var order = {};
+  async.waterfall([
+    function createorder(order, callback){
+      order = {
+        orderID : orderID,
+        openID : 'createdByCS',
+        shopOnce : info.shopOnce,
+        address : info.address,
+        cashUse : 0,
+        voucherUse : 0,
+        status : 3,
+        isFirst : false,
+        totalPrice : info.totalPrice,
+        customerService : customerService,
+        dispatchCenter : info.dispatchCenter,
+        notes : info.notes
       };
       Order.create(order, callback);
     }],
@@ -106,7 +138,7 @@ exports.setReceiveDate = function(orderID, cb){
 }
 
 exports.findbyOrderID = function(orderID, cb){
-  Order.find({'orderID' : orderID},cb);
+  Order.findOne({'orderID' : orderID},cb);
 }
 
 exports.findOrdersInUnship = function(customerService,cb){
@@ -211,5 +243,5 @@ function getOrderID(){
                     leftPadString(date.getUTCMinutes(),2) +
                     leftPadString(date.getUTCSeconds(),2) +
                     leftPadString(orderID_increment1,4)
-  return 'f' + datePart;
+  return 'k' + datePart;
 }
