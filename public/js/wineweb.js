@@ -2,10 +2,6 @@ $(document).ready(function(){
 
 
   var flag = 0;
-  var address;
-  var notes;
-
-  alert("function");
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -44,12 +40,9 @@ $(document).ready(function(){
 
   $("button#check").click(function() {
 
-  	alert(" button check");
 
     if (flag){
     
-    alert("flag enter");
-
     $.post(
       "/orderdetail",
       {

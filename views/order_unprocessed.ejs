@@ -1,7 +1,7 @@
 <div id="unprocessed_form1" class="panel panel-default">
   <div class="panel-heading summaryinfo row">
     <div class = "col-xs-4">
-    <span  class="order_num">订单编号:</strong>
+    <span style="font-weight:bold;">订单编号:</strong>
     <span id="orderID"><%= orderID %></span>
     </div>
     <div class = "col-xs-4">
@@ -24,7 +24,7 @@
 
       <!-- Following show user info-->
 
-      <div class="col-xs-9 col-md-6">
+      <div class="col-xs-9 col-md-6" style="margin-right:0px">
           <ul class="list-group">
             <li class="list-group-item list_head"><strong>顾客信息</strong></li>
             <li class="list-group-item">
@@ -45,7 +45,7 @@
                     <option selected = '<%= address.area == '颍泉区' ? 'selected' : ''%>' value="2">颍泉区</option>
                     <option selected = '<%= address.area == '颍东区' ? 'selected' : ''%>' value="3">颍东区</option>
                 </select>
-                <textarea  id="detailOfLoc" class ="editable form-control address_area" style="margin-top:10px; height:35px"><%= address.detail %></textarea>
+                <textarea  id="detailOfLoc" class ="editable form-control address_area" style="height:35px"><%= address.detail %></textarea>
             </li>
             <li class="list-group-item">
               备注：
@@ -62,15 +62,15 @@
 
             <!-- Table to show specific wine info-->
 
-            <table class="table table-bordered">
-                <thead>
+            <table class="table table-bordered" style="margin-bottom:0px;">
+                <thead class="table_text">
                   <tr>
                       <th>酒种类</th>
                       <th>单价</th>
                       <th>数量</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="table_text">
                 <%for(var i = 0;i < shopOnce.length;i++){%>
                   <tr>
                       <th><%= shopOnce[i].describe %></th>
@@ -81,12 +81,12 @@
                 </tbody>
             </table>
 
-            <li class="list-group-item">
-              <strong>需付现金：</strong><span><%= cashNeeded %></span>
+            <li class="list-group-item" style="margin-top:0px;">
+              <strong>需付现金：</strong><span><b><%= cashNeeded %></b></span>
               <span style="padding-left:10px">(总价：</span><span><%= cashTotal %></span>
               <span>, 现金券：</span><span><%= coupon %></span><span></span>,代金券：</span><span><%= voucher %></span><span>)</span>
             <li class="list-group-item">
-              <strong>选择快递点：</strong>
+                  选择快递点：
                   <select id="dispatch" class ="form-control editable" required aria-selected ="false" >
                     <option hidden ="hidden"></option>
                     <% for(var i = 0;i < alldispatches.length;i++){%>
@@ -130,26 +130,26 @@
             </div> <!-- modal header ends-->
 
             <div class="modal-body">
-                <div class="" style="padding-left:25px; padding-top:0px;">
-                      <h3><strong>删除订单原因：</strong></h3>
-
-                      <label class="checkbox" for="checkbox1">
-                      <input type="checkbox" value="" id="checkbox1">
-                      reason1
+                <div class="" id="radios" style="padding-left:25px; padding-top:0px;">
+                      <h4 style="padding-bottom:10px;"><strong>删除订单原因：</strong></h4> 
+                      
+                      <label class="radio">
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="1">
+                        Reason One
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="2" checked="">
+                        Reason Two
                       </label>
 
-                      <label class="checkbox" for="checkbox2">
-                      <input type="checkbox" checked="checked" value="" id="checkbox2">
-                      reason2
+                      <label class="radio">
+                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="3">
+                        Reason Three
                       </label>
 
-                      <label class="checkbox" for="checkbox3">
-                      <input type="checkbox" value="" id="checkbox3">
-                      reason3
-                      </label>
-
-                      <p>
-                        <h3><strong>其他信息：</strong></h3>
+          
+                      <p style="padding-top:8px;">
+                        <h4><strong>其他信息：</strong></h4>
                         <textarea  class ="form-control">TBD</textarea>
                         <button class="btn btn-md btn-default" style="margin-top:10px;">保存</button>
                       </p>
