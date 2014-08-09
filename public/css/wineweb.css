@@ -199,10 +199,6 @@ div#detail_modal div.modal-dialog{
   width:77%;
 }
 
-.form-control{
-  margin-top: 6px;
-}
-
 .table_text > tr > th{
   font-weight: 100;
 }
@@ -248,6 +244,10 @@ form.search{
 /*new order*/
 input.winewechatprice,input.winenumber{
   width: 50px;
+  height: 25px;
+}
+select.winedescribe,select.winewechatprice{
+  height: 25px;
 }
 
 textarea.address_detail{
