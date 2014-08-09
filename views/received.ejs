@@ -8,13 +8,9 @@
 <div>
  <p style = 'font-size:18px'>订单总数：<span><%= receiveorders.length %></span></p>
   <ul id = "orderlist">
-   <% if(receiveorders.length > 0){ %>
   <% receiveorders.forEach(function(order_abstract){ %>
     <% include order_abstract %>
   <%})%>
-  <% } else { %>
-    <p style = 'margin-top : 200px,text-align : center'>无已收货订单!</p>
-  <%}%>
   </ul>
   </ul>
 </div>
