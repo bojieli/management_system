@@ -41,8 +41,6 @@ exports.load =  function (req, res, next){
         data.unshiporders = unshiporders;
         data.urgentprocess = [];
         data.urgentprocessed = [];
-        console.log('---------data---------------');
-        console.log(JSON.stringify(data));
         res.render('unshipped',data);
       }
     )

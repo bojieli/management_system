@@ -10,10 +10,7 @@ exports.load = function (req, res, next){
       },
       _getnumberQuestion : function(callback){
         Order.getNumberbystatus(21,callback);
-      },
-      _orders : function(callback){
-        Order.findOrdersInShipped(req.session.user, callback);
-      } 
+      }
       },function(err, results){
         if(err){
           console.log('---------shipped error---------------');
