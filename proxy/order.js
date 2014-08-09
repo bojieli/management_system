@@ -58,7 +58,7 @@ exports.findOneOrder = function (customerService, cb){
       return cb(null, order);
     }
     findStatus1();
-    
+
   });
 
 
@@ -74,7 +74,7 @@ exports.findOneOrder = function (customerService, cb){
             return cb(err);
           cb(null,order[0]);
         });
-      
+
     });
   }
 }
@@ -119,7 +119,37 @@ exports.findUnshipped = function (cb){
   Order.find({'status' : 3},'orderID date dispatchCenter', cb);
 }
 
+exports.unprocessedOperate = function(postData,cb){
+  var statusAfter;
+  switch(postData.method){
+    case 'confirm' :
+      statusAfter = 3;
+      break;
+    case 'delete' :
+      statusAfter = 22;
+      break;
+    case 'wait' :
+      statusAfter = 21;
+      break;
+  }
+  console.log('==========irder===='+JSON.stringify(postData))
+  if(postData.modifyinfo){
+    postData.modifyinfo.status = statusAfter;
+    Order.update({orderID : postData.orderID},postData.modifyinfo,afterUpdate);
+  }else{
+    Order.update({orderID : postData.orderID},{$set:{status:statusAfter}},afterUpdate);
+  }
 
+  function afterUpdate(err,order){
+     if(err){
+        errUtil.wrapError(err,congfig.errorCode_update,"unprocessedOperate()","/proxy/order",{postData:postData});
+        return cb(err);
+      }
+
+      return cb(err);
+  }
+
+}
 
 function leftPadString(value,length){
   var valueString = value.toString();

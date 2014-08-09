@@ -23,6 +23,8 @@ module.exports = function (app) {
 
 	app.get('/unprocessed',unprocessed.load)
 
+	app.post('/unprocessed',unprocessed.unprocessedOperate)
+
 	app.get('/unshipped',unshipped.load)
 
 	app.get('/shipped',shipped.load)
