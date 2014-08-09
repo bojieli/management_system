@@ -1,7 +1,9 @@
 $(document).ready(function(){
 
 
+
   var flag = 0;
+  var modify_flag = false;
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -21,22 +23,56 @@ $(document).ready(function(){
   }
 
   $('a.question_orderID').click(function(){
+    alert('click');
     var orderID = $(this).children('span').text();
     getOrderDetail(orderID);
   });
 
   $('li.order_abstract_item').click(function(){
+     alert('click');
     var orderID =  $(this).find('span.orderID_abstract').text();
     getOrderDetail(orderID);
   });
 
-  /* listen if form info changed. S*/
+  function orderProcess(method){
+    var orderID = $('span#orderID').text();
+    var modifyinfo = modify_flag ? {
+        address: {
+          area: $("select#area option:selected").text(),
+          detail: $("#detailOfLoc").text(),
+          name: $("#username").val(),
+          tel: $("#usertel").val()
+        },
+        dispatchCenter:$("select#dispatch option:selected").text(),
+        notes: $("#detailOfNotes").val()
+      } : null;
 
+    var postData = {
+      orderID : orderID,
+      modifyinfo : modifyinfo,
+      method : method
+    }
+
+    $.post("/unprocessed",postData,function(data,status){
+      if(status == 'success'){
+        if(data.code == 'ok'){
+          location.reload();
+        }else{
+          alert('确认订单出错');
+        }
+      }
+    });
+    alert("orderID"+orderID);
+    // alert("modifyinfo"+modifyinfo.address.area+modifyinfo.address.detail+modifyinfo.address.name+modifyinfo.address.tel + modifyinfo.dispatchCenter + modifyinfo.notes);
+    alert(method);
+  }
+  /* listen if form info changed. S*/
   $(".editable").change(function(){
-  	flag = 1;
+  	modify_flag = true;
   });
 
   /* click check button*/
+
 
   $("button#check").click(function() {
 
@@ -68,7 +104,17 @@ $(document).ready(function(){
       	}
       });
 	}
+  $("button#order_confirm").click(function() {
+    orderProcess('confirm');
+	});
+
+  $("button#order_delete").click(function(){
+    orderProcess('delete');
+
   });
 
+  $("button#order_wait").click(function(){
+    orderProcess('wait');
+  });
   /* listen E*/
 });

@@ -34,9 +34,41 @@ exports.createOrder = function(openID,info,cb){
         address : info.address,
         cashUse : info.cashUse || 0,
         voucherUse : info.voucherUse || 0,
-        status : 22,
+        status : 1,
         isFirst : isFirst,
         totalPrice : info.totalPrice,
+      };
+      Order.create(order, callback);
+    }],
+    function afterCreate(err,order){
+      if(err){
+        errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
+        return cb(err);
+      }else{
+        cb(err,order);
+      }
+    }
+  );
+}
+
+exports.createOrderbyCS = function(customerService,info,cb){
+  var orderID = getOrderID();
+  var order = {};
+  async.waterfall([
+    function createorder(order, callback){
+      order = {
+        orderID : orderID,
+        openID : 'createdByCS',
+        shopOnce : info.shopOnce,
+        address : info.address,
+        cashUse : 0,
+        voucherUse : 0,
+        status : 3,
+        isFirst : false,
+        totalPrice : info.totalPrice,
+        customerService : customerService,
+        dispatchCenter : info.dispatchCenter,
+        notes : info.notes
       };
       Order.create(order, callback);
     }],
@@ -58,7 +90,7 @@ exports.findOneOrder = function (customerService, cb){
       return cb(null, order);
     }
     findStatus1();
-    
+
   });
 
 
@@ -74,7 +106,7 @@ exports.findOneOrder = function (customerService, cb){
             return cb(err);
           cb(null,order[0]);
         });
-      
+
     });
   }
 }
@@ -106,7 +138,7 @@ exports.setReceiveDate = function(orderID, cb){
 }
 
 exports.findbyOrderID = function(orderID, cb){
-  Order.find({'orderID' : orderID},cb);
+  Order.findOne({'orderID' : orderID},cb);
 }
 
 exports.findOrdersInUnship = function(customerService,cb){
@@ -115,6 +147,18 @@ exports.findOrdersInUnship = function(customerService,cb){
 }
 exports.findOrdersInShipped = function(customerService,cb){
   Order.find({'customerService' : customerService, 'status' : 4},
+    'orderID shipDate dispatchCenter' ,cb);
+}
+exports.findOrdersInReceived = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 5},
+    'orderID receiveDate dispatchCenter' ,cb);
+}
+exports.findOrdersInQuestion2 = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 21},
+    'orderID date dispatchCenter' ,cb);
+}
+exports.findOrdersInQuestion4 = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 41},
     'orderID shipDate dispatchCenter' ,cb);
 }
 
@@ -128,7 +172,37 @@ exports.findUnshipped = function (cb){
   Order.find({'status' : 3},'orderID date dispatchCenter', cb);
 }
 
+exports.unprocessedOperate = function(postData,cb){
+  var statusAfter;
+  switch(postData.method){
+    case 'confirm' :
+      statusAfter = 3;
+      break;
+    case 'delete' :
+      statusAfter = 22;
+      break;
+    case 'wait' :
+      statusAfter = 21;
+      break;
+  }
+  console.log('==========irder===='+JSON.stringify(postData))
+  if(postData.modifyinfo){
+    postData.modifyinfo.status = statusAfter;
+    Order.update({orderID : postData.orderID},postData.modifyinfo,afterUpdate);
+  }else{
+    Order.update({orderID : postData.orderID},{$set:{status:statusAfter}},afterUpdate);
+  }
 
+  function afterUpdate(err,order){
+     if(err){
+        errUtil.wrapError(err,congfig.errorCode_update,"unprocessedOperate()","/proxy/order",{postData:postData});
+        return cb(err);
+      }
+
+      return cb(err);
+  }
+
+}
 
 function leftPadString(value,length){
   var valueString = value.toString();
@@ -158,5 +232,5 @@ function getOrderID(){
                     leftPadString(date.getUTCMinutes(),2) +
                     leftPadString(date.getUTCSeconds(),2) +
                     leftPadString(orderID_increment1,4)
-  return 'f' + datePart;
+  return 'k' + datePart;
 }

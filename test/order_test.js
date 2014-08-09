@@ -47,7 +47,7 @@ var openID = 'owaixtwzZUF3Qma5s8xH0N__mwK0c';
 // 		console.log(JSON.stringify(order));
 // 	})
 // }
-_Order.update({'status' : 4},{'dispatchCenter': 'heyu hello kitty'},
+_Order.update({'status' : 3},{'dispatchCenter': '阜阳市中心3号车'},
 	{ multi: true },function (err, numberAffected, raw){
 		console.log(numberAffected);
 	})
