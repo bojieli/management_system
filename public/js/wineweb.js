@@ -4,9 +4,7 @@ $(document).ready(function(){
   var flag = 0;
   var address;
   var notes;
-
-  alert("function");
-
+  alert('function');
   function getOrderDetail(orderID){
     $.post('/orderdetail',
     {
@@ -25,11 +23,13 @@ $(document).ready(function(){
   }
 
   $('a.question_orderID').click(function(){
+    alert('click');
     var orderID = $(this).children('span').text();
     getOrderDetail(orderID);
   });
 
   $('li.order_abstract_item').click(function(){
+     alert('click');
     var orderID =  $(this).find('span.orderID_abstract').text();
     getOrderDetail(orderID);
   });

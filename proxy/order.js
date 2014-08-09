@@ -117,6 +117,18 @@ exports.findOrdersInShipped = function(customerService,cb){
   Order.find({'customerService' : customerService, 'status' : 4},
     'orderID shipDate dispatchCenter' ,cb);
 }
+exports.findOrdersInReceived = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 5},
+    'orderID receiveDate dispatchCenter' ,cb);
+}
+exports.findOrdersInQuestion2 = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 21},
+    'orderID date dispatchCenter' ,cb);
+}
+exports.findOrdersInQuestion4 = function(customerService,cb){
+  Order.find({'customerService' : customerService, 'status' : 41},
+    'orderID shipDate dispatchCenter' ,cb);
+}
 
 exports.getNumberbystatus = function(status, cb){
   Order.find({'status' : status},{'_id' : 1}, function(err, orders){
