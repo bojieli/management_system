@@ -43,11 +43,11 @@
                       <th width="50px">数量</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class = "all_wineinfo">
                   <tr class="order_wineinfo">
                       <th>
                         <select class ="winedescribe" required aria-selected ="false">
-                          <option hidden ="hidden"></option>
+                          <option class = 'hidden_option'hidden ="hidden"></option>
                           <%for(var i = 0;i < wines.length; i++){ %>
                           <option value="<%=wines[i].id%>"><%=wines[i].describe%></option>
                           <% } %>
@@ -55,7 +55,7 @@
                       </th>
                       <th>
                         <select class ="winewechatprice" required readonly aria-selected ="false" >
-                          <option hidden ="hidden"></option>
+                          <option class = 'hidden_option' hidden ="hidden"></option>
                           <% for(var i = 0;i < wines.length; i++){ %>
                           <option><%=wines[i].wechatPrice%></option>
                           <% } %>
@@ -68,11 +68,11 @@
             </table>
 
             <li class="list-group-item">
-              <button class="btn btn-md btn-default">添加</button>
+              <button class="btn btn-md btn-default" id = 'order_wine_add'>添加</button>
             </li>
             <li class="list-group-item">
               <strong>选择快递点：</strong>
-                  <select class ="form-control" id = 'order_dispath'required aria-selected ="false" >
+                  <select class ="form-control" id = 'order_dispatch'required aria-selected ="false" >
                     <option hidden ="hidden"></option>
                     <% for(var i = 0;i < alldispatches.length;i++){%>
                     <option><%=alldispatches[i]%></option>
@@ -85,11 +85,11 @@
             <!-- Submit buttons -->
     <div style="" class="well submit_div">
       <div class="center" style="">
-        <button class="btn btn-lg btn-success button_margin button_check" type="button" onClick="">确认创建</button>
+        <button class="btn btn-lg btn-success button_margin button_check" id= "neworder_confirm" type="button">确认创建</button>
             <!-- For the form: click check-button to skip into unshipped state-->
             <!-- For Customer Service: click to skip on unprocessed page -->
             <!-- In view of above reason, we should not display right layout(warning message) but let C.S. focus on buill current form-->
-        <button class="btn btn-lg btn-danger button_margin" id="delete" data-toggle="modal" data-target="#alert_delete">删除</button>
+        <button class="btn btn-lg btn-danger button_margin" id="neworder_delete" data-toggle="modal" data-target="#alert_delete">删除</button>
       </div>
     </div>  <!-- Submit buttons ends-->
 

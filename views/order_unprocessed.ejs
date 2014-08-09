@@ -29,11 +29,11 @@
             <li class="list-group-item list_head"><strong>顾客信息</strong></li>
             <li class="list-group-item">
               顾客姓名：
-              <input class="username_input editable" name="username" id="username" type="text" value="<%= address.name %>">
+              <input class="username_input editable" name="username" id="order_username" type="text" value="<%= address.name %>">
             </li>
             <li class="list-group-item">
               联系电话：
-              <input class="username_input" name="username" id="usertel" type="text" value="<%= address.tel %>">
+              <input class="username_input" name="username" id="order_usertel" type="text" value="<%= address.tel %>">
             </li>
 
             <li class="list-group-item">
@@ -102,9 +102,9 @@
 
   <div style="" class="well submit_div">
     <div class="center" style="">
-      <button id="order_confirm" class="btn btn-lg btn-success button_margin button_check" type="button" >确认</button>
-      <button class="btn btn-lg btn-danger button_margin" id="order_delete" data-toggle="modal" data-target="#alert_delete">删除</button>
-      <button class="btn btn-lg btn-default button_margin" id="order_wait" type="button">稍后处理</button>
+      <button id="unprocessedorder_confirm" class="btn btn-lg btn-success button_margin button_check" type="button" >确认</button>
+      <button class="btn btn-lg btn-danger button_margin" id="unprocessedorder_delete" data-toggle="modal" data-target="#alert_delete">删除</button>
+      <button class="btn btn-lg btn-default button_margin" id="unprocessedorder_wait" type="button">稍后处理</button>
 
     </div>
   </div>  <!-- Submit buttons ends-->
@@ -130,34 +130,26 @@
             </div> <!-- modal header ends-->
 
             <div class="modal-body">
-                <div class="" id="radios" style="padding-left:25px; padding-top:0px;">
-                      <h4 style="padding-bottom:10px;"><strong>删除订单原因：</strong></h4> 
-                      
-                      <label class="radio">
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="1">
-                        Reason One
+                <div class="" id="reason_radios" style="padding-left:25px; padding-top:0px;">
+                      <h4 style="padding-bottom:10px;"><strong>删除订单原因：</strong></h4>
+                      <label class="radio" style = 'padding-left:50px'>
+                        <input class = 'editable'type="radio" name="reasonoRadios" value="联系方式错误"/>
+                        联系方式错误
                       </label>
-                      <label class="radio">
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="2" checked="">
-                        Reason Two
+                      <label class="radio" style = 'padding-left:50px'>
+                        <input class = 'editable' type="radio" name="reasonoRadios" value="用户取消订单" />
+                        用户取消订单
                       </label>
-
-                      <label class="radio">
-                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="3">
-                        Reason Three
-                      </label>
-
-          
                       <p style="padding-top:8px;">
                         <h4><strong>其他信息：</strong></h4>
-                        <textarea  class ="form-control">TBD</textarea>
+                        <textarea id = 'unprocessorder_delete_note' class ="editable form-control"></textarea>
                         <button class="btn btn-md btn-default" style="margin-top:10px;">保存</button>
                       </p>
                 </div>
             </div> <!-- modal body ends-->
 
             <div class="modal-footer">
-                <button class="btn btn-lg btn-danger" type="button" data-dismiss="modal">确认删除</button>
+                <button class="btn btn-lg btn-danger" type="button" id ='unprocessorder_delete_confirm' data-dismiss="modal">确认删除</button>
                 <button class="btn btn-lg btn-default" type="button" data-dismiss="modal">取消</button>
             </div> <!-- modal footer ends-->
         </div> <!-- /.modal-content -->
