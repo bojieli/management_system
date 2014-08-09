@@ -5,6 +5,10 @@
   });
 </script>
 
+<%if(!emptyflag){%>
 <%include order_unprocessed%>
+<%}else{%>
+<p style = "margin-top : 50px;font-size:24px;text-align:center"><strong>无订单需要处理!</strong></p>
+<%}%>
 
 <%include layoutBottom%>

@@ -7,10 +7,16 @@
 </script>
 
 <div>
+  <p style = 'font-size:18px'>订单总数：<span><%= shiporders.length %></span></p>
   <ul id = "orderlist">
+  <% if(shiporders.length > 0){ %>
   <% shiporders.forEach(function(order_abstract){ %>
     <% include order_abstract %>
   <%})%>
+  <% } else { %>
+    <p style = 'margin-top : 200px,text-align : center'>无已发货订单!</p>
+  <%}%>
   </ul>
+
 </div>
 <%include layoutBottom%>

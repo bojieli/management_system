@@ -6,10 +6,15 @@
 </script>
 
 <div>
+ <p style = 'font-size:18px'>订单总数：<span><%= unshiporders.length %></span></p>
   <ul id = "orderlist">
+   <% if(unshiporders.length > 0){ %>
   <% unshiporders.forEach(function(order_abstract){ %>
     <% include order_abstract %>
   <%})%>
+  <% } else { %>
+    <p style = 'margin-top : 200px,text-align : center'>无未收货订单!</p>
+  <%}%>
   </ul>
 </div>
 <%include layoutBottom%>

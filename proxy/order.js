@@ -155,14 +155,25 @@ exports.unprocessedOperate = function(postData,cb){
   }
   console.log('==========irder===='+JSON.stringify(postData))
   if(postData.modifyinfo){
+    console.log('begin update');
+    var modifydata = postData.modifyinfo;
     postData.modifyinfo.status = statusAfter;
-    Order.update({orderID : postData.orderID},postData.modifyinfo,afterUpdate);
+    Order.update({orderID : postData.orderID},{$set :{
+      status : statusAfter,
+      dispatchCenter: modifydata.dispatchCenter,
+      notes : modifydata.notes,
+      'address.area' : modifydata.address.area,
+      'address.detail' : modifydata.address.detail,
+      'address.name' : modifydata.address.name,
+      'address.tel' : modifydata.address.tel
+    }},afterUpdate);
   }else{
     Order.update({orderID : postData.orderID},{$set:{status:statusAfter}},afterUpdate);
   }
 
   function afterUpdate(err,order){
      if(err){
+        console.log('errr===='+err);
         errUtil.wrapError(err,congfig.errorCode_update,"unprocessedOperate()","/proxy/order",{postData:postData});
         return cb(err);
       }

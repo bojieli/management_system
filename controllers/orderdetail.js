@@ -5,7 +5,7 @@ var DispatchCenter = require('../proxy').DispatchCenter;
 var Wine = require('../proxy').Wine;
 
 exports.load = function(req,res,next){
-  //console.log('==========='+req.body['orderID']);
+  console.log('==========='+req.body['orderID']);
   var data = {};
   var order = {};
   async.auto({

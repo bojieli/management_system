@@ -64,11 +64,19 @@ exports.load = function(req,res,next){
         console.log(err);
         return next(err);
       }
-      if(!order)
-          return res.send('恭喜你处理完了');
+
+
       data.numberUnprocessed = results._getnumberUnprocessed;
       data.numberProcessedToday = results._getnumberProcessedToday;
       data.numberQuestion = results._getnumberQuestion;
+      data.urgentprocess = [];
+      data.urgentprocessed = [];
+
+      if(!order){
+        data.emptyflag = true;
+        return res.render('unprocessed',data);
+      }
+      data.emptyflag = false;
       data.orderID = order.orderID;
       var date = {
         year : order.date.getUTCFullYear(),
@@ -86,8 +94,6 @@ exports.load = function(req,res,next){
       data.coupon = order.cashUse;
       data.voucher = order.voucherUse;
       data.shopOnce = order.shopOnce;
-      data.urgentprocess = [];
-      data.urgentprocessed = [];
       var alldispatches = [];
       for (var i = 0; i < results._getAllCenterInfo.length; i++) {
         alldispatches.push(results._getAllCenterInfo[i].address);

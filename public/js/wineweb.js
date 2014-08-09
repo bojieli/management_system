@@ -19,13 +19,11 @@ $(document).ready(function(){
   }
 
   $('a.question_orderID').click(function(){
-    alert('click');
     var orderID = $(this).children('span').text();
     getOrderDetail(orderID);
   });
 
   $('li.order_abstract_item').click(function(){
-     alert('click');
     var orderID =  $(this).find('span.orderID_abstract').text();
     getOrderDetail(orderID);
   });
@@ -54,13 +52,11 @@ $(document).ready(function(){
         if(data.code == 'ok'){
           location.reload();
         }else{
-          alert('确认订单出错');
+          alert('确认订单出错,重新操作!');
         }
       }
     });
-    alert("orderID"+orderID);
-    // alert("modifyinfo"+modifyinfo.address.area+modifyinfo.address.detail+modifyinfo.address.name+modifyinfo.address.tel + modifyinfo.dispatchCenter + modifyinfo.notes);
-    alert(method);
+
   }
   /* listen if form info changed. S*/
   $(".editable").change(function(){

@@ -1,0 +1,9 @@
+<% if((status == 1)||(status == 2)||(status == 21)||(status == 22)){ %>
+<%include order_unprocessed %>
+<% } else if(status == 3){ %>
+  <%include order_unshipped %>
+<% }else if((status == 4)||(status == 41)||(status == 42)){%>
+  <%include order_shipped %>
+<% }else if(status == 5){%>
+  <%include order_received %>
+<%}%>
