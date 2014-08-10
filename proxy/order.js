@@ -55,34 +55,6 @@ exports.createOrderbyCS = function(customerService,info,cb){
   console.log('create=============');
   var orderID = getOrderID();
   var order = {};
-  /*async.waterfall([
-    function createorder(order, callback){
-      order = {
-        orderID : orderID,
-        openID : 'createdByCS',
-        shopOnce : info.shopOnce,
-        address : info.address,
-        cashUse : 0,
-        voucherUse : 0,
-        status : 3,
-        isFirst : false,
-        totalPrice : info.totalPrice,
-        customerService : customerService,
-        dispatchCenter : info.dispatchCenter,
-        notes : info.notes
-      };
-      console.log('adfjaskdfa');
-      Order.create(order, callback);
-    }],
-    function (err,order){
-      if(err){
-        errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
-        return cb(err);
-      }else{
-        cb(err);
-      }
-    }
-  );*/
  order = {
         orderID : orderID,
         openID : 'createdByCS',
