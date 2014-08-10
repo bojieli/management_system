@@ -40,3 +40,11 @@ exports.load = function (req, res, next){
     }
   )
 }
+
+exports.createNewOrder = function (req, res, next){
+  Order.createOrderbyCS (req.session.user, req.body, function(err, order){
+    if(err)
+      return next(err);
+    //发送给快递
+  })
+}
