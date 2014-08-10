@@ -166,6 +166,10 @@ exports.findbyOrderID = function(orderID, cb){
   Order.findOne({'orderID' : orderID},cb);
 }
 
+exports.findbyTel = function(tel, cb){
+  Order.find({'address.tel': tel},cb);
+}
+
 exports.findOrdersInUnship = function(customerService,cb){
   Order.find({'customerService' : customerService, 'status' : 3},
     'orderID date dispatchCenter' ,cb);

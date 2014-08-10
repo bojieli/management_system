@@ -45,11 +45,11 @@
                     <option selected = '<%= address.area == '颍泉区' ? 'selected' : ''%>' value="2">颍泉区</option>
                     <option selected = '<%= address.area == '颍东区' ? 'selected' : ''%>' value="3">颍东区</option>
                 </select>
-                <textarea  id="detailOfLoc" class ="editable form-control address_area" style="height:35px"><%= address.detail %></textarea>
+                <textarea  id="order_address_detail" class ="editable form-control address_area" style="height:35px"><%= address.detail %></textarea>
             </li>
             <li class="list-group-item">
               备注：
-              <textarea  class ="form-control editable" id="detailOfNotes"><%= notes %></textarea>
+              <textarea  class ="form-control editable" id="order_note"><%= notes %></textarea>
             </li>
           </ul>
       </div>    <!-- User Info Ends-->
@@ -143,7 +143,6 @@
                       <p style="padding-top:8px;">
                         <h4><strong>其他信息：</strong></h4>
                         <textarea id = 'unprocessorder_delete_note' class ="editable form-control"></textarea>
-                        <button class="btn btn-md btn-default" style="margin-top:10px;">保存</button>
                       </p>
                 </div>
             </div> <!-- modal body ends-->

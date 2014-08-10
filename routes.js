@@ -33,6 +33,8 @@ module.exports = function (app) {
 
 	app.get('/search',search.load);
 
+	app.post('/search',search.searchOrder);
+
 	app.get('/questionorder',questionorder.load);
 
 	app.get('/neworder', neworder.load);

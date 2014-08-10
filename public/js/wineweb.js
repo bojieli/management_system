@@ -4,6 +4,7 @@ $(function(){
   var username_maxLength = 5;
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
+  var searchorder_inputnum_maxLength = 15;
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -37,33 +38,58 @@ $(function(){
     var modifyinfo = modify_flag ? {
         address: {
           area: $("select#area option:selected").text(),
-          detail: $("#detailOfLoc").text(),
+          detail: $("#order_address_detail").text(),
           name: $("#order_username").val(),
           tel: $("#order_usertel").val()
         },
         dispatchCenter:$("select#dispatch option:selected").text(),
-        notes: $("#detailOfNotes").val() + ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
+        notes: $("textarea#order_note").val() + ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
                         + $('textarea#unprocessorder_delete_note').val()
       } : null;
 
+    var alertString = "";
+
+    if(!usernameVertify(modifyinfo.address.name)){
+      alertString = alertString + "用户名不能为空,且长度应小于5\n";
+      $('input#order_username').val("");
+    }
+    if(!usertelVertify(modifyinfo.address.tel)){
+      alertString = alertString + "联系电话不能为空或格式不正确\n";
+      $('input#order_usertel').val("");
+    }
+    if(!addressDetailVertify(modifyinfo.address.detail)){
+      alertString = alertString + "地址详情不能为空,且长度应小于50\n";
+      $('textarea#order_address_detail').val("");
+    }
+    if(!noteVertify(modifyinfo.notes)){
+       alertString = alertString + "备注信息长度应小于50\n";
+      $('textarea#order_note').val("");
+      $('textarea#unprocessorder_delete_note').val("");
+      if($("input[name = 'reasonoRadios']:checked",'div#reason_radios').length != 0){
+        $("input[name = 'reasonoRadios']:checked",'div#reason_radios').attr('checked',false);
+      }
+    }
 
     var postData = {
       orderID : orderID,
       modifyinfo : modifyinfo,
       method : method
     }
-
-    $.post("/unprocessed",postData,function(data,status){
-      if(status == 'success'){
-        if(data.code == 'ok'){
+    if(alertString.length > 0){
+      alert(alertString);
+      return;
+    }else{
+      $.post("/unprocessed",postData,function(data,status){
+        if(status == 'success' && data.code == 'ok'){
           location.reload();
         }else{
           alert('确认订单出错,重新操作!');
         }
-      }
-    });
-
+      });
+    }
   }
+
+
   /* listen if form info changed. S*/
   $(".editable").change(function(){
   	modify_flag = true;
@@ -152,12 +178,10 @@ $(function(){
       }
       alert(area+usertel+username+detail+notes+dispatchCenter+wines);
       $.post('/neworder',postData,function(data,status){
-      if(status == 'success'){
-        if(data.code == 'ok'){
+      if(status == 'success' && data.code == 'ok'){
           location.reload();
-        }else{
+      }else{
           alert('提交订单出错,请重新提交!');
-        }
       }
     });
   }
@@ -181,12 +205,35 @@ $(function(){
     $(this).parent().parent().find('input.winenumber').focus();
   });
 
-  function usernameVertify(username){
-    if(username.length > username_maxLength || username.length <=0){
-      return false;
-    }else{
-      return true;
-    }
+
+
+
+
+
+/*============searchorder begin======================*/
+$('button#searchorder_search').click(function(){
+  var searchmethod = $("input[name='searchorder_searchmethod']:checked","div#searchorder_methodselect").val();
+  var inputnumber = $("input[name='searchorder_inputnumber']").val();
+  if(!searchorderInputVertify(searchmethod,inputnumber)){
+    alert('请输入正确的订单号或者订单联系电话');
+  }else{
+    $.post('/search',{
+      searchmethod : searchmethod,
+      inputnumber : inputnumber
+    },function(data,status){
+      if(status == 'success'){
+        $('div#searchorder_result').append(data);
+      }else{
+        alert("提交查询出错,请重新提交！");
+      }
+    });
+  }
+});
+/*============searchorder end======================*/
+
+/*=============vertifymethod begin=======================*/
+ function usernameVertify(username){
+    return username.length > 0 && username.length <= username_maxLength;
   }
 
   function usertelVertify(usertel){
@@ -197,28 +244,21 @@ $(function(){
   }
 
   function addressDetailVertify(detail){
-    if(detail.length > addressDetail_maxLength || detail.length <=0){
-      return false;
-    }else{
-      return true;
-    }
+    return detail.length > 0 && detail.length <= addressDetail_maxLength ;
   }
 
   function noteVertify(notes){
-    if(notes.length > notes_maxLength){
-      return false;
-    }else{
-      return true;
-    }
+    return notes.length <= notes_maxLength;
   }
 
   function wineinfoVertify(wineinfo){
-    if(isNaN(wineinfo.number)){
-      return false;
-    }
-    var number = Number(wineinfo.number);
-    return typeof number == 'number' && isFinite(number)
-                  && number % 1 === 0 && number >=1;
+    return !isNaN(wineinfo.number) && Number(wineinfo.number) % 1 === 0
+           && Number(wineinfo.number) >= 1 && isFinite(Number(wineinfo.number));
   }
 
+  function searchorderInputVertify(method,inputnumber){
+    return method == 'phonenum' ? usertelVertify(inputnumber) :
+     (inputnumber.length > 0 && inputnumber.length <= searchorder_inputnum_maxLength);
+  }
+/*=============vertifymethod end=======================*/
 });

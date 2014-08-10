@@ -1,5 +1,8 @@
 var async = require('async');
 var Order = require('../proxy').Order;
+var ServiceStaff = require('../proxy').ServiceStaff;
+var DispatchCenter = require('../proxy').DispatchCenter;
+var Wine = require('../proxy').Wine;
 
 
 exports.load = function (req, res, next){
@@ -18,10 +21,15 @@ exports.load = function (req, res, next){
           return next(err);
         }
         data.numberUnprocessed = results._getnumberUnprocessed;
-        data.numberQuestion = results._getnumberQuestion;       
+        data.numberQuestion = results._getnumberQuestion;
         data.urgentprocess = [];
         data.urgentprocessed = [];
         res.render('search',data);
       }
     )
+}
+
+exports.searchOrder = function(req, res, next){
+   var data = req.body;
+
 }
