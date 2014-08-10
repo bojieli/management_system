@@ -19,7 +19,7 @@ exports.load = function (req, res, next){
     },
     _wines : function(callback){
       Wine.findAllWines(callback);
-    } 
+    }
     },function(err, results){
       if(err){
         console.log('---------shipped error---------------');
@@ -28,7 +28,7 @@ exports.load = function (req, res, next){
       }
       data.wines = results._wines;
       data.numberUnprocessed = results._getnumberUnprocessed;
-      data.numberQuestion = results._getnumberQuestion;       
+      data.numberQuestion = results._getnumberQuestion;
       data.urgentprocess = [];
       data.urgentprocessed = [];
       var alldispatches = [];
@@ -40,11 +40,34 @@ exports.load = function (req, res, next){
     }
   )
 }
-
-exports.createNewOrder = function (req, res, next){
-  Order.createOrderbyCS (req.session.user, req.body, function(err, order){
-    if(err)
-      return next(err);
-    //发送给快递
-  })
+exports.createOrder = function(req,res,next){
+  console.log("=========================");
+  console.log(JSON.stringify(req.body));
+  var data = req.body;
+  var totalPrice = 0;
+  for(var i = 0;i < data.shopOnce.length;i++){
+    totalPrice = totalPrice + data.shopOnce[i].wechatPrice * data.shopOnce[i].number;
+  }
+  var orderinfo = {
+    shopOnce : data.shopOnce,
+    address : {
+    province : "安徽省",
+    city : "阜阳市",
+    area : data.address.area,
+    detail : data.address.detail,
+    name : data.address.name,
+    tel : data.address.tel
+  },
+  totalPrice : totalPrice,
+  dispatchCenter : data.dispatchCenter,
+  notes : data.notes
+  }
+  console.log("========data======"+JSON.stringify(orderinfo));
+  Order.createOrderbyCS(req.session.user,orderinfo,function(err){
+    if(err){
+      res.send({code : 'error'});
+    }else{
+      res.send({code : 'ok'});
+    }
+  });
 }

@@ -233,7 +233,7 @@ div#detail_modal div.modal-dialog{
   display: inline-block;
 }
 
-form.search{
+div.search{
   border-bottom: inset 1px;
   padding-bottom: 10px;
 }

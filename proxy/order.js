@@ -52,9 +52,10 @@ exports.createOrder = function(openID,info,cb){
 }
 
 exports.createOrderbyCS = function(customerService,info,cb){
+  console.log('create=============');
   var orderID = getOrderID();
   var order = {};
-  async.waterfall([
+  /*async.waterfall([
     function createorder(order, callback){
       order = {
         orderID : orderID,
@@ -70,17 +71,41 @@ exports.createOrderbyCS = function(customerService,info,cb){
         dispatchCenter : info.dispatchCenter,
         notes : info.notes
       };
+      console.log('adfjaskdfa');
       Order.create(order, callback);
     }],
-    function afterCreate(err,order){
+    function (err,order){
       if(err){
         errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
         return cb(err);
       }else{
-        cb(err,order);
+        cb(err);
       }
     }
-  );
+  );*/
+ order = {
+        orderID : orderID,
+        openID : 'createdByCS',
+        shopOnce : info.shopOnce,
+        address : info.address,
+        cashUse : 0,
+        voucherUse : 0,
+        status : 3,
+        isFirst : false,
+        totalPrice : info.totalPrice,
+        customerService : customerService,
+        dispatchCenter : info.dispatchCenter,
+        notes : info.notes
+      };
+  Order.create(order, afterCreate);
+  function afterCreate(err,order){
+      if(err){
+        errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
+        return cb(err);
+      }else{
+        cb(err);
+      }
+    }
 }
 //1、查找status = 2，如果有直接返回
 //2、查找status = 1, 并且放置customerService
@@ -141,6 +166,10 @@ exports.findbyOrderID = function(orderID, cb){
   Order.findOne({'orderID' : orderID},cb);
 }
 
+exports.findbyTel = function(tel, cb){
+  Order.find({'address.tel': tel},cb);
+}
+
 exports.findOrdersInUnship = function(customerService,cb){
   Order.find({'customerService' : customerService, 'status' : 3},
     'orderID date dispatchCenter' ,cb);
@@ -185,7 +214,6 @@ exports.unprocessedOperate = function(postData,cb){
       statusAfter = 21;
       break;
   }
-  console.log('==========irder===='+JSON.stringify(postData))
   if(postData.modifyinfo){
     console.log('begin update');
     var modifydata = postData.modifyinfo;
@@ -209,7 +237,6 @@ exports.unprocessedOperate = function(postData,cb){
         errUtil.wrapError(err,congfig.errorCode_update,"unprocessedOperate()","/proxy/order",{postData:postData});
         return cb(err);
       }
-
       return cb(err);
   }
 

@@ -4,30 +4,30 @@
     $("li.search_li").addClass('active');
   });
 </script>
-<form class ="search row"  action = "/search" method ="get">
-    <div class ="col-xs-6" >
+<div class ="search row">
+    <div class ="col-xs-6" id = 'searchorder_methodselect'>
         <label>查询方式：</label>
         <div class = 'factor_inline'>
             <div style="display:inline-block">
-                <input type ="radio" tabindex ="1" id="withorderid" name ="searchmethod" value="0" checked ="checked"/>
+                <input type ="radio" tabindex ="1" name ="searchorder_searchmethod" value="orderid" checked ="checked"/>
                 <label for ="withorderid">订单号查询</label>
             </div>
             <div style="display:inline-block">
-                <input type ="radio" tabindex ="2" id="withphone" name ="searchmethod" value ="1"/>
-                <label for ="withphone">手机号查询</label>
+                <input type ="radio" tabindex ="2" name ="searchorder_searchmethod" value ="phonenum"/>
+                <label for ="withphone">订单联系电话</label>
             </div>
         </div>
     </div>
     <div class ="col-xs-6">
         <div class="input-group">
-            <input type ="text" tabindex ="3" class ="form-control" name ="inputnumber" placeholder="订单号或手机号" required/>
+            <input type ="text" tabindex ="3" class ="form-control" name ="searchorder_inputnumber" placeholder="订单号或手机号" required/>
             <span class="input-group-btn">
-                <button tabindex ="4" class="btn btn-primary" type="submit" >搜索</button>
+                <button tabindex ="4" class="btn btn-primary" id = 'searchorder_search'>搜索</button>
             </span>
         </div>
     </div>
-</form>
-<div id = 'searchresult' style = "margin-top : 30px">
+</div>
+<div id = 'searchorder_result' style = "margin-top : 30px">
 
 </div>
 <%include layoutBottom%>
