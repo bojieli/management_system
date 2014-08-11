@@ -67,6 +67,7 @@ $(function(){
 
     if(nameverify != 0){
       satify = false;
+      alert("name");
       if(nameverify == -1){
          $('input#order_username').nextAll('span.inputrequired').show();
       }else if(nameverify == 1){
@@ -75,6 +76,8 @@ $(function(){
     }
     if(telverify != 0){
       satify = false;
+      alert("tel");
+
       if(telverify == -1){
          $('input#order_usertel').nextAll('span.inputrequired').show();
       }else if(telverify == 1){
@@ -83,10 +86,15 @@ $(function(){
     }
     if(areaverify != 0){
       satify = false;
+      alert("area");
+
       $('select#order_address_area').nextAll('span.inputrequired').show();
     }
     if(detailverify != 0){
       satify = false;
+      alert("detail");
+
+
       if(detailverify == -1){
         $('textarea#order_address_detail').nextAll('span.inputrequired').show();
       }else if(detailverify == 1){
@@ -95,11 +103,13 @@ $(function(){
     }
     if(noteverify != 0){
       satify = false;
+      alert("note");
+
       $('textarea#order_note').siblings('span.formaterror').show();
     }
     /* TODO method == confirm*/
-    if(dispatchverify != 0){
-      alert('1');
+    if(dispatchverify != 0 && method=='confirm'){
+      alert('dispatch');
       satify = false;
       $('select#order_dispatch').siblings('span.inputrequired').show();
     }
@@ -112,7 +122,7 @@ $(function(){
       }
     }*/
     if(!satify){
-      alert("提交的内容不符合条件！");
+      alert("提交的内容不符合条件！!");
       return;
     }else{
       var postData = {
@@ -135,7 +145,7 @@ $(function(){
     orderProcess('confirm');
 	});
 
-  $("button#unprocessorder_delete_confirm").click(function(){
+  $("button#unprocessorder_confirm").click(function(){
     orderProcess('delete');
   });
 
@@ -376,7 +386,7 @@ setInterval(function(){
           ;
           insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes)
           ;
-          var insert_li_done = $('ul#danger_done').last().clone();
+          insert_li_done = $('ul#danger_done').last().clone();
           insert_li_done.children('.question_id').text(data.urgentprocess[i].notes)
           ;
           insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes)
@@ -390,4 +400,5 @@ setInterval(function(){
 
 /* AutoRefreshTime right sidebar End*/
 
+/* */
 });
