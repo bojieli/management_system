@@ -29,7 +29,11 @@
               <span class="badge"><%= numberUnprocessed > 0 ? numberUnprocessed :""%></span>
             </a>
           </li>
-          <li class = "unshipped_li"><a href="/unshipped">未发货</a></li>
+          <li class = "unshipped_li">
+            <a href="/unshipped">
+            未发货<span class="badge"><%= unshiporders.length %></span>
+            </a>
+          </li>
           <li class = "shipped_li"><a href="/shipped">已发货</a></li>
           <li class = "received_li"><a href="/received">已收货</a></li>
           <li class = "search_li"><a href="/search">查询</a></li>
