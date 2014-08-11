@@ -140,22 +140,22 @@
                 <div class="" id="reason_radios" style="padding-left:25px; padding-top:0px;">
                       <h4 style="padding-bottom:10px;"><strong>删除订单原因：</strong></h4>
                       <label class="radio" style = 'padding-left:50px'>
-                        <input class = 'editable'type="radio" name="reasonoRadios" value="联系方式错误"/>
+                        <input class = 'editable delete_info'type="radio" name="reasonoRadios" value="联系方式错误"/>
                         联系方式错误
                       </label>
                       <label class="radio" style = 'padding-left:50px'>
-                        <input class = 'editable' type="radio" name="reasonoRadios" value="用户取消订单" />
+                        <input class = 'editable delete_info' type="radio" name="reasonoRadios" value="用户取消订单" />
                         用户取消订单
                       </label>
                       <p style="padding-top:8px;">
                         <h4><strong>其他信息：</strong></h4>
-                        <textarea id = 'unprocessorder_delete_note' class ="editable form-control"></textarea>
+                        <textarea id = 'unprocessorder_delete_note' class ="editable form-control delete_info"></textarea>
                       </p>
                 </div>
             </div> <!-- modal body ends-->
 
             <div class="modal-footer">
-                <button class="btn btn-lg btn-danger" type="button" id ='unprocessorder_delete_confirm' data-dismiss="modal">确认删除</button>
+                <button class="btn btn-lg btn-danger" type="button" id ='unprocessorder_delete_confirm' data-dismiss="modal" disabled>确认删除</button>
                 <button class="btn btn-lg btn-default" type="button" data-dismiss="modal">取消</button>
             </div> <!-- modal footer ends-->
         </div> <!-- /.modal-content -->

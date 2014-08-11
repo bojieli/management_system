@@ -141,8 +141,10 @@ $(function(){
 /*==========================unprocessed end==================*/
 
 /*========================neworder begin=====================*/
+
   function createOrder(){
     $('span.inputrequired,span.formaterror').hide();
+
     var username =   $('input#order_username').val();
     var usertel = $('input#order_usertel').val();
     var area = $('select#order_address_area option:selected').text();
@@ -256,8 +258,12 @@ $(function(){
     $('tbody.all_wineinfo').children().last().find('select.winedescribe').focus();
   });
 
+  $('button#order_wine_delete').click(function(){
+    $('tr.order_wineinfo').last().rm();
+  });
 
   $("button#neworder_confirm").click(createOrder);
+
 
 
   $('input#username').change(function(){
@@ -346,4 +352,25 @@ $('button#searchorder_search').click(function(){
      (inputnumber.length > 0 && inputnumber.length <= searchorder_inputnum_maxLength);
   }
 /*=============vertifymethod end=======================*/
+
+
+/* AutoRefreshTime Begin*/
+
+$(document).ready(
+
+  setInterval(function(){
+      var ordernum = 20; // get num from db
+      $('#unprocessed_number').text(ordernum);
+  }, 1500);
+
+  return true;
+);
+
+/* AutoRefreshTime End*/
+
+/* DeleteModal Begin*/
+$(.delete_info).change(function(){
+    $('#unprocessorder_delete_confirm').attr("disabled", false);
+});
+/* TestDeleteModal End*/
 });
