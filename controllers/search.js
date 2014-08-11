@@ -87,29 +87,29 @@ exports.searchOrder = function(req, res, next){
       data.status = order.status;
 
       var date = {
-        year : order.date.getUTCFullYear(),
-        month : order.date.getUTCMonth() + 1,
-        day : order.date.getUTCDate(),
-        hour : order.date.getUTCHours(),
-        minute : order.date.getUTCMinutes()
+        year : order.date.getFullYear(),
+        month : order.date.getMonth() + 1,
+        day : order.date.getDate(),
+        hour : order.date.getHours(),
+        minute : order.date.getMinutes()
       }
       data.date = date;
 
       var shipDate = {
-        year : order.shipDate.getUTCFullYear(),
-        month : order.shipDate.getUTCMonth() + 1,
-        day : order.shipDate.getUTCDate(),
-        hour : order.shipDate.getUTCHours(),
-        minute : order.shipDate.getUTCMinutes()
+        year : order.shipDate.getFullYear(),
+        month : order.shipDate.getMonth() + 1,
+        day : order.shipDate.getDate(),
+        hour : order.shipDate.getHours(),
+        minute : order.shipDate.getMinutes()
       }
       data.shipDate = shipDate;
 
       var receiveDate = {
-        year : order.receiveDate.getUTCFullYear(),
-        month : order.receiveDate.getUTCMonth() + 1,
-        day : order.receiveDate.getUTCDate(),
-        hour : order.receiveDate.getUTCHours(),
-        minute : order.receiveDate.getUTCMinutes()
+        year : order.receiveDate.getFullYear(),
+        month : order.receiveDate.getMonth() + 1,
+        day : order.receiveDate.getDate(),
+        hour : order.receiveDate.getHours(),
+        minute : order.receiveDate.getMinutes()
       }
       data.receiveDate = receiveDate;
 

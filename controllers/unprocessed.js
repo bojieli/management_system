@@ -79,11 +79,11 @@ exports.load = function(req,res,next){
       data.emptyflag = false;
       data.orderID = order.orderID;
       var date = {
-        year : order.date.getUTCFullYear(),
-        month : order.date.getUTCMonth() + 1,
-        day : order.date.getUTCDate(),
-        hour : order.date.getUTCHours(),
-        minute : order.date.getUTCMinutes()
+        year : order.date.getFullYear(),
+        month : order.date.getMonth() + 1,
+        day : order.date.getDate(),
+        hour : order.date.getHours(),
+        minute : order.date.getMinutes()
       }
       data.date = date;
       data.isFirst = order.isFirst;
