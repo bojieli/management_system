@@ -357,8 +357,14 @@ $('button#searchorder_search').click(function(){
 /* AutoRefreshTime Begin*/
 
 setInterval(function(){
-    var ordernum = 20; // get num from db
-    $('#unprocessed_number').text(ordernum);
+    $.post('/refresh',function(data,status){
+      if(status == 'success'){
+        $('span#unprocessed_number').text(data.numberUnprocessed);
+        $('span#numberdata.numberquestion').text(data.numberQuestion);
+
+      }
+    })
+
 }, 1500);
 
 /* AutoRefreshTime End*/
