@@ -8,6 +8,7 @@ var search = require('./controllers/search');
 var questionorder = require('./controllers/questionorder');
 var neworder = require('./controllers/neworder');
 var orderdetail = require('./controllers/orderdetail');
+var refresh = require('./controllers/refresh');
 
 module.exports = function (app) {
 

@@ -11,7 +11,11 @@ exports.getAllCenterInfo = function(cb) {
       errUtil.wrapError(err,config.errorCode_find,"getAllCenterInfo()","/proxy/dispatch_center",{});
       return cb(err,null);
     }else{
-        cb(err,dispatchCenters);
+		var alldispatches = [];
+	      for (var i = 0; i < dispatchCenters.length; i++) {
+	        alldispatches.push(dispatchCenters[i].address);
+	      };
+	    cb(err,alldispatches);
     }
   }
 }

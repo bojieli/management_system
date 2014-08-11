@@ -5,10 +5,7 @@ var DispatchCenter = require('../proxy').DispatchCenter;
 var Wine = require('../proxy').Wine;
 
 exports.load = function(req,res,next){
-  console.log('==========='+req.body['orderID']);
-
   var data = {};
-  var order = {};
   async.auto({
     _getAllCenterInfo : function(callback){
       DispatchCenter.getAllCenterInfo(callback);
@@ -16,83 +13,22 @@ exports.load = function(req,res,next){
     _order : function(callback){
       Order.findbyOrderID(req.body['orderID'], callback);
     },
-    _findWineByIDs : ['_order', function(callback, results) {
-      order = results._order;
-      if(!order)
+    _generateOrder : ['_order', function(callback, results) {
+      if(!results._order)
         return callback(null, null);
-
-      var ids = [];
-      for (var i = 0; i < order.shopOnce.length; i++) {
-        ids.push(order.shopOnce[i].id);
-      };
-      Wine.findByIDs(ids, callback);
-    }],
-    _changeShopOnce : ['_findWineByIDs', function(callback, results){
-      if(!order)
-        return callback(null, order);
-      var _wines = results._findWineByIDs;
-      for (var i = 0; i < order.shopOnce.length; i++) {
-        var index = findWinebyid(order.shopOnce[i].id);
-        order.shopOnce[i].describe = _wines[index].describe;
-        order.shopOnce[i].wechatPrice = _wines[index].wechatPrice;
-        delete order.shopOnce[i].id;
-      };
-      callback();
-
-      function findWinebyid(id){
-        for (var i = 0; i < _wines.length; i++) {
-          if(id ==_wines[i].id)
-            return i;
-        };
-      }
+      Order.generateDetail(order, callback);
     }]
   },function(err, results){
     if(err){
-      console.log('---------orderdetail error---------------');
-      console.log(err);
       return next(err);
     }
-    data.orderID = order.orderID;
-    data.status = order.status;
-    var date = {
-      year : order.date.getFullYear(),
-      month : order.date.getMonth() + 1,
-      day : order.date.getDate(),
-      hour : order.date.getHours(),
-      minute : order.date.getMinutes()
+    if(!results._order){
+      data.emptyflag = true;
+      return res.render('order_detail',data);
     }
-    data.date = date;
-    var shipDate = {
-      year : order.shipDate.getFullYear(),
-      month : order.shipDate.getMonth() + 1,
-      day : order.shipDate.getDate(),
-      hour : order.shipDate.getHours(),
-      minute : order.shipDate.getMinutes()
-    }
-    data.shipDate = shipDate;
-    var receiveDate = {
-      year : order.receiveDate.getFullYear(),
-      month : order.receiveDate.getMonth() + 1,
-      day : order.receiveDate.getDate(),
-      hour : order.receiveDate.getHours(),
-      minute : order.receiveDate.getMinutes()
-    }
-    data.receiveDate = receiveDate;
-    data.isFirst = order.isFirst;
-    data.address = order.address;
-    data.notes = order.notes||'';
-    data.cashNeeded = order.totalPrice;
-    data.cashTotal = order.cashUse + order.voucherUse + order.totalPrice;
-    data.coupon = order.cashUse;
-    data.voucher = order.voucherUse;
-    data.shopOnce = order.shopOnce;
-    data.dispatchCenter = order.dispatchCenter;
-    data.shipStaff = order.shipStaff;
-    var alldispatches = [];
-    for (var i = 0; i < results._getAllCenterInfo.length; i++) {
-      alldispatches.push(results._getAllCenterInfo[i].address);
-    };
-    data.alldispatches = alldispatches;
+    data.emptyflag = false;
+    data.order = results._generateOrder ;
+    data.alldispatches = result._getAllCenterInfo;
     res.render('order_detail',data);
   });
 }

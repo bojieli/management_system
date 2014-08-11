@@ -51,7 +51,7 @@ $(function(){
           name: $("#order_username").val(),
           tel: $("#order_usertel").val()
         },
-        dispatchCenter:$("select#dispatch option:selected").text(),
+        dispatchCenter:$("select#order_dispatch option:selected").text(),
         notes: $("textarea#order_note").val()
       };
 
