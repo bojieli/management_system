@@ -5,6 +5,7 @@ $(function(){
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
   var searchorder_inputnum_maxLength = 15;
+  var flag_deleteinfo = false;
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -96,10 +97,13 @@ $(function(){
       satify = false;
       $('textarea#order_note').siblings('span.formaterror').show();
     }
+    /* TODO method == confirm*/
     if(dispatchverify != 0){
+      alert('1');
       satify = false;
       $('select#order_dispatch').siblings('span.inputrequired').show();
     }
+    
     /*if(!noteVertify(modifyinfo.notes)){
       $('textarea#order_note').val("");
       $('textarea#unprocessorder_delete_note').val("");
@@ -357,15 +361,10 @@ $('button#searchorder_search').click(function(){
 /* AutoRefreshTime Begin*/
 
 setInterval(function(){
-    var ordernum = 20; // get num from db
+    var ordernum = numberUnprocessed; // get num from db
     $('#unprocessed_number').text(ordernum);
 }, 1500);
 
 /* AutoRefreshTime End*/
 
-/* DeleteModal Begin*/
-$('.delete_info').change(function(){
-    $('#unprocessorder_delete_confirm').attr("disabled", false);
-});
-/* TestDeleteModal End*/
 });
