@@ -30,6 +30,7 @@ app.use(session({
   secret: config.session_secret,
   cookie:{ maxAge:1800000 },
   key: 'sid',
+  rolling:true,
   store: new MongoStore({
     db: config.db_name
   }),
