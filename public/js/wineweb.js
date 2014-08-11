@@ -358,24 +358,36 @@ $('button#searchorder_search').click(function(){
 /*=============vertifymethod end=======================*/
 
 
-/* AutoRefreshTime Begin*/
+/* AutoRefresh right sidebar Begin*/
 
 setInterval(function(){
-<<<<<<< HEAD
-    var ordernum = numberUnprocessed; // get num from db
-    $('#unprocessed_number').text(ordernum);
-=======
+
     $.post('/refresh',function(data,status){
+      var insert_li_todo;
+      var insert_li_done;
+
       if(status == 'success'){
         $('span#unprocessed_number').text(data.numberUnprocessed);
         $('span#numberdata.numberquestion').text(data.numberQuestion);
 
+        for(var i = 0;i < data.urgentprocess.length;i++){
+          insert_li_todo = $('ul#danger_todo').last().clone();
+          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID)
+          ;
+          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes)
+          ;
+          var insert_li_done = $('ul#danger_done').last().clone();
+          insert_li_done.children('.question_id').text(data.urgentprocess[i].notes)
+          ;
+          insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes)
+          ;        
+        }
+
       }
     })
 
->>>>>>> 229437b19cdb6c074cd873e7bb04c088b2d271d5
 }, 1500);
 
-/* AutoRefreshTime End*/
+/* AutoRefreshTime right sidebar End*/
 
 });
