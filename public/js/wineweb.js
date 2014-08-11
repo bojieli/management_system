@@ -5,7 +5,9 @@ $(function(){
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
   var searchorder_inputnum_maxLength = 15;
+
   var deletereason_maxLength = 56;
+  //var flag_deleteinfo = false;
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -72,6 +74,7 @@ $(function(){
 
     if(nameverify != 0){
       satify = false;
+      alert("name");
       if(nameverify == -1){
          $('input#order_username').nextAll('span.inputrequired').show();
       }else if(nameverify == 1){
@@ -80,6 +83,8 @@ $(function(){
     }
     if(telverify != 0){
       satify = false;
+      alert("tel");
+
       if(telverify == -1){
          $('input#order_usertel').nextAll('span.inputrequired').show();
       }else if(telverify == 1){
@@ -88,10 +93,15 @@ $(function(){
     }
     if(areaverify != 0){
       satify = false;
+      alert("area");
+
       $('select#order_address_area').nextAll('span.inputrequired').show();
     }
     if(detailverify != 0){
       satify = false;
+      alert("detail");
+
+
       if(detailverify == -1){
         $('textarea#order_address_detail').nextAll('span.inputrequired').show();
       }else if(detailverify == 1){
@@ -100,6 +110,8 @@ $(function(){
     }
     if(noteverify != 0){
       satify = false;
+      alert("note");
+
       $('textarea#order_note').siblings('span.formaterror').show();
     }
 
@@ -109,6 +121,7 @@ $(function(){
         $('select#order_dispatch').siblings('span.inputrequired').show();
       }
     }
+
     if(method == 'delete'){
       var reasonvertify = deletereasonVertify(deletereason);
       if(reasonvertify != 0){
@@ -117,7 +130,6 @@ $(function(){
         modifyinfo.notes = modifyinfo.notes + deletereason;
       }
     }
-
     /*if(!noteVertify(modifyinfo.notes)){
       $('textarea#order_note').val("");
       $('textarea#unprocessorder_delete_note').val("");
@@ -126,11 +138,13 @@ $(function(){
       }
     }*/
     if(!satify){
+
       if(method = 'delete'){
         alert('请选择删除原因或填写其他信息，且长度不能超过50！');
       }else{
        alert("提交的内容不符合条件！");
       }
+
       return;
     }else{
       var postData = {
@@ -153,7 +167,7 @@ $(function(){
     orderProcess('confirm');
 	});
 
-  $("button#unprocessorder_delete_confirm").click(function(){
+  $("button#unprocessorder_confirm").click(function(){
     orderProcess('delete');
   });
 
@@ -378,7 +392,7 @@ $('button#searchorder_search').click(function(){
   }
 
   function searchorderInputVertify(method,inputnumber){
-    return method == 'phonenum' ? usertelVertify(inputnumber) :
+    return method == 'phonenum' ? usertelVertify(inputnumber) == 0:
      (inputnumber.length > 0 && inputnumber.length <= searchorder_inputnum_maxLength);
   }
 /*=============vertifymethod end=======================*/
@@ -396,14 +410,40 @@ setInterval(function(){
         $('span#unprocessed_number').text(data.numberUnprocessed);
         $('span#numberdata.numberquestion').text(data.numberQuestion);
 
-        for(var i = 0;i < data.urgentprocess.length;i++){
+
+        if($('ul#danger_todo').last().id == "urgent_form_head"){
+          insert_li_todo = $('li class="list-group-item" id="unprocess_wholeli"' +
+            'a href="#" class = "question_orderID" ' + '订单号: '+
+            'span class="question_id"' + urgentprocess[i].orderID + '/span' +
+            '/a' + 'br' 'p class="urgentform_text"' + '问题描述：' +
+            '/p' + 'p class="urgentform_text question_description"' +
+            urgentprocess[i].notes + '/p' + '/li');
+          $('ul#danger_todo').append(insert_li_todo);
+
+          for(var i = 1;i < data.urgentprocess.length;i++){
           insert_li_todo = $('ul#danger_todo').last().clone();
           insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
           insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
           $('ul#danger_todo').append(insert_li_todo);
+          }
 
-          var insert_li_done = $('ul#danger_done').last().clone();
-          insert_li_done.children('.question_id').text(data.urgentprocess[i].notes);
+        }
+
+        else{
+          for(var i = 0;i < data.urgentprocess.length;i++){
+          insert_li_todo = $('ul#danger_todo').last().clone();
+          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
+          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
+          $('ul#danger_todo').append(insert_li_todo);
+          }
+        }
+
+        // Note that: Processed Form could not be empty.
+        // It should be : clone from above ul>li (urgentprocess)
+
+        for(var i = 0;i < data.urgentprocessed.length;i++){
+          insert_li_done = $('ul#danger_done').last().clone();
+          insert_li_done.children('.question_id').text(data.urgentprocessed[i].notes);
           insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
           $('ul#danger_done').append(insert_li_done);
         }
@@ -415,4 +455,5 @@ setInterval(function(){
 
 /* AutoRefreshTime right sidebar End*/
 
+/* */
 });

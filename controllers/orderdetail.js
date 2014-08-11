@@ -16,7 +16,7 @@ exports.load = function(req,res,next){
     _generateOrder : ['_order', function(callback, results) {
       if(!results._order)
         return callback(null, null);
-      Order.generateDetail(order, callback);
+      Order.generateDetail(results._order, callback);
     }]
   },function(err, results){
     if(err){
@@ -28,7 +28,7 @@ exports.load = function(req,res,next){
     }
     data.emptyflag = false;
     data.order = results._generateOrder ;
-    data.alldispatches = result._getAllCenterInfo;
+    data.alldispatches = results._getAllCenterInfo;
     res.render('order_detail',data);
   });
 }
