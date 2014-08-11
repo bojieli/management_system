@@ -5,7 +5,9 @@ $(function(){
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
   var searchorder_inputnum_maxLength = 15;
-  var flag_deleteinfo = false;
+
+  var deletereason_maxLength = 56;
+  //var flag_deleteinfo = false;
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -52,11 +54,14 @@ $(function(){
           tel: $("#order_usertel").val()
         },
         dispatchCenter:$("select#dispatch option:selected").text(),
-        notes: $("textarea#order_note").val() + ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
-                        + $('textarea#unprocessorder_delete_note').val()
+        notes: $("textarea#order_note").val()
       };
 
-    var satify = true;
+    var deletereason = "";
+    if(method == 'delete'){
+      deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
+                        + $('textarea#unprocessorder_delete_note').val();
+    }
 
     nameverify = usernameVertify(modifyinfo.address.name);
     telverify = usertelVertify(modifyinfo.address.tel);
@@ -64,6 +69,8 @@ $(function(){
     detailverify = addressDetailVertify(modifyinfo.address.detail);
     noteverify = noteVertify(modifyinfo.notes);
     dispatchverify = dispatchCenterVertify(modifyinfo.dispatchCenter);
+
+    var satify = true;
 
     if(nameverify != 0){
       satify = false;
@@ -107,13 +114,23 @@ $(function(){
 
       $('textarea#order_note').siblings('span.formaterror').show();
     }
-    /* TODO method == confirm*/
-    if(dispatchverify != 0 && method=='confirm'){
-      alert('dispatch');
-      satify = false;
-      $('select#order_dispatch').siblings('span.inputrequired').show();
+
+    if(method == 'confirm'){//只有在确认订单那的时候必须选择快递中心
+      if(dispatchverify != 0){
+        satify = false;
+        $('select#order_dispatch').siblings('span.inputrequired').show();
+      }
     }
-    
+
+    if(method == 'delete'){
+      var reasonvertify = deletereasonVertify(deletereason);
+      if(reasonvertify != 0){
+        satify = false;
+      }else{
+        modifyinfo.notes = modifyinfo.notes + deletereason;
+      }
+
+
     /*if(!noteVertify(modifyinfo.notes)){
       $('textarea#order_note').val("");
       $('textarea#unprocessorder_delete_note').val("");
@@ -122,7 +139,13 @@ $(function(){
       }
     }*/
     if(!satify){
-      alert("提交的内容不符合条件！!");
+
+      if(method = 'delete'){
+        alert('请选择删除原因或填写其他信息，且长度不能超过50！');
+      }else{
+       alert("提交的内容不符合条件！");
+      }
+
       return;
     }else{
       var postData = {
@@ -220,10 +243,12 @@ $(function(){
         $('textarea#order_address_detail').nextAll('span.formaterror').show();
       }
     }
+
     if(noteverify != 0){
       satify = false;
       $('textarea#order_note').siblings('span.formaterror').show();
     }
+
     if(dispatchverify != 0){
       satify = false;
       $('select#order_dispatch').siblings('span.inputrequired').show();
@@ -279,6 +304,9 @@ $(function(){
   });
 
   $("button#neworder_confirm").click(createOrder);
+  $("button#neworder_delete").click(function(){
+    location.reload();
+  });
 
   $('input#username').change(function(){
     var username = $(this).val();
@@ -346,7 +374,10 @@ $('button#searchorder_search').click(function(){
   }
 
   function noteVertify(notes){
-    return notes.length > notes_maxLength ? -1 : 0;
+    return notes.length <= notes_maxLength ? 0 : -1;
+  }
+  function deletereasonVertify(reason){
+    return reason.length == 0 ? -1 : (reason.length <= deletereason_maxLength ? 0 : 1);
   }
 
   function winesInfoVerify(wines){
@@ -370,8 +401,8 @@ $('button#searchorder_search').click(function(){
 
 /* AutoRefresh right sidebar Begin*/
 
-setInterval(function(){
 
+setInterval(function(){
     $.post('/refresh',function(data,status){
       var insert_li_todo;
       var insert_li_done;
@@ -380,17 +411,28 @@ setInterval(function(){
         $('span#unprocessed_number').text(data.numberUnprocessed);
         $('span#numberdata.numberquestion').text(data.numberQuestion);
 
-        for(var i = 0;i < data.urgentprocess.length;i++){
+        if(data.urgentprocess.length!=0){
+          var insert_li_todo = "<li class="list-group-item" id="unprocess_wholeli">
+                  <a href="#" class = 'question_orderID'>订单号：<span class="question_id">12</span></a><br>
+                  <p class="urgentform_text">问题描述：</p>
+                  <p class="urgentform_text question_description">haha</p>
+                </li>";
+          $('ul#danger_todo').append(insert_li_todo);   
+        }
+
+        for(var i = 1;i < data.urgentprocess.length;i++){
           insert_li_todo = $('ul#danger_todo').last().clone();
-          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID)
-          ;
-          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes)
-          ;
+          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
+          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
+          $('ul#danger_todo').append(insert_li_todo);
+        }
+
+        for(var i = 1;i < data.urgentprocess.length;i++){
           insert_li_done = $('ul#danger_done').last().clone();
-          insert_li_done.children('.question_id').text(data.urgentprocess[i].notes)
-          ;
-          insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes)
-          ;        
+          insert_li_done.children('.question_id').text(data.urgentprocess[i].notes);
+          insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
+          $('ul#danger_done').append(insert_li_done);
+
         }
 
       }

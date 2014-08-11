@@ -13,7 +13,7 @@ exports.load = function (req, res, next){
       },
       _orders : function(callback){
         Order.findOrdersInReceived(req.session.user, callback);
-      } 
+      }
       },function(err, results){
         if(err){
           console.log('---------shipped error---------------');
@@ -26,7 +26,7 @@ exports.load = function (req, res, next){
         for (var i = 0; i < results._orders.length; i++) {
           var receiveorder = {};
           receiveorder.orderID = results._orders[i].orderID;
-          receiveorder.status = '已发货';
+          receiveorder.status = results._orders[i].status;
           var date = {
             year : results._orders[i].receiveDate.getFullYear(),
             month : results._orders[i].receiveDate.getMonth() + 1,

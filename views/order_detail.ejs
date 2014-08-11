@@ -1,9 +1,9 @@
-<% if((status == 1)||(status == 2)||(status == 21)||(status == 22)){ %>
+<% if((order.status == 1)||(order.status == 2)||(order.status == 21)||(order.status == 22)){ %>
 <%include order_unprocessed %>
-<% } else if(status == 3){ %>
+<% } else if(order.status == 3){ %>
   <%include order_unshipped %>
-<% }else if((status == 4)||(status == 41)||(status == 42)){%>
+<% }else if((order.status == 4)||(order.status == 41)||(order.status == 42)){%>
   <%include order_shipped %>
-<% }else if(status == 5){%>
+<% }else if(order.status == 5){%>
   <%include order_received %>
 <%}%>

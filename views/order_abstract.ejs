@@ -6,8 +6,13 @@
       </div>
       <div class ='col-xs-4'>
         <span>
-        <%= order_abstract.status=='未发货'?'下单时间': (order_abstract.status=='已发货'?'发货时间':'收货时间')%>：
-        <%= order_abstract.date.year %>-<%= order_abstract.date.month %>-<%= order_abstract.date.day %>&ensp;<%= order_abstract.date.hour %>:<%= order_abstract.date.minute %>
+        <% if((order_abstract.status == 1)||(order_abstract.status == 2)||(order_abstract.status == 21)||(order_abstract.status == 22)||(order_abstract.status == 3)){ %>
+          下单时间 ：<%= order_abstract.date %>
+        <% }else if((order_abstract.status == 4)||(order_abstract.status == 41)||(order_abstract.status == 42)){%>
+          发货时间 ：<%= order_abstract.shipDate %>
+        <% }else if(status == 5){%>
+          收货时间 ：<%= order_abstract.receiveDate %>
+        <%}%>
         </span>
       </div>
       <div class="col-xs-4 text_right">

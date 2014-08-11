@@ -15,7 +15,7 @@ exports.load = function(req, res, next){
       },
       _orders : function(callback){
         Order.findOrdersInShipped(req.session.user, callback);
-      } 
+      }
       },function(err, results){
         if(err){
           console.log('---------shipped error---------------');
@@ -28,7 +28,7 @@ exports.load = function(req, res, next){
         for (var i = 0; i < results._orders.length; i++) {
           var shiporder = {};
           shiporder.orderID = results._orders[i].orderID;
-          shiporder.status = '已发货';
+          shiporder.status = results._orders[i].status;
           var date = {
             year : results._orders[i].shipDate.getFullYear(),
             month : results._orders[i].shipDate.getMonth() + 1,
@@ -47,5 +47,5 @@ exports.load = function(req, res, next){
       }
     )
 
-    
+
   }
