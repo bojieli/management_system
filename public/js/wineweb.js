@@ -4,7 +4,7 @@ $(function(){
   var username_maxLength = 5;
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
-  var searchorder_inputnum_maxLength = 15;
+  var searchorder_inputnum_maxLength = 16;
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',

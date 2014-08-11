@@ -128,7 +128,7 @@ exports.searchOrder = function(req, res, next){
       data.alldispatches = alldispatches
       console.log('---------------data-----------------');
       console.log(JSON.stringify(data));
-      res.render('unprocessed',data);
+      res.render('order_detail',data);
     });
 
   }

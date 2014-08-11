@@ -235,7 +235,7 @@ function getOrderID(){
   if(global.orderID_increment > 9990)
     global.orderID_increment = 0;
 
-  var datePart = leftPadString(date.getUTCFullYear().toString(),1) +
+  var datePart = '4' +
                     leftPadString(date.getUTCMonth() + 1,2) +
                     leftPadString(date.getUTCDate(),2) +
                     leftPadString(date.getUTCHours(),2) +
