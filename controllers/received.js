@@ -28,11 +28,11 @@ exports.load = function (req, res, next){
           receiveorder.orderID = results._orders[i].orderID;
           receiveorder.status = results._orders[i].status;
           var date = {
-            year : results._orders[i].receiveDate.getUTCFullYear(),
-            month : results._orders[i].receiveDate.getUTCMonth() + 1,
-            day : results._orders[i].receiveDate.getUTCDate(),
-            hour : results._orders[i].receiveDate.getUTCHours(),
-            minute : results._orders[i].receiveDate.getUTCMinutes()
+            year : results._orders[i].receiveDate.getFullYear(),
+            month : results._orders[i].receiveDate.getMonth() + 1,
+            day : results._orders[i].receiveDate.getDate(),
+            hour : results._orders[i].receiveDate.getHours(),
+            minute : results._orders[i].receiveDate.getMinutes()
           }
           receiveorder.date = date;
           receiveorder.dispatchCenter = results._orders[i].dispatchCenter||'';

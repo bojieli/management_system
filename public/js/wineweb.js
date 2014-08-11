@@ -5,7 +5,11 @@ $(function(){
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
   var searchorder_inputnum_maxLength = 15;
+<<<<<<< HEAD
   var deletereason_maxLength = 56;
+=======
+  var flag_deleteinfo = false;
+>>>>>>> ee6b688c74a1e56ecd046900551802208646b575
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -116,7 +120,8 @@ $(function(){
       }else{
         modifyinfo.notes = modifyinfo.notes + deletereason;
       }
-    }
+
+
     /*if(!noteVertify(modifyinfo.notes)){
       $('textarea#order_note').val("");
       $('textarea#unprocessorder_delete_note').val("");
@@ -383,24 +388,35 @@ $('button#searchorder_search').click(function(){
 /*=============vertifymethod end=======================*/
 
 
-/* AutoRefreshTime Begin*/
+/* AutoRefresh right sidebar Begin*/
 
-/*setInterval(function(){
+
+setInterval(function(){
     $.post('/refresh',function(data,status){
+      var insert_li_todo;
+      var insert_li_done;
+
       if(status == 'success'){
         $('span#unprocessed_number').text(data.numberUnprocessed);
         $('span#numberdata.numberquestion').text(data.numberQuestion);
 
+        for(var i = 0;i < data.urgentprocess.length;i++){
+          insert_li_todo = $('ul#danger_todo').last().clone();
+          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
+          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
+          $('ul#danger_todo').append(insert_li_todo);
+
+          var insert_li_done = $('ul#danger_done').last().clone();
+          insert_li_done.children('.question_id').text(data.urgentprocess[i].notes);
+          insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
+          $('ul#danger_done').append(insert_li_done);
+        }
+
       }
     })
 
-}, 1500);*/
+}, 1500);
 
-/* AutoRefreshTime End*/
+/* AutoRefreshTime right sidebar End*/
 
-/* DeleteModal Begin*/
-$('.delete_info').change(function(){
-    $('#unprocessorder_delete_confirm').attr("disabled", false);
-});
-/* TestDeleteModal End*/
 });

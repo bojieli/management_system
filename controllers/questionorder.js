@@ -8,7 +8,7 @@ exports.load =  function (req, res, next){
         Order.getNumberbystatus(1, callback);
       },
       _getnumberQuestion : function(callback){
-        Order.getNumberbystatus(21,callback);
+        Order.getNumberInQuestion(req.session.user,callback);
       },
       _orders : function(callback){
         Order.findOrdersInQuestion2(req.session.user, callback);
@@ -33,11 +33,11 @@ exports.load =  function (req, res, next){
           questionorder.orderID = results._orders[i].orderID;
           questionorder.status = results._orders[i].status;
           var date = {
-            year : results._orders[i].date.getUTCFullYear(),
-            month : results._orders[i].date.getUTCMonth() + 1,
-            day : results._orders[i].date.getUTCDate(),
-            hour : results._orders[i].date.getUTCHours(),
-            minute : results._orders[i].date.getUTCMinutes()
+            year : results._orders[i].date.getFullYear(),
+            month : results._orders[i].date.getMonth() + 1,
+            day : results._orders[i].date.getDate(),
+            hour : results._orders[i].date.getHours(),
+            minute : results._orders[i].date.getMinutes()
           }
           questionorder.date = date;
           questionorder.dispatchCenter = results._orders[i].dispatchCenter||'';
@@ -48,11 +48,11 @@ exports.load =  function (req, res, next){
           questionorder.orderID = results._orders4[i].orderID;
           questionorder.status = results._orders[i].status;
           var date = {
-            year : results._orders4[i].shipDate.getUTCFullYear(),
-            month : results._orders4[i].shipDate.getUTCMonth() + 1,
-            day : results._orders4[i].shipDate.getUTCDate(),
-            hour : results._orders4[i].shipDate.getUTCHours(),
-            minute : results._orders4[i].shipDate.getUTCMinutes()
+            year : results._orders4[i].shipDate.getFullYear(),
+            month : results._orders4[i].shipDate.getMonth() + 1,
+            day : results._orders4[i].shipDate.getDate(),
+            hour : results._orders4[i].shipDate.getHours(),
+            minute : results._orders4[i].shipDate.getMinutes()
           }
           questionorder.date = date;
           questionorder.dispatchCenter = results._orders4[i].dispatchCenter||'';

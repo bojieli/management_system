@@ -28,11 +28,11 @@ exports.load =  function (req, res, next){
         unshiporder.orderID = results._orders[i].orderID;
         unshiporder.status = results._orders[i].status;
         var date = {
-          year : results._orders[i].date.getUTCFullYear(),
-          month : results._orders[i].date.getUTCMonth() + 1,
-          day : results._orders[i].date.getUTCDate(),
-          hour : results._orders[i].date.getUTCHours(),
-          minute : results._orders[i].date.getUTCMinutes()
+          year : results._orders[i].date.getFullYear(),
+          month : results._orders[i].date.getMonth() + 1,
+          day : results._orders[i].date.getDate(),
+          hour : results._orders[i].date.getHours(),
+          minute : results._orders[i].date.getMinutes()
         }
         unshiporder.date = date;
         unshiporder.dispatchCenter = results._orders[i].dispatchCenter||'';
