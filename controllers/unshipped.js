@@ -13,7 +13,7 @@ exports.load =  function (req, res, next){
     },
     _orders : function(callback){
       Order.findOrdersInUnship(req.session.user, callback);
-    } 
+    }
     },function(err, results){
       if(err){
         console.log('---------shipped error---------------');
@@ -26,7 +26,7 @@ exports.load =  function (req, res, next){
       for (var i = 0; i < results._orders.length; i++) {
         var unshiporder = {};
         unshiporder.orderID = results._orders[i].orderID;
-        unshiporder.status = '未发货';
+        unshiporder.status = results._orders[i].status;
         var date = {
           year : results._orders[i].date.getUTCFullYear(),
           month : results._orders[i].date.getUTCMonth() + 1,

@@ -31,7 +31,7 @@ exports.load =  function (req, res, next){
         for (var i = 0; i < results._orders.length; i++) {
           var questionorder = {};
           questionorder.orderID = results._orders[i].orderID;
-          questionorder.status = '未发货';
+          questionorder.status = results._orders[i].status;
           var date = {
             year : results._orders[i].date.getUTCFullYear(),
             month : results._orders[i].date.getUTCMonth() + 1,
@@ -46,7 +46,7 @@ exports.load =  function (req, res, next){
         for (var i = 0; i < results._orders4.length; i++) {
           var questionorder = {};
           questionorder.orderID = results._orders4[i].orderID;
-          questionorder.status = '已发货';
+          questionorder.status = results._orders[i].status;
           var date = {
             year : results._orders4[i].shipDate.getUTCFullYear(),
             month : results._orders4[i].shipDate.getUTCMonth() + 1,

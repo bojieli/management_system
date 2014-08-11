@@ -1,6 +1,6 @@
-<p style = 'font-size:18px'>订单总数：<span><%= shiporders.length %></span></p>
+<p style = 'font-size:18px'>订单总数：<span><%= searchresults.length %></span></p>
 <ul id = "orderlist">
 <% searchresults.forEach(function(order_abstract){ %>
-  <% include questionorder_abstract %>
+  <% include order_abstract %>
 <%})%>
 </ul>
