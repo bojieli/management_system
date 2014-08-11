@@ -6,9 +6,9 @@
 </script>
 
 <div>
- <p style = 'font-size:18px'>订单总数：<span><%= receiveorders.length %></span></p>
+ <p style = 'font-size:18px'>订单总数：<span><%= orders.length %></span></p>
   <ul id = "orderlist">
-  <% receiveorders.forEach(function(order_abstract){ %>
+  <% orders.forEach(function(order_abstract){ %>
     <% include order_abstract %>
   <%})%>
   </ul>

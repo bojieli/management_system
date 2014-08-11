@@ -3,7 +3,7 @@ var errUtil = require('./wrap_error');
 var models = require('../models');
 var Order = models.Order;
 var async = require('async');
-var Wine = require('../proxy').Wine;
+var Wine = require('./wine');
 var config = require('../config');
 
 
@@ -142,32 +142,26 @@ exports.findbyTel = function(tel, cb){
   Order.find({'address.tel': tel},cb);
 }
 
-exports.findOrdersInUnship = function(customerService,cb){
-  Order.find({'customerService' : customerService, 'status' : 3},
-    'orderID date dispatchCenter' ,cb);
-}
-exports.findOrdersInShipped = function(customerService,cb){
-  Order.find({'customerService' : customerService, 'status' : 4},
-    'orderID shipDate dispatchCenter' ,cb);
-}
-exports.findOrdersInReceived = function(customerService,cb){
-  Order.find({'customerService' : customerService, 'status' : 5},
-    'orderID receiveDate dispatchCenter' ,cb);
-}
-exports.findOrdersInQuestion2 = function(customerService,cb){
-  Order.find({'customerService' : customerService, 'status' : 21},
-    'orderID date dispatchCenter' ,cb);
-}
-exports.findOrdersInQuestion4 = function(customerService,cb){
-  Order.find({'customerService' : customerService, 'status' : 41},
-    'orderID shipDate dispatchCenter' ,cb);
-}
 exports.getNumberInQuestion = function(customerService,cb){
   Order.find({'status' : {$in: [21, 41]}, 'customerService' : customerService},
     {'_id' : 1}, function(err, orders){
     if(err) return cb(err);
     cb(null, orders.length);
   });
+}
+exports.findByStatus = function (customerService, status, cb){
+  Order.find({'status' : status, 'customerService' : customerService},
+    'orderID date shipDate receiveDate dispatchCenter', function(err, orders){
+      if(err)
+        return cb(err);
+      for (var i = 0; i < orders.length; i++) {
+        orders[i].date = formatDate(orders[i].date);
+        orders[i].shipDate = formatDate(orders[i].shipDate);
+        orders[i].receiveDate = formatDate(orders[i].receiveDate);
+        orders[i].dispatchCenter = orders[i].dispatchCenter||'';
+      };
+      cb(null, orders);
+    })
 }
 
 exports.getNumberbystatus = function(status, cb){
@@ -179,6 +173,51 @@ exports.getNumberbystatus = function(status, cb){
 exports.findUnshipped = function (cb){
   Order.find({'status' : 3},'orderID date dispatchCenter', cb);
 }
+
+exports.generateDetail = function (order, cb){
+  var data = {};
+  var ids = [];
+  for (var i = 0; i < order.shopOnce.length; i++) {
+    ids.push(order.shopOnce[i].id);
+  };
+  Wine.findByIDs(ids, afterFind);
+  function afterFind(err, _wines){
+    if(err)
+      return cb(err);
+    //var _wines = results._findWineByIDs;
+    for (var i = 0; i < order.shopOnce.length; i++) {
+      var index = findWinebyid(order.shopOnce[i].id);
+      order.shopOnce[i].describe = _wines[index].describe;
+      order.shopOnce[i].wechatPrice = _wines[index].wechatPrice;
+      delete order.shopOnce[i].id;
+    };
+    function findWinebyid(id){
+      for (var i = 0; i < _wines.length; i++) {
+        if(id ==_wines[i].id)
+          return i;
+      };
+    }
+    data.orderID = order.orderID;
+    data.status = order.status;
+    data.date = formatDate(order.date);
+    data.shipDate = formatDate(order.shipDate);
+    data.receiveDate = formatDate(order.receiveDate);
+    data.isFirst = order.isFirst;
+    data.address = order.address;
+    data.notes = order.notes||'';
+    data.cashNeeded = order.totalPrice;
+    data.cashTotal = order.cashUse + order.voucherUse + order.totalPrice;
+    data.coupon = order.cashUse;
+    data.voucher = order.voucherUse;
+    data.shopOnce = order.shopOnce;
+    data.dispatchCenter = order.dispatchCenter;
+    data.shipStaff = order.shipStaff;
+    data.customerService = order.customerService;
+    cb(null, data);
+  }
+}
+
+//exports.findAbstract(orders, cb)
 
 exports.unprocessedOperate = function(postData,cb){
   var statusAfter;
@@ -221,18 +260,7 @@ exports.unprocessedOperate = function(postData,cb){
 
 }
 
-function leftPadString(value,length){
-  var valueString = value.toString();
-  if(valueString.length >= length){
-    return valueString.substr(0,length);
-  }else{
-    var pad = "";
-    for(var i = 0;i < length - valueString.length; i++){
-      pad = pad + "0";
-    }
-    return pad + valueString;
-  }
-}
+
 
 
 function getOrderID(){
