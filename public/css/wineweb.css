@@ -212,7 +212,12 @@ div#detail_modal div.modal-dialog{
   font-weight: 100;
 }
 
-
+.inputrequired,.formaterror{
+  padding-left: 10px;
+  color : red;
+  font-size: 12px;
+  display: none;
+}
 
 /* unshipped */
 

@@ -30,25 +30,32 @@
             <li class="list-group-item">
               顾客姓名：
               <input class="username_input editable" name="username" id="order_username" type="text" value="<%= address.name %>">
+              <span class = 'inputrequired'>*必填项</span>
+              <span class = 'formaterror'>*长度应小于5</span>
             </li>
             <li class="list-group-item">
               联系电话：
               <input class="username_input" name="username" id="order_usertel" type="text" value="<%= address.tel %>">
+              <span class = 'inputrequired'>*必填项</span>
+              <span class = 'formaterror'>*格式不正确</span>
             </li>
 
             <li class="list-group-item">
                 送酒地址：
                 <span class="text_inline">阜阳市</span>
-                <select id="area" class ="editable form-control select_inline"required aria-selected ="false" >
+                <select id="order_address_area" class ="editable form-control select_inline"required aria-selected ="false" >
                     <option hidden ="hidden"></option>
                     <option selected = '<%= address.area == '颍州区' ? 'selected' : ''%>' value="1">颍州区</option>
                     <option selected = '<%= address.area == '颍泉区' ? 'selected' : ''%>' value="2">颍泉区</option>
                     <option selected = '<%= address.area == '颍东区' ? 'selected' : ''%>' value="3">颍东区</option>
-                </select>
+                </select><span class = 'inputrequired'>*必选项</span>
                 <textarea  id="order_address_detail" class ="editable form-control address_area" style="height:35px"><%= address.detail %></textarea>
+                <span class = 'inputrequired'>*必填项</span>
+                <span class = 'formaterror'>*长度应小于50</span>
             </li>
             <li class="list-group-item">
               备注：
+              <span class = 'formaterror'>*长度应小于50</span>
               <textarea  class ="form-control editable" id="order_note"><%= notes %></textarea>
             </li>
           </ul>
@@ -86,8 +93,8 @@
               <span style="padding-left:10px">(总价：</span><span><%= cashTotal %></span>
               <span>, 现金券：</span><span><%= coupon %></span><span></span>,代金券：</span><span><%= voucher %></span><span>)</span>
             <li class="list-group-item">
-                  选择快递点：
-                  <select id="dispatch" class ="form-control editable" required aria-selected ="false" >
+                  选择快递点：<span class = 'inputrequired'>*必选项</span>
+                  <select id="order_dispatch" class ="form-control editable" required aria-selected ="false" >
                     <option hidden ="hidden"></option>
                     <% for(var i = 0;i < alldispatches.length;i++){%>
                     <option><%=alldispatches[i]%></option>

@@ -6,10 +6,14 @@
           <li class="list-group-item">
             顾客姓名：
             <input name="username" id="order_username" type="text" value="">
+            <span class = 'inputrequired'>*必填项</span>
+            <span class = 'formaterror'>*长度应小于5</span>
           </li>
           <li class="list-group-item">
             联系电话：
             <input class="usertel" id="order_usertel" type="tel" value="">
+            <span class = 'inputrequired'>*必填项</span>
+            <span class = 'formaterror'>*格式不正确</span>
           </li>
           <li class="list-group-item">
               送酒地址：
@@ -19,11 +23,14 @@
                   <option>颍州区</option>
                   <option>颍泉区</option>
                   <option>颍东区</option>
-              </select>
+              </select><span class = 'inputrequired'>*必选项</span>
               <textarea  class ="form-control address_detail" id = 'order_address_detail'></textarea>
+              <span class = 'inputrequired'>*必填项</span>
+              <span class = 'formaterror'>*长度应小于50</span>
           </li>
           <li class="list-group-item">
             备注：
+            <span class = 'formaterror'>*长度应小于50</span>
             <textarea  class ="form-control" id="order_note"></textarea>
           </li>
         </ul>
@@ -31,7 +38,10 @@
 
       <div class="col-xs-9 col-md-6">
           <ul class="list-group">
-            <li class="list-group-item list_head"><strong>酒水信息</strong></li>
+            <li class="list-group-item list_head " id = 'wineinfo_head'><strong>酒水信息</strong>
+              <span class = 'inputrequired'>*必填项</span>
+              <span class = 'formaterror'>*所有酒的数量至少为1</span>
+            </li>
 
             <!-- Table to show specific wine info-->
 
@@ -71,7 +81,7 @@
               <button class="btn btn-md btn-default" id = 'order_wine_add'>添加</button>
             </li>
             <li class="list-group-item">
-              <strong>选择快递点：</strong>
+              <strong>选择快递点：</strong> <span class = 'inputrequired'>*必选项</span>
                   <select class ="form-control" id = 'order_dispatch'required aria-selected ="false" >
                     <option hidden ="hidden"></option>
                     <% for(var i = 0;i < alldispatches.length;i++){%>
