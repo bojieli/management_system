@@ -162,6 +162,13 @@ exports.findOrdersInQuestion4 = function(customerService,cb){
   Order.find({'customerService' : customerService, 'status' : 41},
     'orderID shipDate dispatchCenter' ,cb);
 }
+exports.getNumberInQuestion = function(customerService,cb){
+  Order.find({'status' : {$in: [21, 41]}, 'customerService' : customerService},
+    {'_id' : 1}, function(err, orders){
+    if(err) return cb(err);
+    cb(null, orders.length);
+  });
+}
 
 exports.getNumberbystatus = function(status, cb){
   Order.find({'status' : status},{'_id' : 1}, function(err, orders){

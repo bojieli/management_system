@@ -361,8 +361,19 @@ $('button#searchorder_search').click(function(){
 /* AutoRefreshTime Begin*/
 
 setInterval(function(){
+<<<<<<< HEAD
     var ordernum = numberUnprocessed; // get num from db
     $('#unprocessed_number').text(ordernum);
+=======
+    $.post('/refresh',function(data,status){
+      if(status == 'success'){
+        $('span#unprocessed_number').text(data.numberUnprocessed);
+        $('span#numberdata.numberquestion').text(data.numberQuestion);
+
+      }
+    })
+
+>>>>>>> 229437b19cdb6c074cd873e7bb04c088b2d271d5
 }, 1500);
 
 /* AutoRefreshTime End*/

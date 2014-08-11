@@ -42,4 +42,6 @@ module.exports = function (app) {
 	app.post('/neworder',neworder.createOrder);
 
 	app.post('/orderdetail', orderdetail.load);
+
+	app.post('/refresh', refresh.load);
 }
