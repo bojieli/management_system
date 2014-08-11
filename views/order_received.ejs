@@ -90,13 +90,19 @@
               <strong>需付现金：</strong><span><%= cashNeeded %></span>
               <span style="padding-left:10px">(总价：</span><span><%= cashTotal %></span>
               <span>, 现金券：</span><span><%= coupon %></span><span></span>,代金券：</span><span><%= voucher %></span><span>)</span>
+            </li>
             <li class="list-group-item">
               <strong>快递点：</strong>
-                 <span><%= dispatchCenter %></span>
+                  <select class ="form-control"required aria-selected ="false" readonly>
+                    <option hidden ="hidden"></option>
+                    <% for(var i = 0;i < alldispatches.length;i++){%>
+                    <option selected="<%= dispatchCenter==alldispatches[i]?"selected":""%>"><%=alldispatches[i]%></option>
+                    <%}%>
+              </select>
             </li>
             <li class="list-group-item">
               <strong>快递员：</strong>
-                 <span><%= shipStaff %></span>
+                 <span><%= (shipStaff && shipStaff.length > 0) ? shipStaff : "未知"  %></span>
             </li>
           </ul>
       </div>    <!-- Commodity Info Ends-->

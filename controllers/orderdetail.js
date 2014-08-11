@@ -86,14 +86,13 @@ exports.load = function(req,res,next){
     data.coupon = order.cashUse;
     data.voucher = order.voucherUse;
     data.shopOnce = order.shopOnce;
+    data.dispatchCenter = order.dispatchCenter;
+    data.shipStaff = order.shipStaff;
     var alldispatches = [];
     for (var i = 0; i < results._getAllCenterInfo.length; i++) {
       alldispatches.push(results._getAllCenterInfo[i].address);
     };
     data.alldispatches = alldispatches;
-    console.log('data'+ JSON.stringify(data));
-    //res.send('success')
     res.render('order_detail',data);
-    console.log('complete');
   });
 }

@@ -1,9 +1,5 @@
 var config = {
-	port : 1919,
-<<<<<<< HEAD
-=======
-
->>>>>>> d71d25f478d9896034e0048937362ff18fe6f786
+	port : 8001,
 	session_secret: 'kf_519_Today',
 	db : 'mongodb://localhost/519_Today_dev',
 	db_name : '519_Today_dev',

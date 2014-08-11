@@ -37,7 +37,7 @@ var OrderSchema = new Schema({
   voucherUse : Number,
 
   status : Number,  //订单状态，状态码见下面
-  
+
   isFirst : Boolean, // 是否是首次下单
   totalPrice : Number, //指的是货到付款时需要支付的现金
 
