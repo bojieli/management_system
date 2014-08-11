@@ -120,6 +120,11 @@ $(function(){
     $('tbody.all_wineinfo').append(insert_tr);
     $('tbody.all_wineinfo').children().last().find('select.winedescribe').focus();
   });
+
+  $('button#order_wine_delete').click(function(){
+    $('tr.order_wineinfo').last().rm();
+    $('tbody.all_wineinfo').children().last().find('select.winedescribe').focus();
+  });
   /*new order*/
   $("button#neworder_confirm").click(function(){
     var username =   $('input#order_username').val();
@@ -271,4 +276,25 @@ $('button#searchorder_search').click(function(){
      (inputnumber.length > 0 && inputnumber.length <= searchorder_inputnum_maxLength);
   }
 /*=============vertifymethod end=======================*/
+
+
+/* AutoRefreshTime Begin*/
+
+$(document).ready(
+ 
+  setInterval(function(){
+      var ordernum = 20; // get num from db
+      $('#unprocessed_number').text(ordernum);
+  }, 1500);
+
+  return true;
+);
+
+/* AutoRefreshTime End*/
+
+/* DeleteModal Begin*/
+$(.delete_info).change(function(){
+    $('#unprocessorder_delete_confirm').attr("disabled", false);
+});
+/* TestDeleteModal End*/
 });

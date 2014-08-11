@@ -26,12 +26,12 @@
         <ul class="nav nav-justified">
           <li class = "unprocessed_li">
             <a href="/unprocessed">未处理
-              <span class="badge"><%= numberUnprocessed > 0 ? numberUnprocessed :""%></span>
+              <span id="unprocessed_number" class="badge">10</span>
             </a>
           </li>
           <li class = "unshipped_li">
             <a href="/unshipped">
-            未发货<span class="badge"><%= unshiporders.length %></span>
+            未发货</span>
             </a>
           </li>
           <li class = "shipped_li"><a href="/shipped">已发货</a></li>
