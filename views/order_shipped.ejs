@@ -98,3 +98,52 @@
       </div>    <!-- Commodity Info Ends-->
   </div>  <!-- row ends-->
 </div>   <!-- Panel: Form Info Ends-->
+
+<div class="modal fade" id="alert_delete" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#E8A35A;">
+                <button type="button" class="close"
+                   data-dismiss="modal" aria-hidden="true">
+                      &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align:center;">
+                  <span class="alert_text">警告：订单删除后不可复原，请确认这一操作</span>
+                </h4>
+            </div> <!-- modal header ends-->
+
+            <div class="modal-body">
+                <div class="" style="padding-left:25px; padding-top:0px;">
+                      <h3><strong>删除订单原因：</strong></h3>
+
+                      <label class="checkbox" for="checkbox1">
+                      <input type="checkbox" value="" id="checkbox1">
+                      reason1
+                      </label>
+
+                      <label class="checkbox" for="checkbox2">
+                      <input type="checkbox" checked="checked" value="" id="checkbox2">
+                      reason2
+                      </label>
+
+                      <label class="checkbox" for="checkbox3">
+                      <input type="checkbox" value="" id="checkbox3">
+                      reason3
+                      </label>
+
+                      <p>
+                        <h3><strong>其他信息：</strong></h3>
+                        <textarea  class ="form-control">TBD</textarea>
+                        <button class="btn btn-md btn-default" style="margin-top:10px;">保存</button>
+                      </p>
+                </div>
+            </div> <!-- modal body ends-->
+
+            <div class="modal-footer">
+                <button class="btn btn-lg btn-danger" type="button" data-dismiss="modal">确认删除</button>
+                <button class="btn btn-lg btn-default" type="button" data-dismiss="modal">取消</button>
+            </div> <!-- modal footer ends-->
+        </div> <!-- /.modal-content -->
+    </div> <!-- /.modal -->
+</div>    <!-- Alert when delete Ends-->

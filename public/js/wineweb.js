@@ -7,16 +7,21 @@ $(function(){
   var searchorder_inputnum_maxLength = 15;
 
   function getOrderDetail(orderID){
+    alert('getorderdetail'+orderID);
     $.post('/orderdetail',
     {
       orderID : orderID
     },
     function(data,status){
+      alert('feedback');
       if(status == 'success'){
+        alert('success!');
         $('div#detail_modal div.modal-body').html(data);
         $('div#detail_modal').modal('show');
         $('div#alert_delete').css('z-index',2000);
       }else{
+        alert('fail!');
+
         $('div#detail_modal div.modal-body').text('查找订单出错');
         $('div#detail_modal').modal('show');
       }
@@ -179,6 +184,7 @@ $(function(){
       alert(area+usertel+username+detail+notes+dispatchCenter+wines);
       $.post('/neworder',postData,function(data,status){
       if(status == 'success' && data.code == 'ok'){
+          alert("创建订单成功！");
           location.reload();
       }else{
           alert('提交订单出错,请重新提交!');
