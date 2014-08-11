@@ -33,103 +33,80 @@ exports.searchOrder = function(req, res, next){
   var order = {};
   var data = {};
   var rcv_data = req.body;
-  console.log('-----------------');
-  console.log(rcv_data);
   if(rcv_data.searchmethod == 'orderid'){
+     var data = {};
     async.auto({
-      _order : function(callback){
-        Order.findbyOrderID(rcv_data.inputnumber, callback);
-      },
       _getAllCenterInfo : function(callback){
         DispatchCenter.getAllCenterInfo(callback);
       },
-      _findWineByIDs : ['_order', function(callback, results) {
-        order = results._order;
-        if(!order)
+      _order : function(callback){
+        Order.findOneOrder(req.session.user, callback);
+      },
+      _generateOrder : ['_order', function(callback, results) {
+        if(!results._order)
           return callback(null, null);
-        var ids = [];
-        for (var i = 0; i < order.shopOnce.length; i++) {
-          ids.push(order.shopOnce[i].id);
-        };
-        Wine.findByIDs(ids, callback);
-      }],
-      _changeShopOnce : ['_findWineByIDs', function(callback, results){
-        if(!order)
-          return callback(null, order);
-        var _wines = results._findWineByIDs;
-        for (var i = 0; i < order.shopOnce.length; i++) {
-          var index = findWinebyid(order.shopOnce[i].id);
-          order.shopOnce[i].describe = _wines[index].describe;
-          order.shopOnce[i].wechatPrice = _wines[index].wechatPrice;
-          delete order.shopOnce[i].id;
-        };
-        callback();
-
-        function findWinebyid(id){
-          for (var i = 0; i < _wines.length; i++) {
-            if(id ==_wines[i].id)
-              return i;
-          };
-        }
+        Order.generateDetail(results._order, callback);
       }]
     },function(err, results){
       if(err){
-        console.log('---------unprocessed error---------------');
-        console.log(err);
         return next(err);
       }
-
-      if(!order){
-        //data.emptyflag = true;
-        return res.render('unprocessed',data);
+      // data = results._generateOrder;
+      if(!results._order){
+        data.emptyflag = true;
+        return res.render('order_detail',data);
       }
-      data.orderID = order.orderID;
-      data.status = order.status;
+      data.emptyflag = false;
+      data.order = results._generateOrder ;
+      data.alldispatches = results._getAllCenterInfo;
 
-      var date = {
-        year : order.date.getFullYear(),
-        month : order.date.getMonth() + 1,
-        day : order.date.getDate(),
-        hour : order.date.getHours(),
-        minute : order.date.getMinutes()
-      }
-      data.date = date;
-
-      var shipDate = {
-        year : order.shipDate.getFullYear(),
-        month : order.shipDate.getMonth() + 1,
-        day : order.shipDate.getDate(),
-        hour : order.shipDate.getHours(),
-        minute : order.shipDate.getMinutes()
-      }
-      data.shipDate = shipDate;
-
-      var receiveDate = {
-        year : order.receiveDate.getFullYear(),
-        month : order.receiveDate.getMonth() + 1,
-        day : order.receiveDate.getDate(),
-        hour : order.receiveDate.getHours(),
-        minute : order.receiveDate.getMinutes()
-      }
-      data.receiveDate = receiveDate;
-
-      data.isFirst = order.isFirst;
-      data.address = order.address;
-      data.notes = order.notes||'';
-      data.cashNeeded = order.totalPrice;
-      data.cashTotal = order.cashUse + order.voucherUse + order.totalPrice;
-      data.coupon = order.cashUse;
-      data.voucher = order.voucherUse;
-      data.shopOnce = order.shopOnce;
-      var alldispatches = [];
-      for (var i = 0; i < results._getAllCenterInfo.length; i++) {
-        alldispatches.push(results._getAllCenterInfo[i].address);
-      };
-      data.alldispatches = alldispatches
-      console.log('---------------data-----------------');
-      console.log(JSON.stringify(data));
       res.render('order_detail',data);
     });
 
+  }else if(rcv_data.searchmethod == 'phonenum'){
+    async.auto({
+      _orders : function(callback){
+        Order.findbyTel(rcv_data.inputnumber, callback);
+      } 
+      },function(err, results){
+        if(err){
+          console.log('---------shipped error---------------');
+          console.log(err);
+          return next(err);
+        }
+        if(_orders.length==0)
+          return res.render('searchresult_phonenum',[]);
+        var searchresults = [];
+        for (var i = 0; i < results._orders.length; i++) {
+          var searchresult = {};
+          searchresult.orderID = results._orders[i].orderID;
+          searchresult.status = results._orders[i].status;
+          var result_date;
+          switch(searchresult.status){
+            case 1 :
+            case 2 :
+            case 21:
+            case 22:
+            case 3:
+            result_date = results._orders[i].date;
+            break;
+            case 4 :
+            case 41 :
+            case 42 :
+            result_date = results._orders[i].shipDate;
+            break;
+            case 5 :
+            result_date = results._orders[i].receiveDate;
+            break;
+          }
+          searchresult.date = formatDate(result_date);
+          searchresult.dispatchCenter = results._orders[i].dispatchCenter||'';
+          searchresults.push(searchresult);
+        };
+        data.searchresults = searchresults;
+        res.render('searchresult_phonenum',data);
+      }
+    )
   }
 }
+

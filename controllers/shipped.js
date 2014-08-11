@@ -14,32 +14,15 @@ exports.load = function(req, res, next){
         Order.getNumberbystatus(21,callback);
       },
       _orders : function(callback){
-        Order.findOrdersInShipped(req.session.user, callback);
+        Order.findByStatus(req.session.user, 4, callback);
       } 
       },function(err, results){
         if(err){
-          console.log('---------shipped error---------------');
-          console.log(err);
           return next(err);
         }
         data.numberUnprocessed = results._getnumberUnprocessed;
         data.numberQuestion = results._getnumberQuestion;
-        var shiporders = [];
-        for (var i = 0; i < results._orders.length; i++) {
-          var shiporder = {};
-          shiporder.orderID = results._orders[i].orderID;
-          shiporder.status = '已发货';
-          var date = {
-            year : results._orders[i].shipDate.getFullYear(),
-            month : results._orders[i].shipDate.getMonth() + 1,
-            day : results._orders[i].shipDate.getDate(),
-            hour : results._orders[i].shipDate.getHours(),
-            minute : results._orders[i].shipDate.getMinutes()
-          }
-          shiporder.date = date;
-          shiporder.dispatchCenter = results._orders[i].dispatchCenter||'';
-          shiporders.push(shiporder);
-        };
+        data.orders = results._orders;
         data.shiporders = shiporders;
         data.urgentprocess = [];
         data.urgentprocessed = [];

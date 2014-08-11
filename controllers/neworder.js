@@ -62,7 +62,6 @@ exports.createOrder = function(req,res,next){
   dispatchCenter : data.dispatchCenter,
   notes : data.notes
   }
-  console.log("========data======"+JSON.stringify(orderinfo));
   Order.createOrderbyCS(req.session.user,orderinfo,function(err){
     if(err){
       res.send({code : 'error'});

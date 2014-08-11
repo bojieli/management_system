@@ -50,7 +50,7 @@ $(function(){
           name: $("#order_username").val(),
           tel: $("#order_usertel").val()
         },
-        dispatchCenter:$("select#dispatch option:selected").text(),
+        dispatchCenter:$("select#order_dispatch option:selected").text(),
         notes: $("textarea#order_note").val() + ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
                         + $('textarea#unprocessorder_delete_note').val()
       };

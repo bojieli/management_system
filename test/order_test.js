@@ -51,14 +51,14 @@ var openID = 'owaixtwzZUF3Qma5s8xH0N__mwK0c';
 // 	{ multi: true },function (err, numberAffected, raw){
 // 		console.log(numberAffected);
 // 	})
-// var count = 0;
+ var count = 0;
 
-// setInterval(function(){
-// 	Order.createOrder(openID,info,function(err,order){
-// 		console.log('count : '+count + '  ' + JSON.stringify(order.orderID));
-// 		count++;
-// 	});
-// },5000);
+setInterval(function(){
+	Order.createOrder(openID,info,function(err,order){
+		console.log('count : '+count + '  ' + JSON.stringify(order.orderID));
+		count++;
+	});
+},1000);
 
 // setInterval(function(){
 // 	_Order.update({'status' : 3}, {'status' : 4},{ multi: true },function(err, number){
@@ -73,8 +73,8 @@ var openID = 'owaixtwzZUF3Qma5s8xH0N__mwK0c';
 // },15000);
 
 
-Order.createOrder(openID,info,function(err,order){
-	console.log(order.date.toLocaleString());
-	console.log(order.date.getHours());
-})
+// Order.createOrder(openID,info,function(err,order){
+// 	console.log(order.date.toLocaleString());
+// 	console.log(order.date.getHours());
+// })
 
