@@ -259,12 +259,12 @@ $(function(){
   });
 
   $('button#order_wine_delete').click(function(){
-    $('tr.order_wineinfo').last().rm();
+    if($('tr.order_wineinfo').length > 1){
+      $('tr.order_wineinfo').last().remove();
+    }
   });
 
   $("button#neworder_confirm").click(createOrder);
-
-
 
   $('input#username').change(function(){
     var username = $(this).val();
@@ -356,20 +356,15 @@ $('button#searchorder_search').click(function(){
 
 /* AutoRefreshTime Begin*/
 
-$(document).ready(
-
-  setInterval(function(){
-      var ordernum = 20; // get num from db
-      $('#unprocessed_number').text(ordernum);
-  }, 1500);
-
-  return true;
-);
+setInterval(function(){
+    var ordernum = 20; // get num from db
+    $('#unprocessed_number').text(ordernum);
+}, 1500);
 
 /* AutoRefreshTime End*/
 
 /* DeleteModal Begin*/
-$(.delete_info).change(function(){
+$('.delete_info').change(function(){
     $('#unprocessorder_delete_confirm').attr("disabled", false);
 });
 /* TestDeleteModal End*/
