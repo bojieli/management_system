@@ -62,8 +62,22 @@ exports.load = function(req,res,next){
       minute : order.date.getUTCMinutes()
     }
     data.date = date;
-    data.shipDate = order.shipDate;
-    data.receiveDate = order.receiveDate;
+    var shipDate = {
+      year : order.shipDate.getUTCFullYear(),
+      month : order.shipDate.getUTCMonth() + 1,
+      day : order.shipDate.getUTCDate(),
+      hour : order.shipDate.getUTCHours(),
+      minute : order.shipDate.getUTCMinutes()
+    }
+    data.shipDate = shipDate;
+    var receiveDate = {
+      year : order.receiveDate.getUTCFullYear(),
+      month : order.receiveDate.getUTCMonth() + 1,
+      day : order.receiveDate.getUTCDate(),
+      hour : order.receiveDate.getUTCHours(),
+      minute : order.receiveDate.getUTCMinutes()
+    }
+    data.receiveDate = receiveDate;
     data.isFirst = order.isFirst;
     data.address = order.address;
     data.notes = order.notes||'';

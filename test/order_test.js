@@ -47,7 +47,27 @@ var openID = 'owaixtwzZUF3Qma5s8xH0N__mwK0c';
 // 		console.log(JSON.stringify(order));
 // 	})
 // }
-_Order.update({'status' : 3},{'dispatchCenter': '阜阳市中心3号车'},
-	{ multi: true },function (err, numberAffected, raw){
-		console.log(numberAffected);
-	})
+// _Order.update({'status' : 3},{'dispatchCenter': '阜阳市中心3号车'},
+// 	{ multi: true },function (err, numberAffected, raw){
+// 		console.log(numberAffected);
+// 	})
+var count = 0;
+
+setInterval(function(){
+	Order.createOrder(openID,info,function(err,order){
+		console.log('count : '+count + '  ' + JSON.stringify(order.orderID));
+		count++;
+	});
+},5000);
+
+setInterval(function(){
+	_Order.update({'status' : 3}, {'status' : 4},{ multi: true },function(err, number){
+		console.log('ship:    ' + number);
+	});
+},10000);
+
+setInterval(function(){
+	_Order.update({'status' : 4}, {'status' : 5},{ multi: true },function(err, number){
+		console.log('receive:    ' + number);
+	});
+},15000);
