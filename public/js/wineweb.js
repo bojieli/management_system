@@ -5,11 +5,7 @@ $(function(){
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
   var searchorder_inputnum_maxLength = 15;
-<<<<<<< HEAD
   var deletereason_maxLength = 56;
-=======
-  var flag_deleteinfo = false;
->>>>>>> ee6b688c74a1e56ecd046900551802208646b575
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
