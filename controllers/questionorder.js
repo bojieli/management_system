@@ -14,7 +14,7 @@ exports.load =  function (req, res, next){
         Order.findByStatus(req.session.user, 21, callback);
       },
       _orders4 : function(callback){
-        Order.findByStatus(req.session.user, 22, callback);
+        Order.findByStatus(req.session.user, 41, callback);
       }
       },function(err, results){
         if(err){
@@ -25,9 +25,11 @@ exports.load =  function (req, res, next){
         data.numberUnprocessed = results._getnumberUnprocessed;
         data.numberQuestion = results._getnumberQuestion;
         var questionorders = [];
-        questionorders.push(results._orders);
-        questionorders.push(results._orders4);
-        data.questionorders = questionorders;
+
+        data.orders = results._orders.concat(results._orders4);
+
+        console.log('----------questionorders3-------------------');
+        console.log(JSON.stringify(data.orders));
         data.urgentprocess = [];
         data.urgentprocessed = [];
         res.render('questionorder',data);

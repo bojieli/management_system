@@ -118,7 +118,7 @@ $(function(){
         modifyinfo.notes = modifyinfo.notes + deletereason;
       }
 
-
+    }
     /*if(!noteVertify(modifyinfo.notes)){
       $('textarea#order_note').val("");
       $('textarea#unprocessorder_delete_note').val("");
@@ -379,7 +379,7 @@ $('button#searchorder_search').click(function(){
   }
 
   function searchorderInputVertify(method,inputnumber){
-    return method == 'phonenum' ? usertelVertify(inputnumber) :
+    return method == 'phonenum' ? usertelVertify(inputnumber) == 0:
      (inputnumber.length > 0 && inputnumber.length <= searchorder_inputnum_maxLength);
   }
 /*=============vertifymethod end=======================*/

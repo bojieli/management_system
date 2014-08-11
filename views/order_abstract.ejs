@@ -10,7 +10,7 @@
           下单时间 ：<%= order_abstract.date %>
         <% }else if((order_abstract.status == 4)||(order_abstract.status == 41)||(order_abstract.status == 42)){%>
           发货时间 ：<%= order_abstract.shipDate %>
-        <% }else if(status == 5){%>
+        <% }else if(order_abstract.status == 5){%>
           收货时间 ：<%= order_abstract.receiveDate %>
         <%}%>
         </span>
