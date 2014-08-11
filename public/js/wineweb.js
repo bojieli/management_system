@@ -1,10 +1,10 @@
 $(function(){
 
-  var modify_flag = false;
+  // var modify_flag = false;
   var username_maxLength = 5;
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
-  var searchorder_inputnum_maxLength = 16;
+  var searchorder_inputnum_maxLength = 15;
 
   function getOrderDetail(orderID){
     $.post('/orderdetail',
@@ -33,9 +33,15 @@ $(function(){
     getOrderDetail(orderID);
   });
 
+/*==========================unprocessed begin==================*/
+   /* listen if form info changed. S*/
+  // $(".editable").change(function(){
+  //   modify_flag = true;
+  // });
+
   function orderProcess(method){
     var orderID = $('span#orderID').text();
-    var modifyinfo = modify_flag ? {
+    var modifyinfo = {
         address: {
           area: $("select#area option:selected").text(),
           detail: $("#order_address_detail").text(),
@@ -45,7 +51,7 @@ $(function(){
         dispatchCenter:$("select#dispatch option:selected").text(),
         notes: $("textarea#order_note").val() + ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
                         + $('textarea#unprocessorder_delete_note').val()
-      } : null;
+      };
 
     var alertString = "";
 
@@ -70,15 +76,20 @@ $(function(){
       }
     }
 
-    var postData = {
-      orderID : orderID,
-      modifyinfo : modifyinfo,
-      method : method
+    if(!dispatchCenterVertify(modifyinfo.dispatchCenter)){
+      alertString = alertString + "请选择快递点!\n";
     }
+
     if(alertString.length > 0){
       alert(alertString);
       return;
     }else{
+      var postData = {
+        orderID : orderID,
+        modifyinfo : modifyinfo,
+        method : method
+      };
+
       $.post("/unprocessed",postData,function(data,status){
         if(status == 'success' && data.code == 'ok'){
           location.reload();
@@ -88,12 +99,6 @@ $(function(){
       });
     }
   }
-
-
-  /* listen if form info changed. S*/
-  $(".editable").change(function(){
-  	modify_flag = true;
-  });
 
   $("button#unprocessedorder_confirm").click(function() {
     orderProcess('confirm');
@@ -106,7 +111,9 @@ $(function(){
   $("button#unprocessedorder_wait").click(function(){
     orderProcess('wait');
   });
+/*==========================unprocessed end==================*/
 
+/*========================neworder begin=====================*/
   $('button#order_wine_add').click(function(){
     var insert_tr = $('tr.order_wineinfo').first().clone();
     insert_tr.find('option.hidden_option').attr('selected','selected').end().find('input.winenumber').val("");
@@ -179,6 +186,7 @@ $(function(){
       alert(area+usertel+username+detail+notes+dispatchCenter+wines);
       $.post('/neworder',postData,function(data,status){
       if(status == 'success' && data.code == 'ok'){
+          alert("创建订单成功！");
           location.reload();
       }else{
           alert('提交订单出错,请重新提交!');
@@ -205,9 +213,7 @@ $(function(){
     $(this).parent().parent().find('input.winenumber').focus();
   });
 
-
-
-
+/*========================neworder end=====================*/
 
 
 /*============searchorder begin======================*/
@@ -245,6 +251,10 @@ $('button#searchorder_search').click(function(){
 
   function addressDetailVertify(detail){
     return detail.length > 0 && detail.length <= addressDetail_maxLength ;
+  }
+
+  function dispatchCenterVertify(dispatchCenter){
+    return dispatchCenter.length > 0;
   }
 
   function noteVertify(notes){

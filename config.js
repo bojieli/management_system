@@ -1,6 +1,10 @@
 var config = {
+<<<<<<< HEAD
 	port : 1200,
 
+=======
+	port : 8001,
+>>>>>>> 34ea17b8ff9db20abfd9bf35cbd25dc988dd1d1b
 	session_secret: 'kf_519_Today',
 	db : 'mongodb://localhost/519_Today_dev',
 	db_name : '519_Today_dev',

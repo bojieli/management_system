@@ -53,6 +53,7 @@ exports.load = function(req,res,next){
       return next(err);
     }
     data.orderID = order.orderID;
+    data.status = order.status;
     var date = {
       year : order.date.getUTCFullYear(),
       month : order.date.getUTCMonth() + 1,
@@ -85,18 +86,13 @@ exports.load = function(req,res,next){
     data.coupon = order.cashUse;
     data.voucher = order.voucherUse;
     data.shopOnce = order.shopOnce;
+    data.dispatchCenter = order.dispatchCenter;
+    data.shipStaff = order.shipStaff;
     var alldispatches = [];
     for (var i = 0; i < results._getAllCenterInfo.length; i++) {
       alldispatches.push(results._getAllCenterInfo[i].address);
     };
-    data.alldispatches = alldispatches
-    if(order.status == 2)
-      res.render('order_unprocessed',data);
-    else if(order.status == 3)
-      res.render('order_unshipped',data);
-    else if(order.status == 4)
-      res.render('order_',data);
-    else if(order.status == 5)
-      res.render('order_unprocessed',data);
+    data.alldispatches = alldispatches;
+    res.render('order_detail',data);
   });
 }
