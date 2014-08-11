@@ -5,27 +5,27 @@
                 <h3 class="panel-title" id="urgency">信息提示栏</h3>
             </div>
             <div id="urgent_form">
-              <ul class="list-group">
+              <ul class="list-group" id="danger_todo">
                 <li class="list-group-item list-head" id="urgent_form_head">
                   <span class="label label-danger">急需解决</span>
                 </li>
                 <% for(var i = 0;i < urgentprocess.length;i++){%>
-                <li class="list-group-item">
-                  <a href="#" class = 'question_orderID'>订单号：<span><%= urgentprocess[i].orderID %></span></a><br>
+                <li class="list-group-item" id="unprocess_wholeli">
+                  <a href="#" class = 'question_orderID'>订单号：<span class="question_id"><%= urgentprocess[i].orderID %></span></a><br>
                   <p class="urgentform_text">问题描述：</p>
-                  <p class="urgentform_text"><%= urgentprocess[i].notes %></p>
+                  <p class="urgentform_text question_description"><%= urgentprocess[i].notes %></p>
                 </li>
                 <%}%>
               </ul>
 
 
-              <ul class="list-group" style="padding-bottom:0px">
+              <ul class="list-group" style="padding-bottom:0px" id="danger_done">
                 <li class="list-group-item list-head" id="urgent_form_head">
                   <span class="label label-success">已经解决</span>
                 </li>
                 <% for(var i = 0;i < urgentprocessed.length;i++){%>
                 <li class="list-group-item">
-                  <a href="#" class = 'question_orderID'>订单号：<span><%= urgentprocessed[i].orderID %></span></a><br>
+                  <a href="#" class = 'question_orderID'>订单号：<span class="question_id"><%= urgentprocessed[i].orderID %></span></a><br>
                   <p class="urgentform_text">问题描述：</p>
                   <p class="urgentform_text"><%= urgentprocessed[i].notes %></p>
                 </li>

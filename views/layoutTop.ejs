@@ -26,7 +26,7 @@
         <ul class="nav nav-justified">
           <li class = "unprocessed_li">
             <a href="/unprocessed">未处理
-              <span id="unprocessed_number" class="badge">10</span>
+              <span id="unprocessed_number" class="badge"><%= numberUnprocessed > 0 ? numberUnprocessed:""%></span>
             </a>
           </li>
           <li class = "unshipped_li">
@@ -39,7 +39,7 @@
           <li class = "search_li"><a href="/search">查询</a></li>
           <li class = "question_li">
             <a href="/questionorder">疑难订单
-              <span class="badge"><%= numberQuestion > 0 ? numberQuestion:""%></span>
+              <span class="badge" id= 'numberquestion'><%= numberQuestion > 0 ? numberQuestion:""%></span>
             </a>
           </li>
           <li class = "new_li"><a href="/neworder">创建订单</a></li>

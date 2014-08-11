@@ -2,16 +2,16 @@
   <div class="panel-heading summaryinfo row">
     <div class = "col-xs-4">
     <span style="font-weight:bold;">订单编号:</strong>
-    <span id="orderID"><%= orderID %></span>
+    <span id="orderID"><%= order.orderID %></span>
     </div>
     <div class = "col-xs-4">
       <span class="order_date">下单时间:</span>
-      <span id="orderDate" style="font-weight:bold;"><%= date.year %>-<%= date.month %>-<%= date.day %>&ensp;<%= date.hour %>:<%= date.minute %> </span>
+      <span id="orderDate" style="font-weight:bold;"><%= order.date %> </span>
     </div>
     <div class="col-xs-4 text_right">
         <strong>订单状态：</strong>
         <span class="label label-warning form_state">未处理</span>
-        <span class="label label-default form_state"><%= isFirst ? "首次下单" : "非首次下单"%></span>
+        <span class="label label-default form_state"><%= order.isFirst ? "首次下单" : "非首次下单"%></span>
     </div>
   </div>
 
@@ -29,13 +29,13 @@
             <li class="list-group-item list_head"><strong>顾客信息</strong></li>
             <li class="list-group-item">
               顾客姓名：
-              <input class="username_input editable" name="username" id="order_username" type="text" value="<%= address.name %>">
+              <input class="username_input editable" name="username" id="order_username" type="text" value="<%= order.address.name %>">
               <span class = 'inputrequired'>*必填项</span>
               <span class = 'formaterror'>*长度应小于5</span>
             </li>
             <li class="list-group-item">
               联系电话：
-              <input class="username_input" name="username" id="order_usertel" type="text" value="<%= address.tel %>">
+              <input class="username_input" name="username" id="order_usertel" type="text" value="<%= order.address.tel %>">
               <span class = 'inputrequired'>*必填项</span>
               <span class = 'formaterror'>*格式不正确</span>
             </li>
@@ -45,18 +45,18 @@
                 <span class="text_inline">阜阳市</span>
                 <select id="order_address_area" class ="editable form-control select_inline"required aria-selected ="false" >
                     <option hidden ="hidden"></option>
-                    <option selected = '<%= address.area == '颍州区' ? 'selected' : ''%>' value="1">颍州区</option>
-                    <option selected = '<%= address.area == '颍泉区' ? 'selected' : ''%>' value="2">颍泉区</option>
-                    <option selected = '<%= address.area == '颍东区' ? 'selected' : ''%>' value="3">颍东区</option>
+                    <option selected = '<%= order.address.area == '颍州区' ? 'selected' : ''%>' value="1">颍州区</option>
+                    <option selected = '<%= order.address.area == '颍泉区' ? 'selected' : ''%>' value="2">颍泉区</option>
+                    <option selected = '<%= order.address.area == '颍东区' ? 'selected' : ''%>' value="3">颍东区</option>
                 </select><span class = 'inputrequired'>*必选项</span>
-                <textarea  id="order_address_detail" class ="editable form-control address_area" style="height:35px"><%= address.detail %></textarea>
+                <textarea  id="order_address_detail" class ="editable form-control address_area" style="height:35px"><%= order.address.detail %></textarea>
                 <span class = 'inputrequired'>*必填项</span>
                 <span class = 'formaterror'>*长度应小于50</span>
             </li>
             <li class="list-group-item">
               备注：
               <span class = 'formaterror'>*长度应小于50</span>
-              <textarea  class ="form-control editable" id="order_note"><%= notes %></textarea>
+              <textarea  class ="form-control editable" id="order_note"><%= order.notes %></textarea>
             </li>
           </ul>
       </div>    <!-- User Info Ends-->
@@ -78,20 +78,20 @@
                   </tr>
                 </thead>
                 <tbody class="table_text">
-                <%for(var i = 0;i < shopOnce.length;i++){%>
+                <%for(var i = 0;i < order.shopOnce.length;i++){%>
                   <tr>
-                      <th><%= shopOnce[i].describe %></th>
-                      <th><%= shopOnce[i].wechatPrice %></th>
-                      <th><%= shopOnce[i].number %></th>
+                      <th><%= order.shopOnce[i].describe %></th>
+                      <th><%= order.shopOnce[i].wechatPrice %></th>
+                      <th><%= order.shopOnce[i].number %></th>
                   </tr>
                 <%}%>
                 </tbody>
             </table>
 
             <li class="list-group-item" style="margin-top:0px;">
-              <strong>需付现金：</strong><span><b><%= cashNeeded %></b></span>
-              <span style="padding-left:10px">(总价：</span><span><%= cashTotal %></span>
-              <span>, 现金券：</span><span><%= coupon %></span><span></span>,代金券：</span><span><%= voucher %></span><span>)</span>
+              <strong>需付现金：</strong><span><b><%= order.cashNeeded %></b></span>
+              <span style="padding-left:10px">(总价：</span><span><%= order.cashTotal %></span>
+              <span>, 现金券：</span><span><%= order.coupon %></span><span></span>,代金券：</span><span><%= order.voucher %></span><span>)</span>
             <li class="list-group-item">
                   选择快递点：<span class = 'inputrequired'>*必选项</span>
                   <select id="order_dispatch" class ="form-control editable" required aria-selected ="false" >
@@ -139,6 +139,7 @@
             <div class="modal-body">
                 <div class="" id="reason_radios" style="padding-left:25px; padding-top:0px;">
                       <h4 style="padding-bottom:10px;"><strong>删除订单原因：</strong></h4>
+                      <span class = 'inputrequired'>*必填项</span>
                       <label class="radio" style = 'padding-left:50px'>
                         <input class = 'editable delete_info'type="radio" name="reasonoRadios" value="联系方式错误"/>
                         联系方式错误
@@ -155,7 +156,7 @@
             </div> <!-- modal body ends-->
 
             <div class="modal-footer">
-                <button class="btn btn-lg btn-danger" type="button" id ='unprocessorder_delete_confirm' data-dismiss="modal" disabled>确认删除</button>
+                <button class="btn btn-lg btn-danger" type="button" id ='unprocessorder_delete_confirm' data-dismiss="modal">确认删除</button>
                 <button class="btn btn-lg btn-default" type="button" data-dismiss="modal">取消</button>
             </div> <!-- modal footer ends-->
         </div> <!-- /.modal-content -->
