@@ -116,7 +116,7 @@ $(function(){
       }else{
         modifyinfo.notes = modifyinfo.notes + deletereason;
       }
-
+    }
 
     /*if(!noteVertify(modifyinfo.notes)){
       $('textarea#order_note').val("");
@@ -265,14 +265,14 @@ $(function(){
       }
       alert(area+usertel+username+detail+notes+dispatchCenter+wines);
       $.post('/neworder',postData,function(data,status){
-      if(status == 'success' && data.code == 'ok'){
-          alert("创建订单成功！");
-          location.reload();
-      }else{
-          alert('提交订单出错,请重新提交!');
-      }
-    });
-  }
+        if(status == 'success' && data.code == 'ok'){
+            alert("创建订单成功！");
+            location.reload();
+        }else{
+            alert('提交订单出错,请重新提交!');
+        }
+      });
+    }
   }
 
   $('button#order_wine_add').click(function(){
