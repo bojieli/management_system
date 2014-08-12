@@ -13,8 +13,6 @@ exports.load = function (req, res, next){
     },
     },function(err, results){
       if(err){
-        console.log('---------shipped error---------------');
-        console.log(err);
         return next(err);
       }
       data.numberUnprocessed = results._getnumberUnprocessed;

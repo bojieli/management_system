@@ -51,7 +51,6 @@ exports.load = function(req,res,next){
 }
 
 exports.unprocessedOperate = function(req,res,next) {
-  console.log('======unprocessed.operate======='+JSON.stringify(req.body));
   var postData = req.body;
   Order.unprocessedOperate(postData,function(err){
     if(err){

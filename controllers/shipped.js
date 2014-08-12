@@ -24,8 +24,6 @@ exports.load = function(req, res, next){
       data.numberUnprocessed = results._getnumberUnprocessed;
       data.numberQuestion = results._getnumberQuestion;
       data.orders = results._orders;
-      console.log('-------------orders----------------');
-      console.log(JSON.stringify(data.orders));
       data.urgentprocess = [];
       data.urgentprocessed = [];
       res.render('shipped',data);
