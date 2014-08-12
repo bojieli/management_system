@@ -241,6 +241,10 @@ exports.generateDetail = function (order, cb){
   }
 }
 
+exports.orderDelete = function(orderID, notes, cb){
+  Order.update({'orderID' : orderID}, {'status' : 42, 'notes' : notes}, cb);
+}
+
 //exports.findAbstract(orders, cb)
 
 exports.unprocessedOperate = function(postData,cb){

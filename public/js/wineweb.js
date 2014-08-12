@@ -458,41 +458,38 @@ setInterval(function(){
 
 
         if($('ul#danger_todo').last().id == "urgent_form_head"){
-          insert_li_todo = $('li class="list-group-item" id="unprocess_wholeli"' +
-            'a href="#" class = "question_orderID" ' + '订单号: '+
-            'span class="question_id"' + urgentprocess[i].orderID + '/span' +
-            '/a' + 'br' 'p class="urgentform_text"' + '问题描述：' +
-            '/p' + 'p class="urgentform_text question_description"' +
-            urgentprocess[i].notes + '/p' + '/li');
-          $('ul#danger_todo').append(insert_li_todo);
 
-          for(var i = 1;i < data.urgentprocess.length;i++){
-          insert_li_todo = $('ul#danger_todo').last().clone();
-          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
-          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
-          $('ul#danger_todo').append(insert_li_todo);
-          }
+         
+          // I do not sure how to write html in js
+          /*
+          insert_li_todo = $();
+          $('ul#danger_todo').append(insert_li_todo); */
+          /*
+          insert_li_todo = $('<li class="list-group-item" id="unprocess_wholeli"><a href="#" class = "question_orderID">订单号：<span class="question_id">urgentprocess[0].orderID</span></a><br>
+                  <p class="urgentform_text">问题描述：</p>
+                  <p class="urgentform_text question_description">urgentprocess[0].notes</p></li>').appendTo('ul#danger_todo');
+          */
 
-        }
 
-        else{
           for(var i = 0;i < data.urgentprocess.length;i++){
-          insert_li_todo = $('ul#danger_todo').last().clone();
-          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
-          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
-          $('ul#danger_todo').append(insert_li_todo);
+            insert_li_todo = $("li.urgent-unprocess-template");
+            //insert_li_todo = $('ul#danger_todo').last().clone();
+            insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
+            insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
+            $('ul#danger_todo').append(insert_li_todo);
           }
-        }
 
-        // Note that: Processed Form could not be empty.
-        // It should be : clone from above ul>li (urgentprocess)
 
-        for(var i = 0;i < data.urgentprocessed.length;i++){
-          insert_li_done = $('ul#danger_done').last().clone();
-          insert_li_done.children('.question_id').text(data.urgentprocessed[i].notes);
-          insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
-          $('ul#danger_done').append(insert_li_done);
-        }
+
+          // Note that: Processed Form could not be empty.
+          // It should be : clone from above ul>li (urgentprocess)
+
+          for(var i = 0;i < data.urgentprocessed.length;i++){
+            insert_li_done = $("li.urgent-processed-template");
+            insert_li_done.children('.question_id').text(data.urgentprocessed[i].notes);
+            insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
+            $('ul#danger_done').append(insert_li_done);
+          }
 
       }
     })
