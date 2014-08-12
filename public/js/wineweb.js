@@ -129,8 +129,7 @@ $(function(){
       }else{
         modifyinfo.notes = modifyinfo.notes + deletereason;
       }
-
-
+    }
     /*if(!noteVertify(modifyinfo.notes)){
       $('textarea#order_note').val("");
       $('textarea#unprocessorder_delete_note').val("");
@@ -280,14 +279,14 @@ $(function(){
       }
       alert(area+usertel+username+detail+notes+dispatchCenter+wines);
       $.post('/neworder',postData,function(data,status){
-      if(status == 'success' && data.code == 'ok'){
-          alert("创建订单成功！");
-          location.reload();
-      }else{
-          alert('提交订单出错,请重新提交!');
-      }
-    });
-  }
+        if(status == 'success' && data.code == 'ok'){
+            alert("创建订单成功！");
+            location.reload();
+        }else{
+            alert('提交订单出错,请重新提交!');
+        }
+      });
+    }
   }
 
   $('button#order_wine_add').click(function(){
@@ -349,6 +348,48 @@ $('button#searchorder_search').click(function(){
 });
 /*============searchorder end======================*/
 
+/*============unshiporder begin====================*/
+$("button#unshiporder_delete_confirm").click(function(){
+  var deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
+                        + $('textarea#unshiporder_delete_note').val();
+  var reasonvertify = deletereasonVertify(deletereason);
+  if(reasonvertify != 0){
+    alert('请选择删除原因或填写其他信息，且长度不能超过50！');
+  }else{
+    $.post('/unshipped',{
+      deletereason : deletereason
+    },function(data,status){
+      if(status == 'success' && data.code =='ok'){
+        location.reload();
+      }else{
+        alert("删除订单出错，请重新尝试！");
+      }
+    });
+  }
+});
+/*============unshiporder end======================*/
+
+/*============shiporder begin====================*/
+$("button#shiporder_delete_confirm").click(function(){
+  var deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
+                        + $('textarea#shiporder_delete_note').val();
+  var reasonvertify = deletereasonVertify(deletereason);
+  if(reasonvertify != 0){
+    alert('请选择删除原因或填写其他信息，且长度不能超过50！');
+  }else{
+    $.post('/shipped',{
+      deletereason : deletereason
+    },function(data,status){
+      if(status == 'success' && data.code =='ok'){
+        location.reload();
+      }else{
+        alert("删除订单出错，请重新尝试！");
+      }
+    });
+  }
+});
+/*============shiporder end======================*/
+
 /*=============vertifymethod begin=======================*/
  function usernameVertify(username){
     return username.length == 0 ? -1 :(username.length <= username_maxLength ? 0 : 1);
@@ -393,7 +434,7 @@ $('button#searchorder_search').click(function(){
   }
 
   function searchorderInputVertify(method,inputnumber){
-    return method == 'phonenum' ? usertelVertify(inputnumber) :
+    return method == 'phonenum' ? usertelVertify(inputnumber) == 0:
      (inputnumber.length > 0 && inputnumber.length <= searchorder_inputnum_maxLength);
   }
 /*=============vertifymethod end=======================*/
@@ -413,49 +454,38 @@ setInterval(function(){
 
 
         if($('ul#danger_todo').last().id == "urgent_form_head"){
+
          
           // I do not sure how to write html in js
           /*
-          insert_li_todo = $('li class="list-group-item" id="unprocess_wholeli"' + 
-            'a href="#" class = "question_orderID" ' + '订单号: '+ 
-            'span class="question_id"' + urgentprocess[i].orderID + '/span' + 
-            '/a' + 'br' 'p class="urgentform_text"' + '问题描述：' + 
-            '/p' + 'p class="urgentform_text question_description"' + 
-            urgentprocess[i].notes + '/p' + '/li');
+          insert_li_todo = $();
           $('ul#danger_todo').append(insert_li_todo); */
-
+          /*
           insert_li_todo = $('<li class="list-group-item" id="unprocess_wholeli"><a href="#" class = "question_orderID">订单号：<span class="question_id">urgentprocess[0].orderID</span></a><br>
                   <p class="urgentform_text">问题描述：</p>
                   <p class="urgentform_text question_description">urgentprocess[0].notes</p></li>').appendTo('ul#danger_todo');
+          */
 
-          if(data.urgentprocess.length > 1){
-            for(var i = 1;i < data.urgentprocess.length;i++){
-            insert_li_todo = $('ul#danger_todo').last().clone();
+
+          for(var i = 0;i < data.urgentprocess.length;i++){
+            insert_li_todo = $("li.urgent-unprocess-template");
+            //insert_li_todo = $('ul#danger_todo').last().clone();
             insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
             insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
             $('ul#danger_todo').append(insert_li_todo);
-            }
-          }..
-        }
-
-        else{
-          for(var i = 0;i < data.urgentprocess.length;i++){
-          insert_li_todo = $('ul#danger_todo').last().clone();
-          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
-          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
-          $('ul#danger_todo').append(insert_li_todo);
           }
-        }
 
-        // Note that: Processed Form could not be empty.
-        // It should be : clone from above ul>li (urgentprocess)
 
-        for(var i = 0;i < data.urgentprocessed.length;i++){
-          insert_li_done = $('ul#danger_done').last().clone();
-          insert_li_done.children('.question_id').text(data.urgentprocessed[i].notes);
-          insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
-          $('ul#danger_done').append(insert_li_done);
-        }
+
+          // Note that: Processed Form could not be empty.
+          // It should be : clone from above ul>li (urgentprocess)
+
+          for(var i = 0;i < data.urgentprocessed.length;i++){
+            insert_li_done = $("li.urgent-processed-template");
+            insert_li_done.children('.question_id').text(data.urgentprocessed[i].notes);
+            insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
+            $('ul#danger_done').append(insert_li_done);
+          }
 
       }
     })

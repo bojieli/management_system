@@ -9,7 +9,7 @@ exports.load = function (req, res, next){
       Order.getNumberbystatus(1, callback);
     },
     _getnumberQuestion : function(callback){
-      Order.getNumberbystatus(21,callback);
+      Order.getNumberInQuestion(req.session.user,callback);
     },
     },function(err, results){
       if(err){

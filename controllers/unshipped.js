@@ -9,7 +9,7 @@ exports.load =  function (req, res, next){
       Order.getNumberbystatus(1, callback);
     },
     _getnumberQuestion : function(callback){
-      Order.getNumberbystatus(21,callback);
+      Order.getNumberInQuestion(req.session.user,callback);
     },
     _orders : function(callback){
       Order.findByStatus(req.session.user, 3, callback);
@@ -21,7 +21,6 @@ exports.load =  function (req, res, next){
       data.numberUnprocessed = results._getnumberUnprocessed;
       data.numberQuestion = results._getnumberQuestion;
       data.orders = results._orders;
-      data.shiporders = shiporders;
       data.urgentprocess = [];
       data.urgentprocessed = [];
       res.render('unshipped',data);

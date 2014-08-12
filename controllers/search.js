@@ -12,7 +12,7 @@ exports.load = function (req, res, next){
         Order.getNumberbystatus(1, callback);
       },
       _getnumberQuestion : function(callback){
-        Order.getNumberbystatus(21,callback);
+        Order.getNumberInQuestion(req.session.user,callback);
       }
       },function(err, results){
         if(err){
@@ -74,36 +74,9 @@ exports.searchOrder = function(req, res, next){
           console.log(err);
           return next(err);
         }
-        if(_orders.length==0)
+        if(results._orders.length==0)
           return res.render('searchresult_phonenum',[]);
-        var searchresults = [];
-        for (var i = 0; i < results._orders.length; i++) {
-          var searchresult = {};
-          searchresult.orderID = results._orders[i].orderID;
-          searchresult.status = results._orders[i].status;
-          var result_date;
-          switch(searchresult.status){
-            case 1 :
-            case 2 :
-            case 21:
-            case 22:
-            case 3:
-            result_date = results._orders[i].date;
-            break;
-            case 4 :
-            case 41 :
-            case 42 :
-            result_date = results._orders[i].shipDate;
-            break;
-            case 5 :
-            result_date = results._orders[i].receiveDate;
-            break;
-          }
-          searchresult.date = formatDate(result_date);
-          searchresult.dispatchCenter = results._orders[i].dispatchCenter||'';
-          searchresults.push(searchresult);
-        };
-        data.searchresults = searchresults;
+        data.searchresults = results._orders;
         res.render('searchresult_phonenum',data);
       }
     )

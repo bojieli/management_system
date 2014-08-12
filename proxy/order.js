@@ -139,7 +139,24 @@ exports.findbyOrderID = function(orderID, cb){
 }
 
 exports.findbyTel = function(tel, cb){
-  Order.find({'address.tel': tel},cb);
+ Order.find({'address.tel' : tel},
+    'orderID date shipDate receiveDate dispatchCenter status', function(err, orders){
+      if(err)
+        return cb(err);
+      var _orders = [];
+      for (var i = 0; i < orders.length; i++) {
+        var data = {};
+        data.date = formatDate(orders[i].date);
+        data.shipDate = formatDate(orders[i].shipDate);
+        data.receiveDate = formatDate(orders[i].receiveDate);
+        data.dispatchCenter = orders[i].dispatchCenter||'';
+        data.orderID = orders[i].orderID;
+        data.status = orders[i].status;
+        _orders.push(data);
+      };
+      _orders.reverse();
+      cb(null, _orders);
+    })
 }
 
 exports.getNumberInQuestion = function(customerService,cb){
@@ -151,16 +168,23 @@ exports.getNumberInQuestion = function(customerService,cb){
 }
 exports.findByStatus = function (customerService, status, cb){
   Order.find({'status' : status, 'customerService' : customerService},
-    'orderID date shipDate receiveDate dispatchCenter', function(err, orders){
+    'orderID date shipDate receiveDate dispatchCenter status', function(err, orders){
       if(err)
         return cb(err);
+      var _orders = [];
       for (var i = 0; i < orders.length; i++) {
-        orders[i].date = formatDate(orders[i].date);
-        orders[i].shipDate = formatDate(orders[i].shipDate);
-        orders[i].receiveDate = formatDate(orders[i].receiveDate);
-        orders[i].dispatchCenter = orders[i].dispatchCenter||'';
+        var data = {};
+        data.date = formatDate(orders[i].date);
+        data.shipDate = formatDate(orders[i].shipDate);
+        data.receiveDate = formatDate(orders[i].receiveDate);
+        data.dispatchCenter = orders[i].dispatchCenter||'';
+        data.orderID = orders[i].orderID;
+        data.status = orders[i].status;
+        _orders.push(data);
       };
-      cb(null, orders);
+      _orders.reverse();
+      //console.log(JSON.stringify(orders));
+      cb(null, _orders);
     })
 }
 
