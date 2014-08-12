@@ -9,6 +9,7 @@ var questionorder = require('./controllers/questionorder');
 var neworder = require('./controllers/neworder');
 var orderdetail = require('./controllers/orderdetail');
 var refresh = require('./controllers/refresh');
+var Delete = require('./controllers/delete');
 
 module.exports = function (app) {
 
@@ -45,4 +46,6 @@ module.exports = function (app) {
 	app.post('/orderdetail', orderdetail.load);
 
 	app.post('/refresh', refresh.load);
+
+	app.post('/orderdelete',Delete.orderDelete);
 }

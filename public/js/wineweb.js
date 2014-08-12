@@ -350,14 +350,16 @@ $('button#searchorder_search').click(function(){
 
 /*============unshiporder begin====================*/
 $("button#unshiporder_delete_confirm").click(function(){
+  var orderID = $('span#orderID').text();
   var deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
                         + $('textarea#unshiporder_delete_note').val();
   var reasonvertify = deletereasonVertify(deletereason);
   if(reasonvertify != 0){
     alert('请选择删除原因或填写其他信息，且长度不能超过50！');
   }else{
-    $.post('/unshipped',{
-      deletereason : deletereason
+    $.post('/orderdelete',{
+      orderID : orderID,
+      notes : deletereason
     },function(data,status){
       if(status == 'success' && data.code =='ok'){
         location.reload();
@@ -371,6 +373,7 @@ $("button#unshiporder_delete_confirm").click(function(){
 
 /*============shiporder begin====================*/
 $("button#shiporder_delete_confirm").click(function(){
+  var orderID = $('span#orderID').text();
   var deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
                         + $('textarea#shiporder_delete_note').val();
   var reasonvertify = deletereasonVertify(deletereason);
@@ -378,7 +381,8 @@ $("button#shiporder_delete_confirm").click(function(){
     alert('请选择删除原因或填写其他信息，且长度不能超过50！');
   }else{
     $.post('/shipped',{
-      deletereason : deletereason
+      orderID : orderID,
+      notes : deletereason
     },function(data,status){
       if(status == 'success' && data.code =='ok'){
         location.reload();
