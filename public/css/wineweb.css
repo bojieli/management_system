@@ -39,8 +39,8 @@ label {
 }
 
 .text_right{
-  float: right;
-  padding-right: 30px;
+  text-align: right;
+  padding-right: 15px;
 }
 
 .rightdiv{
@@ -258,4 +258,18 @@ select.winedescribe,select.winewechatprice{
 textarea.address_detail{
   margin-top:10px;
   height:35px;
+}
+
+/*questionorder*/
+.item-info{
+  padding:5px;
+  float: left;
+}
+
+.item-orderID ,.item-orderdate{
+  width:25%;
+}
+
+.item-orderstatus{
+  width:20%;
 }
