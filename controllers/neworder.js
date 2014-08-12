@@ -22,8 +22,6 @@ exports.load = function (req, res, next){
     }
     },function(err, results){
       if(err){
-        console.log('---------shipped error---------------');
-        console.log(err);
         return next(err);
       }
       data.wines = results._wines;
@@ -41,8 +39,6 @@ exports.load = function (req, res, next){
   )
 }
 exports.createOrder = function(req,res,next){
-  console.log("=========================");
-  console.log(JSON.stringify(req.body));
   var data = req.body;
   var totalPrice = 0;
   for(var i = 0;i < data.shopOnce.length;i++){

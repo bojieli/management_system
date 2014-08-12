@@ -52,7 +52,6 @@ exports.createOrder = function(openID,info,cb){
 }
 
 exports.createOrderbyCS = function(customerService,info,cb){
-  console.log('create=============');
   var orderID = getOrderID();
   var order = {};
  order = {
@@ -279,7 +278,6 @@ exports.unprocessedOperate = function(postData,cb){
 
   function afterUpdate(err,order){
      if(err){
-        console.log('errr===='+err);
         errUtil.wrapError(err,congfig.errorCode_update,"unprocessedOperate()","/proxy/order",{postData:postData});
         return cb(err);
       }

@@ -16,8 +16,6 @@ exports.load = function (req, res, next){
       }
       },function(err, results){
         if(err){
-          console.log('---------shipped error---------------');
-          console.log(err);
           return next(err);
         }
         data.numberUnprocessed = results._getnumberUnprocessed;
@@ -70,8 +68,6 @@ exports.searchOrder = function(req, res, next){
       } 
       },function(err, results){
         if(err){
-          console.log('---------shipped error---------------');
-          console.log(err);
           return next(err);
         }
         if(results._orders.length==0)
