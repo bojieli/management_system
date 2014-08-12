@@ -453,52 +453,50 @@ $("button#ship_order_delete_confirm").click(function(){
 
 setInterval(function(){
     $.post('/refresh',function(data,status){
+      alert("post");
+
       var $li_undo = $("li.urgent-unprocess-template");
       var $li_done = $("li.urgent-processed-template");
-
-      alert("post");
+      var urgentprocess = [{orderID: "aa",
+        notes:"one"},{orderID: "bb",
+        notes:"two"}];      
+      var urgentprocessed = [{orderID: "aa",
+        notes:"one"},{orderID: "bb",
+        notes:"two"}];      
+      
       if(status == 'success'){
-        $('span#unprocessed_number').text(data.numberUnprocessed);
-
-        $('span#numberdata.numberquestion').text(data.numberQuestion);
-
-
-        if($('ul#danger_todo').last().id == "urgent_form_head"){
+        alert("succes");
+        $('span#unprocessed_number').text(10);
+        $('span#numberquestion').text(15);
 
 
-          // I do not sure how to write html in js
-          /*
-          insert_li_todo = $();
-          $('ul#danger_todo').append(insert_li_todo); */
-          /*
-          insert_li_todo = $('<li class="list-group-item" id="unprocess_wholeli"><a href="#" class = "question_orderID">订单号：<span class="question_id">urgentprocess[0].orderID</span></a><br>
-                  <p class="urgentform_text">问题描述：</p>
-                  <p class="urgentform_text question_description">urgentprocess[0].notes</p></li>').appendTo('ul#danger_todo');
-          */
-          for(var i = 0;i < data.urgentprocess.length;i++){
+          for(var i = 0;i < urgentprocess.length;i++){
 
             var addli_undo = $li_undo.clone();
             var addli_done = $li_done.clone();
 
             //insert_li_todo = $('ul#danger_todo').last().clone();
-            addli_undo.find('span.question_id').text(data.urgentprocess[i].orderID);
-            addli_undo.find('.question_description').text(data.urgentprocess[i].notes);
+            addli_undo.find('span.question_id').text(urgentprocess[i].orderID);
+            addli_undo.find('.question_description').text(urgentprocess[i].notes);
+            addli_undo.attr('display', 'list-item');
             addli_undo.removeClass('urgent-unprocess-template');
             $('ul#danger_todo').append(addli_undo);
+          }
 
-            addli_done.find('.question_id').text(data.urgentprocessed[i].orderID);
-            addli_done.find('.question_description').text(data.urgentprocessed[i].notes);
+          for(var i = 0;i < urgentprocessed.length;i++){
+          
+            addli_done.find('.question_id').text(urgentprocessed[i].orderID);
+            addli_done.find('.question_description').text(urgentprocessed[i].notes);
+            addli_done.attr('display', 'list-item');
             addli_done.removeClass('urgent-processed-template');
             $('ul#danger_done').append(insert_li_done);
           }
 
+      };
+    });
+}, 10000);
 
-      }
-    }
-  })
-}, 1500);
 
-});
 
 /* AutoRefreshTime right sidebar End*/
 
