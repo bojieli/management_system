@@ -413,21 +413,29 @@ setInterval(function(){
 
 
         if($('ul#danger_todo').last().id == "urgent_form_head"){
+         
+          // I do not sure how to write html in js
+          /*
           insert_li_todo = $('li class="list-group-item" id="unprocess_wholeli"' + 
             'a href="#" class = "question_orderID" ' + '订单号: '+ 
             'span class="question_id"' + urgentprocess[i].orderID + '/span' + 
             '/a' + 'br' 'p class="urgentform_text"' + '问题描述：' + 
             '/p' + 'p class="urgentform_text question_description"' + 
             urgentprocess[i].notes + '/p' + '/li');
-          $('ul#danger_todo').append(insert_li_todo);
+          $('ul#danger_todo').append(insert_li_todo); */
 
-          for(var i = 1;i < data.urgentprocess.length;i++){
-          insert_li_todo = $('ul#danger_todo').last().clone();
-          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
-          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
-          $('ul#danger_todo').append(insert_li_todo);
-          }
-         
+          insert_li_todo = $('<li class="list-group-item" id="unprocess_wholeli"><a href="#" class = "question_orderID">订单号：<span class="question_id">urgentprocess[0].orderID</span></a><br>
+                  <p class="urgentform_text">问题描述：</p>
+                  <p class="urgentform_text question_description">urgentprocess[0].notes</p></li>').appendTo('ul#danger_todo');
+
+          if(data.urgentprocess.length > 1){
+            for(var i = 1;i < data.urgentprocess.length;i++){
+            insert_li_todo = $('ul#danger_todo').last().clone();
+            insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
+            insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
+            $('ul#danger_todo').append(insert_li_todo);
+            }
+          }..
         }
 
         else{
