@@ -44,23 +44,30 @@ $(function(){
 
   function orderProcess(method){
     $('span.inputrequired,span.formaterror').hide();
+    var domParent = $("#unprocess_panel");
 
-    var orderID = $('span#orderID').text();
+    var orderID = domParent.find('span.orderID').text();
+    var areaDOM = domParent.find("select.order_address_area option:selected");
+    var detailDOM = domParent.find("textarea.order_address_detail");
+    var nameDOM = domParent.find("input.order_username");
+    var telDOM = domParent.find("input.order_usertel");
+    var dispatchDOM = domParent.find("select.order_dispatch option:selected");
+    var noteDOM = domParent.find("textarea.order_note") ;
+
     var modifyinfo = {
         address: {
-          area: $("select#order_address_area option:selected").text(),
-          detail: $("#order_address_detail").val(),
-          name: $("#order_username").val(),
-          tel: $("#order_usertel").val()
+          area: areaDOM.text(),
+          detail: detailDOM.val(),
+          name: nameDOM.val(),
+          tel: telDOM.val()
         },
-        dispatchCenter:$("select#order_dispatch option:selected").text(),
-        notes: $("textarea#order_note").val()
+        dispatchCenter: dispatchDOM.text(),
+        notes: noteDOM.val()
       };
-
     var deletereason = "";
     if(method == 'delete'){
-      deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
-                        + $('textarea#unprocessorder_delete_note').val();
+      deletereason = (domParent.next().find("input[name = 'reasonoRadios']:checked").val()||"")
+                        + domParent.next().find('textarea.delete_note').val();
     }
 
     nameverify = usernameVertify(modifyinfo.address.name);
@@ -74,56 +81,47 @@ $(function(){
 
     if(nameverify != 0){
       satify = false;
-      alert("name");
       if(nameverify == -1){
-         $('input#order_username').nextAll('span.inputrequired').show();
+        nameDOM.nextAll('span.inputrequired').show();
       }else if(nameverify == 1){
-       $('input#order_username').nextAll('span.formaterror').show();
+        nameDOM.nextAll('span.formaterror').show();
       }
     }
     if(telverify != 0){
       satify = false;
-      alert("tel");
-
       if(telverify == -1){
-         $('input#order_usertel').nextAll('span.inputrequired').show();
+        telDOM.nextAll('span.inputrequired').show();
       }else if(telverify == 1){
-       $('input#order_usertel').nextAll('span.formaterror').show();
+        telDOM.nextAll('span.formaterror').show();
       }
     }
     if(areaverify != 0){
       satify = false;
-      alert("area");
-
-      $('select#order_address_area').nextAll('span.inputrequired').show();
+      areaDOM.nextAll('span.inputrequired').show();
     }
     if(detailverify != 0){
       satify = false;
-      alert("detail");
-
-
       if(detailverify == -1){
-        $('textarea#order_address_detail').nextAll('span.inputrequired').show();
+        detailDOM.nextAll('span.inputrequired').show();
       }else if(detailverify == 1){
-        $('textarea#order_address_detail').nextAll('span.formaterror').show();
+        detailDOM.nextAll('span.formaterror').show();
       }
     }
     if(noteverify != 0){
       satify = false;
-      alert("note");
-
-      $('textarea#order_note').siblings('span.formaterror').show();
+      noteDOM.siblings('span.formaterror').show();
     }
 
     if(method == 'confirm'){//只有在确认订单那的时候必须选择快递中心
       if(dispatchverify != 0){
         satify = false;
-        $('select#order_dispatch').siblings('span.inputrequired').show();
+        dispatchDOM.parent().siblings('span.inputrequired').show();
       }
     }
 
     if(method == 'delete'){
       var reasonvertify = deletereasonVertify(deletereason);
+
       if(reasonvertify != 0){
         satify = false;
       }else{
@@ -138,8 +136,7 @@ $(function(){
       }
     }*/
     if(!satify){
-
-      if(method = 'delete'){
+      if(method == 'delete'){
         alert('请选择删除原因或填写其他信息，且长度不能超过50！');
       }else{
        alert("提交的内容不符合条件！");
@@ -163,15 +160,15 @@ $(function(){
     }
   }
 
-  $("button#unprocessedorder_confirm").click(function() {
+  $("button#unprocess_order_confirm").click(function() {
     orderProcess('confirm');
 	});
 
-  $("button#unprocessorder_confirm").click(function(){
+  $("button#unprocess_order_delete_confirm").click(function(){
     orderProcess('delete');
   });
 
-  $("button#unprocessedorder_wait").click(function(){
+  $("button#unprocess_order_wait").click(function(event){
     orderProcess('wait');
   });
 /*==========================unprocessed end==================*/
@@ -180,16 +177,17 @@ $(function(){
 
   function createOrder(){
     $('span.inputrequired,span.formaterror').hide();
+    var domParent = $('div#new_panel');
 
-    var username =   $('input#order_username').val();
-    var usertel = $('input#order_usertel').val();
-    var area = $('select#order_address_area option:selected').text();
-    var detail = $('textarea#order_address_detail').val();
-    var notes = $('textarea#order_note').val();
-    var dispatchCenter = $('select#order_dispatch option:selected').text();
+    var username = domParent.find('input.order_username').val();
+    var usertel = domParent.find('input.order_usertel').val();
+    var area = domParent.find('select.order_address_area option:selected').text();
+    var detail = domParent.find('textarea.order_address_detail').val();
+    var notes = domParent.find('textarea.order_note').val();
+    var dispatchCenter = domParent.find('select.order_dispatch option:selected').text();
 
     var wines =[];
-    var winerows = $('tr.order_wineinfo');
+    var winerows = domParent.find('tr.order_wineinfo');
     var wineinfo_right = true;
     for(var i = 0;i < winerows.length;i++){
       if($(winerows[i]).find('select.winedescribe option:selected').val().length != 0){
@@ -217,47 +215,47 @@ $(function(){
     if(nameverify != 0){
       satify = false;
       if(nameverify == -1){
-        $('input#order_username').nextAll('span.inputrequired').show();
+        domParent.find('input.order_username').nextAll('span.inputrequired').show();
       }else if(nameverify == 1){
-        $('input#order_username').nextAll('span.formaterror').show();
+        domParent.find('input.order_username').nextAll('span.formaterror').show();
       }
     }
     if(telverify != 0){
       satify = false;
       if(telverify == -1){
-        $('input#order_usertel').nextAll('span.inputrequired').show();
+        domParent.find('input.order_usertel').nextAll('span.inputrequired').show();
       }else if(telverify == 1){
-        $('input#order_usertel').nextAll('span.formaterror').show();
+        domParent.find('input.order_usertel').nextAll('span.formaterror').show();
       }
     }
     if(areaverify != 0){
       satify = false;
-      $('select#order_address_area').nextAll('span.inputrequired').show();
+      domParent.find('select.order_address_area').nextAll('span.inputrequired').show();
     }
     if(detailverify != 0){
       satify = false;
       if(detailverify == -1){
-        $('textarea#order_address_detail').nextAll('span.inputrequired').show();
+        domParent.find('textarea.order_address_detail').nextAll('span.inputrequired').show();
       }else if(detailverify == 1){
-        $('textarea#order_address_detail').nextAll('span.formaterror').show();
+        domParent.find('textarea.order_address_detail').nextAll('span.formaterror').show();
       }
     }
 
     if(noteverify != 0){
       satify = false;
-      $('textarea#order_note').siblings('span.formaterror').show();
+      domParent.find('textarea.order_note').siblings('span.formaterror').show();
     }
 
     if(dispatchverify != 0){
       satify = false;
-      $('select#order_dispatch').siblings('span.inputrequired').show();
+      domParent.find('select.order_dispatch').siblings('span.inputrequired').show();
     }
     if(winesverify != 0){
       satify = false;
       if(winesverify == -1){
-        $('li#wineinfo_head>span.inputrequired').show();
+        domParent.find('li.wineinfo_head>span.inputrequired').show();
       }else{
-        $('li#wineinfo_head>span.formaterror').show();
+        domParent.find('li.wineinfo_head>span.formaterror').show();
       }
     }
 
@@ -298,22 +296,26 @@ $(function(){
 
   $('button#order_wine_delete').click(function(){
     if($('tr.order_wineinfo').length > 1){
-      $('tr.order_wineinfo').last().remove();
+      $(this).parent().prev().find('tr.order_wineinfo').last().remove();
     }
   });
 
   $("button#neworder_confirm").click(createOrder);
-  $("button#neworder_delete").click(function(){
-    location.reload();
-  });
 
-  $('input#username').change(function(){
-    var username = $(this).val();
-    if(username.length > username_maxLength){
-      alert('用户名最大长度为5');
-      $(this).val("");
+  $("button#neworder_delete").click(function(){
+    var deleteconfirm = confirm("所有订单信息将被清空,确定删除？");
+    if(deleteconfirm){
+      location.reload();
     }
   });
+
+  // $('input#username').change(function(){
+  //   var username = $(this).val();
+  //   if(username.length > username_maxLength){
+  //     alert('用户名最大长度为5');
+  //     $(this).val("");
+  //   }
+  // });
 
   /* listen E*/
   $('tbody.all_wineinfo').on('change','select.winedescribe',function(){
@@ -349,10 +351,11 @@ $('button#searchorder_search').click(function(){
 /*============searchorder end======================*/
 
 /*============unshiporder begin====================*/
-$("button#unshiporder_delete_confirm").click(function(){
-  var orderID = $('span#orderID').text();
-  var deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
-                        + $('textarea#unshiporder_delete_note').val();
+$("button#unship_order_delete_confirm").click(function(){
+  var parentDOM = $('div.unship_panel');
+  var orderID = parentDOM.find('span.orderID').text();
+  var deletereason = (domParent.next().find("input[name = 'reasonoRadios']:checked").val()||"")
+                        + domParent.next().find('textarea.delete_note').val();
   var reasonvertify = deletereasonVertify(deletereason);
   if(reasonvertify != 0){
     alert('请选择删除原因或填写其他信息，且长度不能超过50！');
@@ -372,10 +375,12 @@ $("button#unshiporder_delete_confirm").click(function(){
 /*============unshiporder end======================*/
 
 /*============shiporder begin====================*/
-$("button#shiporder_delete_confirm").click(function(){
-  var orderID = $('span#orderID').text();
-  var deletereason = ($("input[name = 'reasonoRadios']:checked",'div#reason_radios').val()||"")
-                        + $('textarea#shiporder_delete_note').val();
+$("button#ship_order_delete_confirm").click(function(){
+  var parentDOM = $('div.ship_panel');
+  var orderID = parentDOM.find('span.orderID').text();
+  var deletereason = (domParent.next().find("input[name = 'reasonoRadios']:checked").val()||"")
+                        + domParent.next().find('textarea.delete_note').val();
+
   var reasonvertify = deletereasonVertify(deletereason);
   if(reasonvertify != 0){
     alert('请选择删除原因或填写其他信息，且长度不能超过50！');
@@ -401,9 +406,8 @@ $("button#shiporder_delete_confirm").click(function(){
 
   function usertelVertify(usertel){
     var phoneregex = /^0?(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$/;
-    var landlineregex = /^(\d{3}-?\d{7,8})|(\d{4}-?\d{7,8})$/;
-    var landlineregex_noprex = /^\d{7,8}$/;
-    return usertel.length == 0 ? -1:(phoneregex.test(usertel) || landlineregex.test(usertel)||landlineregex_noprex.test(usertel) ? 0 :1);
+    var landlineregex = /^(\d{3}-\d{7,8})|(\d{4}-\d{7,8})$/;
+    return usertel.length == 0 ? -1:((phoneregex.test(usertel) || landlineregex.test(usertel)) ? 0 :1);
   }
 
   function addressDetailVertify(detail){
@@ -459,7 +463,7 @@ setInterval(function(){
 
         if($('ul#danger_todo').last().id == "urgent_form_head"){
 
-         
+
           // I do not sure how to write html in js
           /*
           insert_li_todo = $();
@@ -492,8 +496,8 @@ setInterval(function(){
           }
 
       }
-    })
-
+    }
+  })
 }, 1500);
 
 /* AutoRefreshTime right sidebar End*/

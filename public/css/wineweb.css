@@ -206,11 +206,11 @@ div#detail_modal div.modal-dialog{
 .list_head{
   padding-left: auto;
 }
-
+/*
 #radios > label{
   padding: 2px 0px 2px 20px;
   font-weight: 100;
-}
+}*/
 
 .inputrequired,.formaterror{
   padding-left: 10px;
@@ -220,13 +220,6 @@ div#detail_modal div.modal-dialog{
 }
 
 /* unshipped */
-
-#time_consumed{
-  display:inline-block;
-  margin-bottom:0px;
-  color:#FF645D;
-  font-weight: bold;
-}
 
 /* shipped */
 

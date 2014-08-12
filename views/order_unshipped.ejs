@@ -1,7 +1,7 @@
-<div class="panel panel-default">
+<div id = 'unship_panel'class="panel panel-default">
   <div class="panel-heading summaryinfo row">
     <div class = "col-xs-4">
-    <span id="unship_orderID">订单编号：<%= order.orderID %></span>
+    <span class="orderID">订单编号：<%= order.orderID %></span>
     </div>
     <div class = "col-xs-4">
       <span class="form_head_date">下单时间：<%= order.date%> </span>
@@ -27,11 +27,11 @@
             <li class="list-group-item list_head"><strong>顾客信息</strong></li>
             <li class="list-group-item">
               顾客姓名：
-              <input name="username" id="order_username" type="text" value="<%= order.address.name %>" readonly />
+              <input name="username" class="order_username" type="text" value="<%= order.address.name %>" readonly />
             </li>
             <li class="list-group-item">
               联系电话：
-              <input name="username" id="order_usertel" type="tel" value="<%= order.address.tel %>" readonly />
+              <input name="username" class="order_usertel" type="tel" value="<%= order.address.tel %>" readonly />
             </li>
             <li class="list-group-item">
                 送酒地址：
@@ -46,7 +46,7 @@
             </li>
             <li class="list-group-item">
               备注：
-              <textarea  class ="form-control" id="textarea_else" readonly><%= order.notes %></textarea>
+              <textarea  class ="form-control order_note" readonly><%= order.notes %></textarea>
             </li>
           </ul>
       </div>    <!-- User Info Ends-->
@@ -100,7 +100,7 @@
 
   <div style="" class="well submit_div">
     <div class="center" style="">
-      <button class="btn btn-lg btn-danger button_margin"  data-toggle="modal" data-target="#alert_delete">删除</button>
+      <button class="btn btn-lg btn-danger button_margin"  data-toggle="modal" data-target="#unship_alert_delete">删除</button>
     </div>
   </div>  <!-- Submit buttons ends-->
 
@@ -110,7 +110,7 @@
 
 
 <!-- 模态框（Modal） 点击删除键弹出的框-->
-<div class="modal fade" id="alert_delete" tabindex="-1" role="dialog"
+<div class="modal fade" id="unship_alert_delete" tabindex="-1" role="dialog"
    aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -119,16 +119,16 @@
                    data-dismiss="modal" aria-hidden="true">
                       &times;
                 </button>
-                <h4 class="modal-title" id="myModalLabel" style="text-align:center;">
+                <h4 class="modal-title myModalLabel" style="text-align:center;">
                   <span class="alert_text">订单详情</span>
                 </h4>
             </div> <!-- modal header ends-->
 
             <div class="modal-body">
-                <div class="" id="reason_radios" style="padding-left:25px; padding-top:0px;">
+                <div  class="reason_radios" style="padding-left:25px; padding-top:0px;">
                       <h4 style="padding-bottom:10px;"><strong>删除订单原因：</strong></h4>
                       <label class="radio" style = 'padding-left:50px'>
-                        <input class = 'editable delete_info'type="radio" name="reasonoRadios" value="联系方式错误"/>
+                        <input class = 'editable delete_info' type="radio" name="reasonoRadios" value="联系方式错误"/>
                         联系方式错误
                       </label>
                       <label class="radio" style = 'padding-left:50px'>
@@ -143,7 +143,7 @@
             </div> <!-- modal body ends-->
 
             <div class="modal-footer">
-                <button class="btn btn-lg btn-danger" type="button" id ='unshiporder_delete_confirm' data-dismiss="modal">确认删除</button>
+                <button class="btn btn-lg btn-danger" id="unship_order_delete_confirm" type="button" data-dismiss="modal">确认删除</button>
                 <button class="btn btn-lg btn-default" type="button" data-dismiss="modal">取消</button>
             </div> <!-- modal footer ends-->
         </div> <!-- /.modal-content -->

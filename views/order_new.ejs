@@ -1,44 +1,44 @@
-<div class="panel panel-default">
+<div id = 'new_panel' class="panel panel-default">
    <div class="row">
       <div class="col-xs-9 col-md-6">
         <ul class="list-group">
           <li class="list-group-item list_head"><strong>顾客信息</strong></li>
           <li class="list-group-item">
             顾客姓名：
-            <input name="username" id="order_username" type="text" value="">
+            <input name="username" class="order_username" type="text" value="">
             <span class = 'inputrequired'>*必填项</span>
             <span class = 'formaterror'>*长度应小于5</span>
           </li>
           <li class="list-group-item">
             联系电话：
-            <input class="usertel" id="order_usertel" type="tel" value="">
+            <input  class="order_usertel" type="tel" value="">
             <span class = 'inputrequired'>*必填项</span>
             <span class = 'formaterror'>*格式不正确</span>
           </li>
           <li class="list-group-item">
               送酒地址：
               <span class="text_inline">阜阳市</span>
-              <select  class ="form-control select_inline" id= 'order_address_area' required aria-selected ="false" >
+              <select  class ="form-control select_inline order_address_area" required aria-selected ="false" >
                   <option hidden ="hidden"></option>
                   <option>颍州区</option>
                   <option>颍泉区</option>
                   <option>颍东区</option>
               </select><span class = 'inputrequired'>*必选项</span>
-              <textarea  class ="form-control address_detail" id = 'order_address_detail'></textarea>
+              <textarea  class ="form-control address_detail order_address_detail"></textarea>
               <span class = 'inputrequired'>*必填项</span>
               <span class = 'formaterror'>*长度应小于50</span>
           </li>
           <li class="list-group-item">
             备注：
             <span class = 'formaterror'>*长度应小于50</span>
-            <textarea  class ="form-control" id="order_note"></textarea>
+            <textarea  class ="form-control order_note"></textarea>
           </li>
         </ul>
       </div>    <!-- User Info Ends-->
 
       <div class="col-xs-9 col-md-6">
           <ul class="list-group">
-            <li class="list-group-item list_head " id = 'wineinfo_head'><strong>酒水信息</strong>
+            <li class="list-group-item list_head wineinfo_head"><strong>酒水信息</strong>
               <span class = 'inputrequired'>*必填项</span>
               <span class = 'formaterror'>*所有酒的数量至少为1</span>
             </li>
@@ -83,7 +83,7 @@
             </li>
             <li class="list-group-item">
               <strong>选择快递点：</strong> <span class = 'inputrequired'>*必选项</span>
-                  <select class ="form-control" id = 'order_dispatch'required aria-selected ="false" >
+                  <select class ="form-control order_dispatch" required aria-selected ="false" >
                     <option hidden ="hidden"></option>
                     <% for(var i = 0;i < alldispatches.length;i++){%>
                     <option><%=alldispatches[i]%></option>
@@ -95,12 +95,12 @@
     </div>  <!-- row ends-->
             <!-- Submit buttons -->
     <div style="" class="well submit_div">
-      <div class="center" style="">
+      <div class="center">
         <button class="btn btn-lg btn-success button_margin button_check" id= "neworder_confirm" type="button">确认创建</button>
             <!-- For the form: click check-button to skip into unshipped state-->
             <!-- For Customer Service: click to skip on unprocessed page -->
             <!-- In view of above reason, we should not display right layout(warning message) but let C.S. focus on buill current form-->
-        <button class="btn btn-lg btn-danger button_margin" id="neworder_delete" data-toggle="modal" data-target="#alert_delete">删除</button>
+        <button class="btn btn-lg btn-danger button_margin" id="neworder_delete">删除</button>
       </div>
     </div>  <!-- Submit buttons ends-->
 
