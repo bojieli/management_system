@@ -449,55 +449,36 @@ $("button#shiporder_delete_confirm").click(function(){
 
 setInterval(function(){
     $.post('/refresh',function(data,status){
-      var insert_li_todo;
-      var insert_li_done;
-
+      var $li_undo = $("li.urgent-unprocess-template");
+      var $li_done = $("li.urgent-processed-template");
+      
+      alert("post");
       if(status == 'success'){
         $('span#unprocessed_number').text(data.numberUnprocessed);
-        $('span#numberdata.numberquestion').text(data.numberQuestion);
+        $('span#numberquestion').text(data.numberQuestion);
 
 
-        if($('ul#danger_todo').last().id == "urgent_form_head"){
-          insert_li_todo = $('li class="list-group-item" id="unprocess_wholeli"' +
-            'a href="#" class = "question_orderID" ' + '订单号: '+
-            'span class="question_id"' + urgentprocess[i].orderID + '/span' +
-            '/a' + 'br' 'p class="urgentform_text"' + '问题描述：' +
-            '/p' + 'p class="urgentform_text question_description"' +
-            urgentprocess[i].notes + '/p' + '/li');
-          $('ul#danger_todo').append(insert_li_todo);
-
-          for(var i = 1;i < data.urgentprocess.length;i++){
-          insert_li_todo = $('ul#danger_todo').last().clone();
-          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
-          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
-          $('ul#danger_todo').append(insert_li_todo);
-          }
-
-        }
-
-        else{
           for(var i = 0;i < data.urgentprocess.length;i++){
-          insert_li_todo = $('ul#danger_todo').last().clone();
-          insert_li_todo.children('span.question_id').text(data.urgentprocess[i].orderID);
-          insert_li_todo.children('.question_description').text(data.urgentprocess[i].notes);
-          $('ul#danger_todo').append(insert_li_todo);
+
+            var addli_undo = $li_undo.clone();
+            var addli_done = $li_done.clone();
+
+            //insert_li_todo = $('ul#danger_todo').last().clone();
+            addli_undo.find('span.question_id').text(data.urgentprocess[i].orderID);
+            addli_undo.find('.question_description').text(data.urgentprocess[i].notes);
+            addli_undo.removeClass('urgent-unprocess-template');
+            $('ul#danger_todo').append(addli_undo);
+          
+            addli_done.find('.question_id').text(data.urgentprocessed[i].orderID);
+            addli_done.find('.question_description').text(data.urgentprocessed[i].notes);
+            addli_done.removeClass('urgent-processed-template');
+            $('ul#danger_done').append(insert_li_done);
           }
-        }
 
-        // Note that: Processed Form could not be empty.
-        // It should be : clone from above ul>li (urgentprocess)
+      };
+    }, 5000);
 
-        for(var i = 0;i < data.urgentprocessed.length;i++){
-          insert_li_done = $('ul#danger_done').last().clone();
-          insert_li_done.children('.question_id').text(data.urgentprocessed[i].notes);
-          insert_li_done.children('.question_description').text(data.urgentprocessed[i].notes);
-          $('ul#danger_done').append(insert_li_done);
-        }
-
-      }
-    })
-
-}, 1500);
+});
 
 /* AutoRefreshTime right sidebar End*/
 
