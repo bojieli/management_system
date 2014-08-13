@@ -90,7 +90,12 @@ exports.unprocessedOperate = function(req,res,next) {
           for(var i = 0;i < orderDetail.shopOnce.length;i++){
             message = message + "\n\t"+orderDetail.shopOnce[i].describe + "\t,数量：" + orderDetail.shopOnce[i].number;
           }
-          wechatAPI.sendText(dispatchDetail.shipHeadID,message,function(){});
+          wechatAPI.sendText(dispatchDetail.shipHeadID,message,function(err, message){
+            if(err){
+              err.message = message;
+              next(err);
+            }
+          });
         });
 
       }
