@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>当前订单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <style>
+        html,body,div{
+            padding: 0;
+            margin: 0;
+        }
+        .content{
+            padding: 5px;
+        }
+        .content label{
+            font-size: 18px;
+            color: #aaa;
+        }
+        .content span{
+            font-size: 18px;
+            color: #444;
+        }
+        .content select{
+            width: 100%;
+            height: 18px;
+            font-size: 22px;
+        }
+        .content button {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 5px;
+            font-size: 21px;
+            font-weight: normal;
+            line-height: 1.9;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: #FFFFFF;
+            width : 90%;
+            background-color : #0079FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <p>
+            <label>编号：</label>
+             <span><%= order.orderID %></span>
+            <hr>
+            <label>下单时间：</label>
+             <span><%= order.date %></span>
+            <hr>
+            <label>订单内容：</label>
+             <%for(var i=0 ;i<order.shopOnce.length;i++){%>
+                <span><%= order.shopOnce[i].describe + ",\t 数量：" + order.shopOnce[i].number + "\n"  %></span>
+             <%}%>
+            <hr>
+            <label>需付现金：</label>
+             <span><%= order.cashNeeded %></span>
+            <hr>
+            <label>配送地点：</label>
+             <span><%= order.address.city + order.address.area + order.address
+                 .detail%></span>
+            <hr>
+            <label>预计送达时间</label>
+            <select>
+                <option>20分钟</option>
+                <option>30分钟</option>
+                <option>40分钟</option>
+                <option>50分钟</option>
+                <option>60分钟</option>
+            </select>
+            <center>
+                <button>开始配送</button>
+                <button>配送完成</button>
+            </center>
+
+        </p>
+    </div>
+</body>
+</html>
