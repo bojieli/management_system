@@ -67,6 +67,9 @@ exports.unprocessedOperate = function(req,res,next) {
           _order : function(callback){
             Order.findbyOrderID(postData.orderID, callback);
           },
+          _addNumberToday : function(callback){
+            DispatchCenter.addNumberToday(postData.modifyinfo.dispatchCenter,callback);
+          },
           _generateOrder : ['_order', function(callback, results) {
             if(!results._order)
               return callback(null, {});
@@ -74,6 +77,7 @@ exports.unprocessedOperate = function(req,res,next) {
           }]
         },function(err, results){
           if(err){
+            res.send({code:'error'});
             return next(err);
           }
           if(!results._order){
@@ -82,15 +86,22 @@ exports.unprocessedOperate = function(req,res,next) {
 
           var orderDetail = results._generateOrder ;
           var dispatchDetail = results._getCenterInfo;
-          var message = "订单编号：\n" + orderDetail.orderID
-                        + "\n订单时间\：" + orderDetail.date
+          var message = "编号:" + orderDetail.orderID
+                        + "\n时间：" + orderDetail.date
                         + "\n联系人：" + orderDetail.address.name
-                        + "\n联系方式：\n" + orderDetail.address.tel
-                        + "\n订单详情：";
+                        + "\n手机号：" + orderDetail.address.tel
+                        + "\n详情：";
+
           for(var i = 0;i < orderDetail.shopOnce.length;i++){
-            message = message + "\n\t"+orderDetail.shopOnce[i].describe + "\t,数量：" + orderDetail.shopOnce[i].number;
+            message = message + "\n"+orderDetail.shopOnce[i].describe + " * " + orderDetail.shopOnce[i].number;
           }
-          wechatAPI.sendText(dispatchDetail.shipHeadID,message,function(err, message){
+          var article = {
+            "title" : dispatchDetail.orderNumToday,
+            "description" : message,
+            "url" : 'http://kf.519.today:8001/orderaction?orderID=' + orderDetail.orderID,
+            "picurl" : ''
+          }
+          wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){
             if(err){
               err.message = message;
               next(err);

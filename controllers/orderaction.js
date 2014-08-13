@@ -14,14 +14,12 @@ exports.load = function (req, res, next){
 	    }]
 	  },function(err, results){
 	    if(err){
+	   	  //res.send();
 	      return next(err);
 	    }
-	    if(!results._order){
-	      data.emptyflag = true;
-	      return res.render('order_detail',data);
-	    }
-	    data.emptyflag = false;
+	    if(results._order){
 	    data.order = results._generateOrder ;
 	    res.render('order_action',data);
+	    }
 	});
 }
