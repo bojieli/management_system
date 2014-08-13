@@ -241,7 +241,7 @@ exports.generateDetail = function (order, cb){
 }
 
 exports.orderDelete = function(orderID, notes, cb){
-  Order.update({'orderID' : orderID}, {'status' : 42, 'notes' : notes}, cb);
+  Order.update({'orderID' : orderID},{$set : {'status' : 42, 'notes' : notes}}, cb);
 }
 
 //exports.findAbstract(orders, cb)

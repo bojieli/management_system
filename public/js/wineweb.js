@@ -16,9 +16,19 @@ $(function(){
     },
     function(data,status){
       if(status == 'success'){
+        //populate data
         $('div#detail_modal div.modal-body').html(data);
         $('div#detail_modal').modal('show');
-        $('div#alert_delete').css('z-index',2000);
+
+        if($('div#unprocess_alert_delete').length > 0){
+          $('div#unprocess_alert_delete').css('z-index',2000);
+        }
+        if($('div#unship_alert_delete').length > 0){
+          $('div#unship_alert_delete').css('z-index',2000);
+        }
+        if($('div#ship_alert_delete').length > 0){
+          $('div#ship_alert_delete').css('z-index',2000);
+        }
       }else{
         $('div#detail_modal div.modal-body').text('查找订单出错');
         $('div#detail_modal').modal('show');
@@ -26,12 +36,12 @@ $(function(){
     });
   }
 
-  $('a.question_orderID').click(function(){
-    var orderID = $(this).children('span').text();
+  $(document).on('click','a.urgent-unprocess,a.urgent-processed',function(){
+    var orderID = $(this).children('span.urgent_orderID').text();
     getOrderDetail(orderID);
   });
 
-  $('li.order_abstract_item').click(function(){
+  $(document).on('click','li.order_abstract_item',function(){
     var orderID =  $(this).find('span.orderID_abstract').text();
     getOrderDetail(orderID);
   });
@@ -44,7 +54,7 @@ $(function(){
 
   function orderProcess(method){
     $('span.inputrequired,span.formaterror').hide();
-    var domParent = $("#unprocess_panel");
+    var domParent = $("div#unprocess_panel");
 
     var orderID = domParent.find('span.orderID').text();
     var areaDOM = domParent.find("select.order_address_area option:selected");
@@ -139,9 +149,8 @@ $(function(){
       if(method == 'delete'){
         alert('请选择删除原因或填写其他信息，且长度不能超过50！');
       }else{
-       alert("提交的内容不符合条件！");
+        alert("提交的内容不符合条件！");
       }
-
       return;
     }else{
       var postData = {
@@ -152,23 +161,36 @@ $(function(){
 
       $.post("/unprocessed",postData,function(data,status){
         if(status == 'success' && data.code == 'ok'){
+          if(method == 'delete'){
+            $("div#unprocess_alert_delete").modal('hide');
+          }
           location.reload();
         }else{
-          alert('确认订单出错,重新操作!');
+          switch(method){
+            case 'confirm':
+              alert('确认订单出错,重新操作!');
+              break;
+            case  'delete':
+              alert('删除订单出错,请重新尝试!');
+              break;
+            case 'wait':
+              alert('稍后处理订单出错,请重新尝试!');
+              break;
+          }
         }
       });
     }
   }
 
-  $("button#unprocess_order_confirm").click(function() {
+  $(document).on('click',"button#unprocess_order_confirm",function(){
     orderProcess('confirm');
-	});
+  });
 
-  $("button#unprocess_order_delete_confirm").click(function(){
+  $(document).on('click',"button#unprocess_order_delete_confirm",function(){
     orderProcess('delete');
   });
 
-  $("button#unprocess_order_wait").click(function(event){
+  $(document).on('click',"button#unprocess_order_wait",function(){
     orderProcess('wait');
   });
 /*==========================unprocessed end==================*/
@@ -302,6 +324,7 @@ $(function(){
 
   $("button#neworder_confirm").click(createOrder);
 
+
   $("button#neworder_delete").click(function(){
     var deleteconfirm = confirm("所有订单信息将被清空,确定删除？");
     if(deleteconfirm){
@@ -351,11 +374,11 @@ $('button#searchorder_search').click(function(){
 /*============searchorder end======================*/
 
 /*============unshiporder begin====================*/
-$("button#unship_order_delete_confirm").click(function(){
-  var parentDOM = $('div.unship_panel');
+$(document).on('click',"button#unship_order_delete_confirm",function(){
+  var parentDOM = $('div#unship_panel');
   var orderID = parentDOM.find('span.orderID').text();
-  var deletereason = (domParent.next().find("input[name = 'reasonoRadios']:checked").val()||"")
-                        + domParent.next().find('textarea.delete_note').val();
+  var deletereason = (parentDOM.next().find("input[name = 'reasonoRadios']:checked").val()||"")
+                        + parentDOM.next().find('textarea.delete_note').val();
   var reasonvertify = deletereasonVertify(deletereason);
   if(reasonvertify != 0){
     alert('请选择删除原因或填写其他信息，且长度不能超过50！');
@@ -365,6 +388,9 @@ $("button#unship_order_delete_confirm").click(function(){
       notes : deletereason
     },function(data,status){
       if(status == 'success' && data.code =='ok'){
+        $("div#unship_alert_delete").modal('hide');
+        $('div#detail_modal').modal('hide');
+        $('div#detail_modal div.modal-body').html("");
         location.reload();
       }else{
         alert("删除订单出错，请重新尝试！");
@@ -375,21 +401,22 @@ $("button#unship_order_delete_confirm").click(function(){
 /*============unshiporder end======================*/
 
 /*============shiporder begin====================*/
-$("button#ship_order_delete_confirm").click(function(){
-  var parentDOM = $('div.ship_panel');
+$(document).on('click',"button#ship_order_delete_confirm",function(){
+  var parentDOM = $('div#ship_panel');
   var orderID = parentDOM.find('span.orderID').text();
-  var deletereason = (domParent.next().find("input[name = 'reasonoRadios']:checked").val()||"")
-                        + domParent.next().find('textarea.delete_note').val();
+  var deletereason = (parentDOM.next().find("input[name = 'reasonoRadios']:checked").val()||"")
+                        + parentDOM.next().find('textarea.delete_note').val();
 
   var reasonvertify = deletereasonVertify(deletereason);
   if(reasonvertify != 0){
     alert('请选择删除原因或填写其他信息，且长度不能超过50！');
   }else{
-    $.post('/shipped',{
+    $.post('/orderdelete',{
       orderID : orderID,
       notes : deletereason
     },function(data,status){
       if(status == 'success' && data.code =='ok'){
+        $("div#ship_alert_delete").modal('hide');
         location.reload();
       }else{
         alert("删除订单出错，请重新尝试！");
@@ -398,6 +425,8 @@ $("button#ship_order_delete_confirm").click(function(){
   }
 });
 /*============shiporder end======================*/
+
+
 
 /*=============vertifymethod begin=======================*/
  function usernameVertify(username){
@@ -449,52 +478,39 @@ $("button#ship_order_delete_confirm").click(function(){
 
 
 /* AutoRefresh right sidebar Begin*/
-
+var num = 0;
 
 setInterval(function(){
     $.post('/refresh',function(data,status){
-      alert("post");
+      var li_undo = $("li.urgent-unprocess-template");
+      var li_done = $("li.urgent-processed-template");
 
-      var $li_undo = $("li.urgent-unprocess-template");
-      var $li_done = $("li.urgent-processed-template");
-      var urgentprocess = [{orderID: "aa",
-        notes:"one"},{orderID: "bb",
-        notes:"two"}];      
-      var urgentprocessed = [{orderID: "aa",
-        notes:"one"},{orderID: "bb",
-        notes:"two"}];      
-      
       if(status == 'success'){
-        alert("succes");
-        $('span#unprocessed_number').text(10);
-        $('span#numberquestion').text(15);
+        num++;
+        $('span#unprocessed_number').text(data.numberUnprocessed);
+        $('span#numberquestion').text(data.numberQuestion);
 
+        for(var i = 0;i < data.urgentprocess.length;i++){
+          var addli_undo = li_undo.clone();
+          addli_undo.find('span.question_id').text(data.urgentprocess[i].orderID);
+          addli_undo.find('.question_description').text(data.urgentprocess[i].notes);
+          addli_undo.css('display', 'list-item');
+          addli_undo.removeClass('urgent-unprocess-template');
+          $('ul#danger_todo').append(addli_undo);
+        }
 
-          for(var i = 0;i < urgentprocess.length;i++){
-
-            var addli_undo = $li_undo.clone();
-            var addli_done = $li_done.clone();
-
-            //insert_li_todo = $('ul#danger_todo').last().clone();
-            addli_undo.find('span.question_id').text(urgentprocess[i].orderID);
-            addli_undo.find('.question_description').text(urgentprocess[i].notes);
-            addli_undo.attr('display', 'list-item');
-            addli_undo.removeClass('urgent-unprocess-template');
-            $('ul#danger_todo').append(addli_undo);
-          }
-
-          for(var i = 0;i < urgentprocessed.length;i++){
-          
-            addli_done.find('.question_id').text(urgentprocessed[i].orderID);
-            addli_done.find('.question_description').text(urgentprocessed[i].notes);
-            addli_done.attr('display', 'list-item');
-            addli_done.removeClass('urgent-processed-template');
-            $('ul#danger_done').append(insert_li_done);
-          }
+        for(var i = 0;i < data.urgentprocessed.length;i++){
+          var addli_done = li_done.clone();
+          addli_done.find('.question_id').text(data.urgentprocessed[i].orderID);
+          addli_done.find('.question_description').text(data.urgentprocessed[i].notes);
+          addli_done.css('display', 'list-item');
+          addli_done.removeClass('urgent-processed-template');
+          $('ul#danger_done').append(addli_done);
+        }
 
       };
     });
-}, 10000);
+}, 30000);
 
 
 
