@@ -4,7 +4,7 @@ $(function(){
   var username_maxLength = 5;
   var addressDetail_maxLength = 50;
   var notes_maxLength = 50;
-  var searchorder_inputnum_maxLength = 15;
+  var searchorder_inputnum_maxLength = 16;
 
   var deletereason_maxLength = 56;
   //var flag_deleteinfo = false;
@@ -356,6 +356,7 @@ $(function(){
 $('button#searchorder_search').click(function(){
   var searchmethod = $("input[name='searchorder_searchmethod']:checked","div#searchorder_methodselect").val();
   var inputnumber = $("input[name='searchorder_inputnumber']").val();
+
   if(!searchorderInputVertify(searchmethod,inputnumber)){
     alert('请输入正确的订单号或者订单联系电话');
   }else{
@@ -478,7 +479,6 @@ $(document).on('click',"button#ship_order_delete_confirm",function(){
 
 
 /* AutoRefresh right sidebar Begin*/
-var num = 0;
 
 setInterval(function(){
     $.post('/refresh',function(data,status){
@@ -486,9 +486,8 @@ setInterval(function(){
       var li_done = $("li.urgent-processed-template");
 
       if(status == 'success'){
-        num++;
-        $('span#unprocessed_number').text(data.numberUnprocessed);
-        $('span#numberquestion').text(data.numberQuestion);
+        $('span#unprocessed_number').text(data.numberUnprocessed > 0 ? data.numberUnprocessed : "");
+        $('span#numberquestion').text(data.numberQuestion > 0 ? data.numberQuestion : "");
 
         for(var i = 0;i < data.urgentprocess.length;i++){
           var addli_undo = li_undo.clone();
