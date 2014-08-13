@@ -5,6 +5,7 @@
     <title>当前订单</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
     <meta name="format-detection" content="telephone=no">
+    <script type="text/javascript" src="/js/zepto.min.js"></script>
     <style>
         html,body,div{
             padding: 0;
@@ -80,6 +81,7 @@
             <hr>
             <label>预计送达时间</label>
             <select>
+                <option>请选择时间</option>
                 <option>20分钟</option>
                 <option>30分钟</option>
                 <option>40分钟</option>
@@ -87,11 +89,51 @@
                 <option>60分钟</option>
             </select>
             <center>
-                <button>开始配送</button>
-                <button>配送完成</button>
+                <button id="start">开始配送</button>
+                <button id="complete">配送完成</button>
             </center>
 
         </p>
     </div>
+    <SCRIPT TYPE="text/javascript">
+        var orderID = <%= order.orderID %> ;
+        $("#start").on('tap',function(){
+            var val = $("select").val();
+            if(val=='请选择时间'){
+                return alert("请选择预计到达时间");
+            }
+            $(this).attr("disabled","disabled");
+            var $this = $(this);
+            $.post("/orderaction",{orderID:orderID,method:"ship"},function(err,status){
+                if(err){
+                    $this.removeAttr("disabled","disabled");
+                    return alert("通信失败，请检查网络");
+                }
+                if(status != 'success'){
+                    $this.removeAttr("disabled","disabled");
+                    return alert("通信失败！");
+                }
+                $this.text("已开始");
+            });
+        });
+        $("#complete").on('tap',function(){
+            var r = comfirm("确定配送完成了吗，不可更改");
+            if(!r)
+                return;
+            $(this).attr("disabled","disabled");
+            var $this = $(this);
+            $.post("/orderaction",{orderID:orderID,method:"receive"},function(err,status){
+                if(err){
+                    $this.removeAttr("disabled","disabled");
+                    return alert("通信失败，请检查网络");
+                }
+                if(status != 'success'){
+                    $this.removeAttr("disabled","disabled");
+                    return alert("通信失败！");
+                }
+                $this.text("已配送");
+            });
+        });        
+    </SCRIPT>
 </body>
 </html>
