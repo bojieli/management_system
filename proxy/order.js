@@ -54,7 +54,7 @@ exports.createOrder = function(openID,info,cb){
 exports.createOrderbyCS = function(customerService,info,cb){
   var orderID = getOrderID();
   var order = {};
- order = {
+  order = {
         orderID : orderID,
         openID : 'createdByCS',
         shopOnce : info.shopOnce,
@@ -96,7 +96,7 @@ exports.findOneOrder = function (customerService, cb){
       if(order.length==0)
         return cb(null,null);
       Order.update({'orderID' : order[0].orderID},
-        {'status' : 2, 'customerService' : customerService},
+        {$set:{'status' : 2, 'customerService' : customerService}},
         function(err){
           if(err)
             return cb(err);
@@ -108,29 +108,29 @@ exports.findOneOrder = function (customerService, cb){
 }
 
 exports.setStatus = function (orderID, status, cb){
-  Order.update({'orderID' : orderID},{'status' : status}, cb);
+  Order.update({'orderID' : orderID},{$set:{'status' : status}}, cb);
 }
 
 exports.setNotes = function(orderID , notes, cb){
-  Order.update({'orderID' : orderID},{'notes' : notes}, cb);
+  Order.update({'orderID' : orderID},{$set:{'notes' : notes}}, cb);
 }
 
 exports.setDispatchCenter = function(orderID, dispatchCenter, cb){
-  Order.update({'orderID' : orderID},{'dispatchCenter' : dispatchCenter}, cb);
+  Order.update({'orderID' : orderID},{$set:{'dispatchCenter' : dispatchCenter}}, cb);
 }
 
 exports.setShipStaff = function(orderID, shipStaff, cb){
-  Order.update({'orderID' : orderID},{'shipStaff' : shipStaff}, cb);
+  Order.update({'orderID' : orderID},{$set:{'shipStaff' : shipStaff}}, cb);
 }
 exports.setCustomerService = function(orderID, customerService, cb){
-  Order.update({'orderID' : orderID},{'customerService' : customerService}, cb);
+  Order.update({'orderID' : orderID},{$set:{'customerService' : customerService}}, cb);
 }
 
 exports.setShipDate = function(orderID, cb){
-  Order.update({'orderID' : orderID},{'shipDate' : new Date()}, cb);
+  Order.update({'orderID' : orderID},{$set:{'shipDate' : new Date()}}, cb);
 }
 exports.setReceiveDate = function(orderID, cb){
-  Order.update({'orderID' : orderID},{'receiveDate' : new Date()}, cb);
+  Order.update({'orderID' : orderID},{$set:{'receiveDate' : new Date()}}, cb);
 }
 
 exports.findbyOrderID = function(orderID, cb){
