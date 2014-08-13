@@ -7,7 +7,8 @@ var Schema = mongoose.Schema;
 var DispatchCenterSchema = new Schema({
   address : String,
   shipHeadID : String,
-  orderNumToday : Number
+  orderNumToday : Number,
+  orderNumTotal : Number
 },{autoindex :  false});
 
 

@@ -34,8 +34,7 @@ exports.getCenterByAddress = function(address,cb){
 
 exports.addNumberToday = function(address, cb){
   DispatchCenter.update({address : address},
-    {$inc:{orderNumToday : 1}} , function(err){
-
+    {$inc:{orderNumToday : 1,orderNumTotal : 1}} , function(err){
       if(err)
         return cb(err);
       cb(null);
