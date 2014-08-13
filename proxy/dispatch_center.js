@@ -19,3 +19,17 @@ exports.getAllCenterInfo = function(cb) {
     }
   }
 }
+
+exports.getCenterByAddress = function(address,cb){
+  console.log("getCenterByAddress=================:"+ address);
+  DispatchCenter.findOne({address : address},afterFind);
+  function afterFind(err,dispatchCenter){
+    if(err) {
+      errUtil.wrapError(err,config.errorCode_find,"getCenterByAddress()","/proxy/dispatch_center",{});
+      return cb(err,null);
+    }else{
+      console.log("dispatchCenter==================" + JSON.stringify(dispatchCenter));
+      return cb(err,dispatchCenter);
+    }
+  }
+}

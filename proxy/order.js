@@ -2,10 +2,11 @@ var congfig = require('../config');
 var errUtil = require('./wrap_error');
 var models = require('../models');
 var Order = models.Order;
+var DispatchCenter = models.DispatchCenter;
 var async = require('async');
 var Wine = require('./wine');
 var config = require('../config');
-
+var wechatAPI = require('../common/api');
 
 /**用户提交订单以后保存订单信息
 * Callback:
@@ -276,7 +277,7 @@ exports.unprocessedOperate = function(postData,cb){
     Order.update({orderID : postData.orderID},{$set:{status:statusAfter}},afterUpdate);
   }
 
-  function afterUpdate(err,order){
+  function afterUpdate(err){
      if(err){
         errUtil.wrapError(err,congfig.errorCode_update,"unprocessedOperate()","/proxy/order",{postData:postData});
         return cb(err);

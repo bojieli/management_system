@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 
 
 var DispatchCenterSchema = new Schema({
-  address : String
+  address : String,
+  shipHeadID : String
 },{autoindex :  false});
 
 
