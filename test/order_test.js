@@ -12,6 +12,24 @@ var _Order = require('../models').Order;
 // })
 
 global.orderID_increment = 0;
+global.leftPadString = function (value,length){
+  var valueString = value.toString();
+  if(valueString.length >= length){
+    return valueString.substr(0,length);
+  }else{
+    var pad = "";
+    for(var i = 0;i < length - valueString.length; i++){
+      pad = pad + "0";
+    }
+    return pad + valueString;
+  }
+}
+global.formatDate = function(date){
+  // return date.toString();
+  return date.getFullYear() + '-' + leftPadString(date.getMonth() + 1,2) + '-'
+  + leftPadString(date.getDay(),2) + '  ' + leftPadString(date.getHours(),2) + ':' 
+  + leftPadString(date.getMinutes(), 2);
+}
 
 var info = {
 	shopOnce : [
@@ -58,7 +76,7 @@ setInterval(function(){
 		console.log('count : '+count + '  ' + JSON.stringify(order.orderID));
 		count++;
 	});
-},1000);
+},100);
 
 // setInterval(function(){
 // 	_Order.update({'status' : 3}, {'status' : 4},{ multi: true },function(err, number){
