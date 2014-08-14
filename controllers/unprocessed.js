@@ -98,7 +98,7 @@ exports.unprocessedOperate = function(req,res,next) {
           var article = {
             "title" : dispatchDetail.orderNumToday,
             "description" : message,
-            "url" : 'http://kf.519.today:8001/orderaction?orderID=' + orderDetail.orderID,
+            "url" : 'http://519.today/orderaction?orderID=' + orderDetail.orderID,
             "picurl" : ''
           }
           wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){

@@ -18,7 +18,13 @@
         <div class='item-info item-orderstatus'>
           <strong>订单状态：</strong>
           <span class="label label-warning form_state">
-            <%= order_abstract.status %>
+           <% if((order_abstract.status == 1)||(order_abstract.status == 2)||(order_abstract.status == 21)||(order_abstract.status == 22)||(order_abstract.status == 3)){ %>
+             未处理
+          <% }else if((order_abstract.status == 4)||(order_abstract.status == 41)||(order_abstract.status == 42)){%>
+            未发货
+          <% }else if(order_abstract.status == 5){%>
+            已收货
+          <%}%>
           </span>
         </div>
         <div class="item-info">

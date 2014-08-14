@@ -27,7 +27,7 @@ global.leftPadString = function (value,length){
 global.formatDate = function(date){
   // return date.toString();
   return date.getFullYear() + '-' + leftPadString(date.getMonth() + 1,2) + '-'
-  + leftPadString(date.getDay(),2) + '  ' + leftPadString(date.getHours(),2) + ':' 
+  + leftPadString(date.getDay(),2) + '  ' + leftPadString(date.getHours(),2) + ':'
   + leftPadString(date.getMinutes(), 2);
 }
 
@@ -60,7 +60,7 @@ app.use(session({
 routes(app);
 app.listen(config.port);
 
-
+require('./proxy/setinteral')();//每天定时更新数据库数据
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

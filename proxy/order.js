@@ -6,7 +6,6 @@ var DispatchCenter = models.DispatchCenter;
 var async = require('async');
 var Wine = require('./wine');
 var config = require('../config');
-var wechatAPI = require('../common/api');
 
 /**用户提交订单以后保存订单信息
 * Callback:
@@ -251,30 +250,32 @@ exports.unprocessedOperate = function(postData,cb){
   var statusAfter;
   switch(postData.method){
     case 'confirm' :
-      statusAfter = 3;
+    case 'wait' :
+      if(postData.method == 'confirm'){
+        statusAfter = 3;
+      }else{
+        statusAfter = 21;
+      }
+      var modifydata = postData.modifyinfo;
+      Order.update({orderID : postData.orderID},{$set :{
+        status : statusAfter,
+        dispatchCenter: modifydata.dispatchCenter,
+        notes : modifydata.notes,
+        'address.area' : modifydata.address.area,
+        'address.detail' : modifydata.address.detail,
+        'address.name' : modifydata.address.name,
+        'address.tel' : modifydata.address.tel
+        }},afterUpdate);
       break;
     case 'delete' :
       statusAfter = 22;
+      var modifydata = postData.modifyinfo;
+      Order.update({orderID : postData.orderID},{$set :{
+        status : statusAfter,
+        notes : modifydata.notes
+        }},afterUpdate);
       break;
-    case 'wait' :
-      statusAfter = 21;
-      break;
-  }
-  if(postData.modifyinfo){
-    console.log('begin update');
-    var modifydata = postData.modifyinfo;
-    postData.modifyinfo.status = statusAfter;
-    Order.update({orderID : postData.orderID},{$set :{
-      status : statusAfter,
-      dispatchCenter: modifydata.dispatchCenter,
-      notes : modifydata.notes,
-      'address.area' : modifydata.address.area,
-      'address.detail' : modifydata.address.detail,
-      'address.name' : modifydata.address.name,
-      'address.tel' : modifydata.address.tel
-    }},afterUpdate);
-  }else{
-    Order.update({orderID : postData.orderID},{$set:{status:statusAfter}},afterUpdate);
+
   }
 
   function afterUpdate(err){

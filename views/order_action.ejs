@@ -5,7 +5,7 @@
     <title>当前订单</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
     <meta name="format-detection" content="telephone=no">
-    <script type="text/javascript" src="/js/zepto.min.js"></script>
+    <script type="text/javascript" src="Lib/js/zepto.min.js"></script>
     <style>
         html,body,div{
             padding: 0;
@@ -48,12 +48,13 @@
             background-color : #0079FF;
         }
         hr{
-            height: 0.5px;
-            color:red;
+            height: 1px;
+            border:0;
+            border-top: 1px dashed #555555;
         }
         .content .winenum{
             color: #aa0000;
-        }        
+        }
     </style>
 </head>
 <body>
@@ -96,44 +97,37 @@
         </p>
     </div>
     <SCRIPT TYPE="text/javascript">
-        var orderID = <%= order.orderID %> ;
-        $("#start").on('tap',function(){
+        var orderID = '<%= order.orderID %>' ;
+        $("#start").on('click',function(){
             var val = $("select").val();
             if(val=='请选择时间'){
                 return alert("请选择预计到达时间");
             }
             $(this).attr("disabled","disabled");
             var $this = $(this);
-            $.post("/orderaction",{orderID:orderID,method:"ship"},function(err,status){
-                if(err){
+            $.post("/orderaction",{orderID:orderID,arrivetime: val,method:"ship"},function(data,status){
+                if(status != 'success'|| data.code != 'ok'){
                     $this.removeAttr("disabled","disabled");
-                    return alert("通信失败，请检查网络");
-                }
-                if(status != 'success'){
-                    $this.removeAttr("disabled","disabled");
-                    return alert("通信失败！");
+                    return alert("通信失败,请重新尝试！");
                 }
                 $this.text("已开始");
             });
         });
-        $("#complete").on('tap',function(){
-            var r = comfirm("确定配送完成了吗，不可更改");
+        $("#complete").on('click',function(){
+            var r = confirm("确定配送完成了吗，不可更改");
             if(!r)
                 return;
             $(this).attr("disabled","disabled");
             var $this = $(this);
-            $.post("/orderaction",{orderID:orderID,method:"receive"},function(err,status){
-                if(err){
+            $.post("/orderaction",{orderID:orderID,method:"receive"},function(data,status){
+                alert('feedback');
+                if(status != 'success' || data.code != 'ok'){
                     $this.removeAttr("disabled","disabled");
-                    return alert("通信失败，请检查网络");
-                }
-                if(status != 'success'){
-                    $this.removeAttr("disabled","disabled");
-                    return alert("通信失败！");
+                    return alert("通信失败,请重新尝试！");
                 }
                 $this.text("已配送");
             });
-        });        
+        });
     </SCRIPT>
 </body>
 </html>
