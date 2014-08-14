@@ -1,7 +1,8 @@
 var API = require('wechat').API;
 var db = require('./db');
-var appkey = 'wxd8c15c2734dacb07';
-var secret = '188081716b20d3d655ed14328dcf7e90';
+var config = require('../config');
+var appkey = config.appid;
+var secret = config.secret;
 
 var fs = require('fs');
 var dir = process.cwd();
@@ -15,6 +16,7 @@ var api = new API(appkey, secret//);
 		if(!doc){
 			return callback(null,{});
 		}
+		console.log(doc.access_token);
 		callback(null,JSON.parse(doc.access_token));
 	});
 }, function (token, callback) {
