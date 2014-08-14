@@ -58,8 +58,8 @@ $(function(){
 
     var satify = true;
     var modifyinfo;
+    var orderID = domParent.find('span.orderID').text();
     if(method == "confirm" || method == "wait"){
-      var orderID = domParent.find('span.orderID').text();
       var areaDOM = domParent.find("select.order_address_area option:selected");
       var detailDOM = domParent.find("textarea.order_address_detail");
       var nameDOM = domParent.find("input.order_username");

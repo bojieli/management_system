@@ -9,7 +9,7 @@ exports.authorize = function (req, res, next){
     ServiceStaff.loginAuthorize(req.body.account,req.body.password,function(err,status){
       if(status){
         req.session.user = req.body.account;
-        res.redirect('./unprocessed');
+        res.redirect('/unprocessed');
       }else{
         switch(err.errCode){
           case config.errCode_find:

@@ -58,8 +58,7 @@ exports.unprocessedOperate = function(req,res,next) {
       res.send({code:'error'});
       return next(err);
     }
-
-    if(postData.method == 'confirm'){
+    if(postData.method == 'confirm' || postData.method == 'delete'){
         async.auto({
           _getCenterInfo : function(callback){
             DispatchCenter.getCenterByAddress(postData.modifyinfo.dispatchCenter,callback);
@@ -85,30 +84,60 @@ exports.unprocessedOperate = function(req,res,next) {
           }
 
           var orderDetail = results._generateOrder ;
-          var dispatchDetail = results._getCenterInfo;
-          var message = "编号:" + orderDetail.orderID
-                        + "\n时间：" + orderDetail.date
-                        + "\n联系人：" + orderDetail.address.name
-                        + "\n手机号：" + orderDetail.address.tel
-                        + "\n详情：";
 
-          for(var i = 0;i < orderDetail.shopOnce.length;i++){
-            message = message + "\n"+orderDetail.shopOnce[i].describe + " * " + orderDetail.shopOnce[i].number;
-          }
-          var article = {
-            "title" : dispatchDetail.orderNumToday,
-            "description" : message,
-            "url" : 'http://519.today/orderaction?orderID=' + orderDetail.orderID,
-            "picurl" : ''
-          }
-          wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){
-            if(err){
-              err.message = message;
-              next(err);
+          if(postData.method == 'confirm'){
+            var dispatchDetail = results._getCenterInfo;
+            var message = "编号:" + orderDetail.orderID
+                          + "\n时间：" + orderDetail.date
+                          + "\n联系人：" + orderDetail.address.name
+                          + "\n手机号：" + orderDetail.address.tel
+                          + "\n详情：";
+
+            for(var i = 0;i < orderDetail.shopOnce.length;i++){
+              message = message + "\n"+orderDetail.shopOnce[i].describe + " * " + orderDetail.shopOnce[i].number;
             }
-          });
+            var article = {
+              "title" : dispatchDetail.orderNumToday,
+              "description" : message,
+              "url" : 'http://519.today/orderaction?orderID=' + orderDetail.orderID,
+              "picurl" : ''
+            }
+            wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){
+              if(err){
+                err.message = message;
+                next(err);
+              }
+            });
+          }else{
+            var openID = results._order.openID;
+            var deletereason = results._order.notes;
+            var message = "编号:" + orderDetail.orderID
+                          + "\n时间：" + orderDetail.date
+                          + "\n联系人：" + orderDetail.address.name
+                          + "\n手机号：" + orderDetail.address.tel
+                          + "\n详情：";
+            for(var i = 0;i < orderDetail.shopOnce.length;i++){
+              message = message + "\n"+orderDetail.shopOnce[i].describe + " * " + orderDetail.shopOnce[i].number;
+            }
+
+            message = message + "订单因如下原因被取消,如有问题,请自行联系客服:\n" + deletereason;
+            var article = {
+              "title" : "订单被取消",
+              "description" : message,
+              "url" : "",
+              "picurl" : ''
+            }
+
+            wechatAPI.sendNews(openID,[article],function(err, message){
+              if(err){
+                err.message = message;
+                next(err);
+              }
+            });
+          }
+
         });
 
-      }
+    }
     res.send({code:'ok'});});
 }
