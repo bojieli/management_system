@@ -1,9 +1,6 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
-
-
-
 var ShipStaffSchema = new Schema({
   name : String,
   openID : String,
@@ -11,4 +8,4 @@ var ShipStaffSchema = new Schema({
 },{autoindex :  false});
 
 
-mongoose.model('ShipStaff',ShipStaffSchema);  
+mongoose.model('ShipStaff',ShipStaffSchema);

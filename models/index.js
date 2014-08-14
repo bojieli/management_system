@@ -14,7 +14,7 @@ require('./order');
 require('./service_staff');
 require('./dispatch_center');
 require('./wine');
-//require('./ship_staff');
+require('./ship_staff');
 
 
 exports.Order = mongoose.model('Order');
