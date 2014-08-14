@@ -12,9 +12,14 @@ var refresh = require('./controllers/refresh');
 var Delete = require('./controllers/delete');
 var OrderAction = require('./controllers/orderaction');
 
+var shipLogin = require('./util_plugin/login');
+
+
 module.exports = function (app) {
 
-	app.all('*',access.authorize)
+	app.all('*',access.authorize);
+
+	app.all('/shiplogin',shipLogin.Oath2);
 
 	app.get('/',function(req ,res, next){
 		res.redirect('./unprocessed');

@@ -14,7 +14,6 @@ exports.load = function (req, res, next){
 	    }]
 	  },function(err, results){
 	    if(err){
-	   	  //res.send();
 	      return next(err);
 	    }
 	    if(results._order){
