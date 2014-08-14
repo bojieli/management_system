@@ -50,7 +50,7 @@ module.exports = function (app) {
 
 	app.post('/orderdelete',Delete.orderDelete);
 
-	app.get('/orderaction', OrderAction.load);//快递点击订单链接进入
+	// app.get('/orderaction', OrderAction.load);//快递点击订单链接进入
 
-	app.post('/orderaction',OrderAction.operate);
+	// app.post('/orderaction',OrderAction.operate);
 }

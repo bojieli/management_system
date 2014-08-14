@@ -56,86 +56,86 @@ $(function(){
     $('span.inputrequired,span.formaterror').hide();
     var domParent = $("div#unprocess_panel");
 
-    var orderID = domParent.find('span.orderID').text();
-    var areaDOM = domParent.find("select.order_address_area option:selected");
-    var detailDOM = domParent.find("textarea.order_address_detail");
-    var nameDOM = domParent.find("input.order_username");
-    var telDOM = domParent.find("input.order_usertel");
-    var dispatchDOM = domParent.find("select.order_dispatch option:selected");
-    var noteDOM = domParent.find("textarea.order_note") ;
-
-    var modifyinfo = {
-        address: {
-          area: areaDOM.text(),
-          detail: detailDOM.val(),
-          name: nameDOM.val(),
-          tel: telDOM.val()
-        },
-        dispatchCenter: dispatchDOM.text(),
-        notes: noteDOM.val()
-      };
-    var deletereason = "";
-    if(method == 'delete'){
-      deletereason = (domParent.next().find("input[name = 'reasonoRadios']:checked").val()||"")
-                        + domParent.next().find('textarea.delete_note').val();
-    }
-
-    nameverify = usernameVertify(modifyinfo.address.name);
-    telverify = usertelVertify(modifyinfo.address.tel);
-    areaverify = addressAreaVertify(modifyinfo.address.area);
-    detailverify = addressDetailVertify(modifyinfo.address.detail);
-    noteverify = noteVertify(modifyinfo.notes);
-    dispatchverify = dispatchCenterVertify(modifyinfo.dispatchCenter);
-
     var satify = true;
+    var modifyinfo;
+    if(method == "confirm" || method == "wait"){
+      var orderID = domParent.find('span.orderID').text();
+      var areaDOM = domParent.find("select.order_address_area option:selected");
+      var detailDOM = domParent.find("textarea.order_address_detail");
+      var nameDOM = domParent.find("input.order_username");
+      var telDOM = domParent.find("input.order_usertel");
+      var dispatchDOM = domParent.find("select.order_dispatch option:selected");
+      var noteDOM = domParent.find("textarea.order_note") ;
 
-    if(nameverify != 0){
-      satify = false;
-      if(nameverify == -1){
-        nameDOM.nextAll('span.inputrequired').show();
-      }else if(nameverify == 1){
-        nameDOM.nextAll('span.formaterror').show();
-      }
-    }
-    if(telverify != 0){
-      satify = false;
-      if(telverify == -1){
-        telDOM.nextAll('span.inputrequired').show();
-      }else if(telverify == 1){
-        telDOM.nextAll('span.formaterror').show();
-      }
-    }
-    if(areaverify != 0){
-      satify = false;
-      areaDOM.nextAll('span.inputrequired').show();
-    }
-    if(detailverify != 0){
-      satify = false;
-      if(detailverify == -1){
-        detailDOM.nextAll('span.inputrequired').show();
-      }else if(detailverify == 1){
-        detailDOM.nextAll('span.formaterror').show();
-      }
-    }
-    if(noteverify != 0){
-      satify = false;
-      noteDOM.siblings('span.formaterror').show();
-    }
+      modifyinfo = {
+          address: {
+            area: areaDOM.text(),
+            detail: detailDOM.val(),
+            name: nameDOM.val(),
+            tel: telDOM.val()
+          },
+          dispatchCenter: dispatchDOM.text(),
+          notes: noteDOM.val()
+        };
 
-    if(method == 'confirm'){//只有在确认订单那的时候必须选择快递中心
-      if(dispatchverify != 0){
+
+      nameverify = usernameVertify(modifyinfo.address.name);
+      telverify = usertelVertify(modifyinfo.address.tel);
+      areaverify = addressAreaVertify(modifyinfo.address.area);
+      detailverify = addressDetailVertify(modifyinfo.address.detail);
+      noteverify = noteVertify(modifyinfo.notes);
+      dispatchverify = dispatchCenterVertify(modifyinfo.dispatchCenter);
+
+
+      if(nameverify != 0){
         satify = false;
-        dispatchDOM.parent().siblings('span.inputrequired').show();
+        if(nameverify == -1){
+          nameDOM.nextAll('span.inputrequired').show();
+        }else if(nameverify == 1){
+          nameDOM.nextAll('span.formaterror').show();
+        }
       }
-    }
+      if(telverify != 0){
+        satify = false;
+        if(telverify == -1){
+          telDOM.nextAll('span.inputrequired').show();
+        }else if(telverify == 1){
+          telDOM.nextAll('span.formaterror').show();
+        }
+      }
+      if(areaverify != 0){
+        satify = false;
+        areaDOM.nextAll('span.inputrequired').show();
+      }
+      if(detailverify != 0){
+        satify = false;
+        if(detailverify == -1){
+          detailDOM.nextAll('span.inputrequired').show();
+        }else if(detailverify == 1){
+          detailDOM.nextAll('span.formaterror').show();
+        }
+      }
+      if(noteverify != 0){
+        satify = false;
+        noteDOM.siblings('span.formaterror').show();
+      }
+      if(method == "confirm"){
+        if(dispatchverify != 0){
+          satify = false;
+          dispatchDOM.parent().siblings('span.inputrequired').show();
+        }
+      }
+    }else if(method == 'delete'){
+      var deletereason = (domParent.next().find("input[name = 'reasonoRadios']:checked").val()||"")
+                        + domParent.next().find('textarea.delete_note').val();
 
-    if(method == 'delete'){
       var reasonvertify = deletereasonVertify(deletereason);
-
       if(reasonvertify != 0){
         satify = false;
       }else{
-        modifyinfo.notes = modifyinfo.notes + deletereason;
+        modifyinfo = {
+          notes : deletereason
+        };
       }
     }
     /*if(!noteVertify(modifyinfo.notes)){
@@ -151,7 +151,7 @@ $(function(){
       }else{
         alert("提交的内容不符合条件！");
       }
-      return;
+      return ;
     }else{
       var postData = {
         orderID : orderID,
@@ -345,6 +345,12 @@ $(function(){
     var selectedIndex = $(this).children('option:selected').index();
     $(this).parent().next().children('select.winewechatprice').children().eq(selectedIndex).siblings().attr('disabled',true).end().attr('selected','selected');
   });
+
+  $('tbody.all_wineinfo').on('change','select.winewechatprice',function(){
+    var selectedIndex = $(this).children('option:selected').index();
+    $(this).parent().prev().children('select.winedescribe').children().eq(selectedIndex).siblings().attr('disabled',true).end().attr('selected','selected');
+  });
+
   $('tbody.all_wineinfo').on('blur','select.winedescribe',function(){
     $(this).parent().parent().find('input.winenumber').focus();
   });
