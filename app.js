@@ -92,14 +92,6 @@ MongoClient.connect(config.db_native, function(err, session_store) {
 });
 
 require('./proxy/setinteral')();//每天定时更新数据库数据
-
-/// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-
 /// error handlers
 
 // development error handler
