@@ -10,6 +10,7 @@
     "express": "~4.2.0",
     "express-session": "^1.0.4",
     "mongoose": "~2.8.0",
+    "mongodb":"~1.4.8",
     "static-favicon": "~1.0.0",
     "morgan": "~1.0.0",
     "cookie-parser": "~1.0.1",
