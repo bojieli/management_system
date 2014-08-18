@@ -53,11 +53,12 @@ exports.load = function(req,res,next){
 
 exports.unprocessedOperate = function(req,res,next) {
   var postData = req.body;
-  Order.unprocessedOperate(postData,function(err){
+  Order.unprocessedOperate(postDatar,req.session.user,function(err){
     if(err){
       res.send({code:'error'});
       return next(err);
     }
+    //如果是确认订单或者是删除订单，需要微信发送客服信息给用户
     if(postData.method == 'confirm' || postData.method == 'delete'){
         async.auto({
           _getCenterInfo : function(callback){

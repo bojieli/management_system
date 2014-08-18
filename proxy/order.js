@@ -246,7 +246,7 @@ exports.orderDelete = function(orderID, notes, cb){
 
 //exports.findAbstract(orders, cb)
 
-exports.unprocessedOperate = function(postData,cb){
+exports.unprocessedOperate = function(postData,customerservice,cb){
   var statusAfter;
   switch(postData.method){
     case 'confirm' :
@@ -259,6 +259,7 @@ exports.unprocessedOperate = function(postData,cb){
       var modifydata = postData.modifyinfo;
       Order.update({orderID : postData.orderID},{$set :{
         status : statusAfter,
+        customerService : customerservice,
         dispatchCenter: modifydata.dispatchCenter,
         notes : modifydata.notes,
         'address.area' : modifydata.address.area,
@@ -272,6 +273,7 @@ exports.unprocessedOperate = function(postData,cb){
       var modifydata = postData.modifyinfo;
       Order.update({orderID : postData.orderID},{$set :{
         status : statusAfter,
+        customerService : customerservice,
         notes : modifydata.notes
         }},afterUpdate);
       break;
