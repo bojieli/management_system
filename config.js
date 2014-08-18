@@ -1,8 +1,8 @@
 var config = {
 	port : 8001,
 	session_secret: 'kf_519_Today',
-	db : 'mongodb://localhost/519_Today_dev',
-	db_name : '519_Today_dev',
+	db : 'mongodb://519:oDg6jt7iG4gN@s0.gewu.me/519,mongodb://s1.gewu.me',
+	db_native : 'mongodb://519:oDg6jt7iG4gN@s0.gewu.me,s1.gewu.me/519',
 	redirect_url : encodeURIComponent('http://519.today/shiplogin'),
 	appid : 'wxd8c15c2734dacb07',
 	secret : '81ae37cb50e1f3fb49eda224f6ffad73',
@@ -10,3 +10,4 @@ var config = {
 }
 
 module.exports = config;
+
