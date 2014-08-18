@@ -18,8 +18,6 @@ exports.load =  function (req, res, next){
       }
       },function(err, results){
         if(err){
-          console.log('---------shipped error---------------');
-          console.log(err);
           return next(err);
         }
         data.numberUnprocessed = results._getnumberUnprocessed;
@@ -27,9 +25,6 @@ exports.load =  function (req, res, next){
         var questionorders = [];
 
         data.orders = results._orders.concat(results._orders4);
-
-        console.log('----------questionorders3-------------------');
-        console.log(JSON.stringify(data.orders));
         data.urgentprocess = [];
         data.urgentprocessed = [];
         res.render('questionorder',data);
