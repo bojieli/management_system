@@ -53,7 +53,7 @@ exports.load = function(req,res,next){
 
 exports.unprocessedOperate = function(req,res,next) {
   var postData = req.body;
-  Order.unprocessedOperate(postDatar,req.session.user,function(err){
+  Order.unprocessedOperate(postData,req.session.user,function(err){
     if(err){
       res.send({code:'error'});
       return next(err);
