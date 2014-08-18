@@ -1,5 +1,4 @@
 var config = require('../config');
-var errUtil = require('./wrap_error');
 var models = require('../models');
 var ServiceStaff = models.ServiceStaff;
 
@@ -11,15 +10,14 @@ exports.getStaffInfoByAccount = function(account,cb){
 
   function staffFind(err,staff){
     if(err) {
-      errUtil.wrapError(err,config.errorCode_find,"getStaffInfoByAccount()","/proxy/service_staff",{
-        account:account
-      });
       return cb(err,null);
     }else{
       if(staff){
         cb(err,staff);
       }else{
-        cb({errCode : config.errorCode_account_notfound},{});
+        var error = new Error();
+        error.describe = "kefu account not found";
+        cb(error,{});
       }
     }
   }
@@ -32,20 +30,16 @@ exports.loginAuthorize = function(account,password,cb){
 
   function staffFind(err,staff){
     if(err) {
-      errUtil.wrapError(err,config.errCode_find,"loginAuthorize()","/proxy/service_staff",{
-        account:account,
-        password:password
-      });
-      return cb(err,false);
+      return cb({errCode : -3},false);
     }else{
       if(staff){
         if(staff.password === password){
            cb(null,true);
         }else{
-           cb({errCode : config.errCode_password_error},false);
+           cb({errCode : -2},false);
         }
       }else{
-        cb({errCode : config.errCode_account_notfound},false);
+        cb({errCode : -1},false);//account not found
       }
     }
   }

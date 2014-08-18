@@ -1,5 +1,4 @@
 var congfig = require('../config');
-var errUtil = require('./wrap_error');
 var models = require('../models');
 var Order = models.Order;
 var DispatchCenter = models.DispatchCenter;
@@ -42,7 +41,6 @@ exports.createOrder = function(openID,info,cb){
     }],
     function afterCreate(err,order){
       if(err){
-        errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
         return cb(err);
       }else{
         cb(err,order);
@@ -71,7 +69,6 @@ exports.createOrderbyCS = function(customerService,info,cb){
   Order.create(order, afterCreate);
   function afterCreate(err,order){
       if(err){
-        errUtil.wrapError(err,congfig.errorCode_create,"createOrder()","/proxy/order",{req:req});
         return cb(err);
       }else{
         cb(err);
@@ -282,7 +279,6 @@ exports.unprocessedOperate = function(postData,customerservice,cb){
 
   function afterUpdate(err){
      if(err){
-        errUtil.wrapError(err,congfig.errorCode_update,"unprocessedOperate()","/proxy/order",{postData:postData});
         return cb(err);
       }
       return cb(err);

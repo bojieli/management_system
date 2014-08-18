@@ -15,10 +15,9 @@ exports.load = function(req, res, next){
     },
     _orders : function(callback){
       Order.findByStatus(req.session.user, 4, callback);
-    } 
+    }
     },function(err, results){
       if(err){
-        console.log(err);
         return next(err);
       }
       data.numberUnprocessed = results._getnumberUnprocessed;

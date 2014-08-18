@@ -61,6 +61,7 @@ exports.createOrder = function(req,res,next){
   Order.createOrderbyCS(req.session.user,orderinfo,function(err){
     if(err){
       res.send({code : 'error'});
+      return next(err);
     }else{
       res.send({code : 'ok'});
     }

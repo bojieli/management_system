@@ -31,6 +31,14 @@ global.formatDate = function(date){
   + leftPadString(date.getMinutes(), 2);
 }
 
+var bunyan = require("bunyan");
+var errlog = bunyan.createLogger({
+  name : "kf-519-today",
+  level : "error",
+  path : '../log/error.log'
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -75,14 +83,9 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
-
-        console.log('----------------error---------------------');
-        console.log(err);
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+      console.log(err);
+      console.log(err.stack);
+      errlog.error(err);
     });
 }
 

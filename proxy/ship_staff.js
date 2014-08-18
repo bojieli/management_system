@@ -1,5 +1,4 @@
 var config = require('../config');
-var errUtil = require('./wrap_error');
 var models = require('../models');
 var ShipStaff = models.ShipStaff;
 

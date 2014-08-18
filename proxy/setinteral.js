@@ -11,8 +11,7 @@ module.exports = function(){
   },1800000);
   function afterUpdate(err){
     if(err) {
-      errUtil.wrapError(err,config.errCode_update,"setInterval()","/proxy/setinterval");
-       return next(err);
+      return next(err);
     }
   }
 }

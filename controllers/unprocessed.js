@@ -106,7 +106,7 @@ exports.unprocessedOperate = function(req,res,next) {
             wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){
               if(err){
                 err.message = message;
-                next(err);
+                return next(err);
               }
             });
           }else{
@@ -132,7 +132,7 @@ exports.unprocessedOperate = function(req,res,next) {
             wechatAPI.sendNews(openID,[article],function(err, message){
               if(err){
                 err.message = message;
-                next(err);
+                return next(err);
               }
             });
           }

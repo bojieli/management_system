@@ -1,5 +1,4 @@
 var congfig = require('../config');
-var errUtil = require('./wrap_error');
 var models = require('../models');
 var DispatchCenter = models.DispatchCenter;
 
@@ -8,7 +7,6 @@ exports.getAllCenterInfo = function(cb) {
 
   function afterFind(err,dispatchCenters){
     if(err) {
-      errUtil.wrapError(err,config.errorCode_find,"getAllCenterInfo()","/proxy/dispatch_center",{});
       return cb(err,null);
     }else{
 		var alldispatches = [];
@@ -24,7 +22,6 @@ exports.getCenterByAddress = function(address,cb){
   DispatchCenter.findOne({address : address},afterFind);
   function afterFind(err,dispatchCenter){
     if(err) {
-      errUtil.wrapError(err,config.errorCode_find,"getCenterByAddress()","/proxy/dispatch_center",{});
       return cb(err,null);
     }else{
       return cb(err,dispatchCenter);
