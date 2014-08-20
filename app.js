@@ -35,7 +35,7 @@ var bunyan = require("bunyan");
 var errlog = bunyan.createLogger({
   name : "kf-519-today",
   level : "error",
-  path : '../log/error.log'
+  path : '../log/error-management.log'
 });
 
 
