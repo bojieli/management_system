@@ -2,6 +2,7 @@ var async = require('async');
 var Order = require('../proxy').Order;
 var Wine = require('../proxy').Wine;
 var DispatchCenter = require('../proxy').DispatchCenter;
+var config = require('../config');
 var wechatAPI = require('../common/api');
 
 
@@ -29,11 +30,7 @@ exports.load = function (req, res, next){
       data.numberQuestion = results._getnumberQuestion;
       data.urgentprocess = [];
       data.urgentprocessed = [];
-      var alldispatches = [];
-      for (var i = 0; i < results._getAllCenterInfo.length; i++) {
-        alldispatches.push(results._getAllCenterInfo[i].address);
-      };
-      data.alldispatches = alldispatches;
+      data.alldispatches = results._getAllCenterInfo;;
       res.render('neworder',data);
     }
   )
@@ -67,7 +64,7 @@ exports.createOrder = function(req,res,next){
       return next(err);
     }else{
       res.send({code : 'ok'});
-      asyc.auto({
+      async.auto({
         _getCenterInfo : function(callback){
             DispatchCenter.getCenterByAddress(order.dispatchCenter,callback);
           },
@@ -75,8 +72,6 @@ exports.createOrder = function(req,res,next){
             DispatchCenter.addNumberToday(order.dispatchCenter,callback);
           },
         _generateOrder : function(callback) {
-            if(!results._order)
-              return callback(null, {});
             Order.generateDetail(order, callback);
           }
       },function(err,results){
@@ -99,7 +94,7 @@ exports.createOrder = function(req,res,next){
           var article = {
             "title" : dispatchDetail.orderNumToday,
             "description" : message,
-            "url" : 'http://519.today/orderaction?orderID=' + orderDetail.orderID,
+            "url" : config.host_519+'/orderaction?orderID=' + orderDetail.orderID,
             "picurl" : ''
           }
           wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){

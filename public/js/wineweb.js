@@ -297,7 +297,6 @@ $(function(){
         dispatchCenter : dispatchCenter,
         shopOnce : wines
       }
-      alert(area+usertel+username+detail+notes+dispatchCenter+wines);
       $.post('/neworder',postData,function(data,status){
         if(status == 'success' && data.code == 'ok'){
             alert("创建订单成功！");
