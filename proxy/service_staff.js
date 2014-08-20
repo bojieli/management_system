@@ -6,18 +6,16 @@ var ServiceStaff = models.ServiceStaff;
 */
 
 exports.getStaffInfoByAccount = function(account,cb){
-  ServiceStaff.findOne({ account : account},"orderNumberTotal orderNumberToday",staffFind);
+  ServiceStaff.findOne({ account : account},null,staffFind);
 
   function staffFind(err,staff){
     if(err) {
-      return cb(err,null);
+      return cb(err);
     }else{
       if(staff){
         cb(err,staff);
       }else{
-        var error = new Error();
-        error.describe = "kefu account not found";
-        cb(error,{});
+        cb(new Error(),{});
       }
     }
   }
@@ -25,9 +23,7 @@ exports.getStaffInfoByAccount = function(account,cb){
 
 
 exports.loginAuthorize = function(account,password,cb){
-  //console.log("===========loginAuthorize========");
   ServiceStaff.findOne({account : account},"password",staffFind);
-
   function staffFind(err,staff){
     if(err) {
       return cb({errCode : -3},false);

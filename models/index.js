@@ -11,18 +11,18 @@ mongoose.connectSet(config.db, function dberr(err){
 
 
 //different models
+
+require('./wine');
 require('./order');
 require('./service_staff');
-require('./dispatch_center');
-require('./wine');
-require('./ship_staff');
 require('./access_token');
+require('./dispatch_center');
+require('./ship_staff');
 
 
+exports.Wine = mongoose.model('Wine');
 exports.Order = mongoose.model('Order');
 exports.ServiceStaff = mongoose.model('ServiceStaff');
-//exports.ShipStaff = mongoose.model('ShipStaff');
+exports.AccessToken = mongoose.model(config.accessToken);
 exports.DispatchCenter = mongoose.model('DispatchCenter');
-exports.Wine = mongoose.model('Wine');
 exports.ShipStaff = mongoose.model('ShipStaff');
-exports.AccessToken = mongoose.model('AccessToken');

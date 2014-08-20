@@ -6,53 +6,28 @@ var async = require('async');
 var Wine = require('./wine');
 var config = require('../config');
 
-/**用户提交订单以后保存订单信息
-* Callback:
-* - err
-* - order:
-* req:传入的订单参数
-*/
-
-exports.createOrder = function(openID,info,cb){
-  var orderID = getOrderID();
-  var order = {};
-  async.waterfall([
-    function _isFirst (callback){
-      Order.findOne({'address.tel' : info.address.tel}, callback);
-    },
-    function createorder(order, callback){
-      var isFirst;
-      if(order)
-        isFirst = false;
-      else
-        isFirst = true;
-      order = {
-        orderID : orderID,
-        openID : openID,
-        shopOnce : info.shopOnce,
-        address : info.address,
-        cashUse : info.cashUse || 0,
-        voucherUse : info.voucherUse || 0,
-        status : 1,
-        isFirst : isFirst,
-        totalPrice : info.totalPrice,
-      };
-      Order.create(order, callback);
-    }],
-    function afterCreate(err,order){
-      if(err){
-        return cb(err);
-      }else{
-        cb(err,order);
-      }
-    }
-  );
-}
-
 exports.createOrderbyCS = function(customerService,info,cb){
   var orderID = getOrderID();
   var order = {};
-  order = {
+  async.auto({
+    _getWineInfo : function(callback){
+      var ids = [];
+      for (var i = 0; i < info.shopOnce.length; i++) {
+        ids.push(info.shopOnce[i].id);
+      };
+      Wine.findByIDs(ids,callback);
+    },
+    _createorder :["_getWineInfo", function(callback,results){
+      var wines = results._getWineInfo;
+
+      for (var i = 0; i < info.shopOnce.length; i++) {
+        var index = findWinebyid(info.shopOnce[i].id);
+        info.shopOnce[i].describe = wines[index].describe;
+        info.shopOnce[i].wechatPrice = wines[index].wechatPrice;
+        info.shopOnce[i].littlePic = config.small_dir + wines[index].littlePic;
+      }
+
+      order = {
         orderID : orderID,
         openID : 'createdByCS',
         shopOnce : info.shopOnce,
@@ -66,31 +41,43 @@ exports.createOrderbyCS = function(customerService,info,cb){
         dispatchCenter : info.dispatchCenter,
         notes : info.notes
       };
-  Order.create(order, afterCreate);
-  function afterCreate(err,order){
+      Order.create(order, callback);
+
+      function findWinebyid(id){
+        for (var i = 0; i < wines.length; i++) {
+          if(id == wines[i].id)
+            return i;
+        }
+      }
+    }]},
+    function (err,results){
       if(err){
         return cb(err);
-      }else{
-        cb(err);
       }
-    }
+      cb(null,results._createorder);
+    });
 }
 //1、查找status = 2，如果有直接返回
 //2、查找status = 1, 并且放置customerService
-exports.findOneOrder = function (customerService, cb){
+exports.findOneUnprocessOrder = function (customerService, cb){
   Order.findOne({'status' : 2, 'customerService' : customerService}, function(err, order){
+    if(err){
+      return cb(err);
+    }
     if(order){
       return cb(null, order);
     }
     findStatus1();
-
   });
 
 
   function findStatus1(){
 
     Order.find({'status' : 1},null,{sort : { date: 1}, limit : 1},function(err, order){
-      if(order.length==0)
+        if(err){
+          return cb(err);
+        }
+      if(order.length == 0)
         return cb(null,null);
       Order.update({'orderID' : order[0].orderID},
         {$set:{'status' : 2, 'customerService' : customerService}},
@@ -135,8 +122,7 @@ exports.findbyOrderID = function(orderID, cb){
 }
 
 exports.findbyTel = function(tel, cb){
- Order.find({'address.tel' : tel},
-    'orderID date shipDate receiveDate dispatchCenter status', function(err, orders){
+ Order.find({'address.tel' : tel},null,{sort:{date : -1}},function(err, orders){
       if(err)
         return cb(err);
       var _orders = [];
@@ -145,26 +131,29 @@ exports.findbyTel = function(tel, cb){
         data.date = formatDate(orders[i].date);
         data.shipDate = formatDate(orders[i].shipDate);
         data.receiveDate = formatDate(orders[i].receiveDate);
-        data.dispatchCenter = orders[i].dispatchCenter||'';
+        data.dispatchCenter = orders[i].dispatchCenter;
         data.orderID = orders[i].orderID;
         data.status = orders[i].status;
         _orders.push(data);
-      };
-      _orders.reverse();
+      }
       cb(null, _orders);
-    })
+  });
 }
 
 exports.getNumberInQuestion = function(customerService,cb){
   Order.find({'status' : {$in: [21, 41]}, 'customerService' : customerService},
     {'_id' : 1}, function(err, orders){
-    if(err) return cb(err);
+
+    if(err)
+      return cb(err);
+
     cb(null, orders.length);
   });
 }
+
 exports.findByStatus = function (customerService, status, cb){
   Order.find({'status' : status, 'customerService' : customerService},
-    'orderID date shipDate receiveDate dispatchCenter status', function(err, orders){
+    null, function(err, orders){
       if(err)
         return cb(err);
       var _orders = [];
@@ -173,7 +162,7 @@ exports.findByStatus = function (customerService, status, cb){
         data.date = formatDate(orders[i].date);
         data.shipDate = formatDate(orders[i].shipDate);
         data.receiveDate = formatDate(orders[i].receiveDate);
-        data.dispatchCenter = orders[i].dispatchCenter||'';
+        data.dispatchCenter = orders[i].dispatchCenter;
         data.orderID = orders[i].orderID;
         data.status = orders[i].status;
         _orders.push(data);
@@ -196,49 +185,28 @@ exports.findUnshipped = function (cb){
 
 exports.generateDetail = function (order, cb){
   var data = {};
-  var ids = [];
-  for (var i = 0; i < order.shopOnce.length; i++) {
-    ids.push(order.shopOnce[i].id);
-  };
-  Wine.findByIDs(ids, afterFind);
-  function afterFind(err, _wines){
-    if(err)
-      return cb(err);
-    //var _wines = results._findWineByIDs;
-    for (var i = 0; i < order.shopOnce.length; i++) {
-      var index = findWinebyid(order.shopOnce[i].id);
-      order.shopOnce[i].describe = _wines[index].describe;
-      order.shopOnce[i].wechatPrice = _wines[index].wechatPrice;
-      delete order.shopOnce[i].id;
-    };
-    function findWinebyid(id){
-      for (var i = 0; i < _wines.length; i++) {
-        if(id ==_wines[i].id)
-          return i;
-      };
-    }
-    data.orderID = order.orderID;
-    data.status = order.status;
-    data.date = formatDate(order.date);
-    data.shipDate = formatDate(order.shipDate);
-    data.receiveDate = formatDate(order.receiveDate);
-    data.isFirst = order.isFirst;
-    data.address = order.address;
-    data.notes = order.notes||'';
-    data.cashNeeded = order.totalPrice;
-    data.cashTotal = order.cashUse + order.voucherUse + order.totalPrice;
-    data.coupon = order.cashUse;
-    data.voucher = order.voucherUse;
-    data.shopOnce = order.shopOnce;
-    data.dispatchCenter = order.dispatchCenter;
-    data.shipStaff = order.shipStaff;
-    data.customerService = order.customerService;
-    cb(null, data);
-  }
+  data.orderID = order.orderID;
+  data.status = order.status;
+  data.date = formatDate(order.date);
+  data.shipDate = formatDate(order.shipDate);
+  data.receiveDate = formatDate(order.receiveDate);
+  data.isFirst = order.isFirst;
+  data.address = order.address;
+  data.notes = order.notes;
+  data.cashNeeded = order.totalPrice;
+  data.cashTotal = order.cashUse + order.voucherUse + order.totalPrice;
+  data.coupon = order.cashUse;
+  data.voucher = order.voucherUse;
+  data.shopOnce = order.shopOnce;
+  data.dispatchCenter = order.dispatchCenter;
+  data.shipStaff = order.shipStaff;
+  data.customerService = order.customerService;
+  cb(null, data);
 }
 
+
 exports.orderDelete = function(orderID, notes, cb){
-  Order.update({orderID : orderID},{$set : {'status' : 42}}, cb);
+  Order.update({orderID : orderID},{$set : {'status' : 42,notes : notes}}, cb);
 }
 
 //exports.findAbstract(orders, cb)

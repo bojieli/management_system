@@ -22,7 +22,7 @@ exports.load = function(req,res,next){
         DispatchCenter.getAllCenterInfo(callback);
       },
       _order : function(callback){
-        Order.findOneOrder(req.session.user, callback);
+        Order.findOneUnprocessOrder(req.session.user, callback);
       },
       _generateOrder : ['_order', function(callback, results) {
         if(!results._order)

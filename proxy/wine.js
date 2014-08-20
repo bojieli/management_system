@@ -54,26 +54,10 @@ exports.addVisit = function(id,cb){
 * @param {Function} cb
 */
 exports.findByID = function(id,cb){
-	Wine.findOne({id : id},wineFind);
-
-  function wineFind(err,wine){
-    if(err){
-      return cb(err,{});
-    }else{
-      cb(err,wine);
-    }
-  }
-
+	Wine.findOne({id : id},cb);
 }
 exports.findByIDs = function(ids, cb){
-  Wine.find({id: {$in: ids}},afterFind);
-  function afterFind(err, wines) {
-    if(err){
-      return cb(err,null);
-    }else{
-      cb(err, wines);
-    }
-  }
+  Wine.find({id: {$in: ids}},cb);
 }
 /**
 * 查找推荐的酒
@@ -83,16 +67,7 @@ exports.findByIDs = function(ids, cb){
 * @param {Function} cb
 */
 exports.findRecommend = function(cb){
-	Wine.find({"tag.isRecommend" : true} , winesFind);
-
-
-  function winesFind(err,wines){
-    if(err){
-      return cb(err,{});
-    }else{
-      cb(err,wines);
-    }
-  }
+	Wine.find({"tag.isRecommend" : true} , cb);
 }
 
 exports.findAllWines = function(cb){
