@@ -37,7 +37,7 @@
             <li class="list-group-item">
                 送酒地址：
                 <span class="text_inline">阜阳市</span>
-                <select class ="form-control select_inline"required aria-selected ="false" readonly>
+                <select class ="form-control select_inline"required aria-selected ="false" disabled = "disabled">
                     <option hidden ="hidden"></option>
                     <option selected = '<%= order.address.area == '颍州区' ? 'selected' : ''%>'>颍州区</option>
                     <option selected = '<%= order.address.area == '颍泉区' ? 'selected' : ''%>'>颍泉区</option>
@@ -94,7 +94,7 @@
             </li>
             <li class="list-group-item">
               <strong>快递点：</strong>
-                  <select class ="form-control"required aria-selected ="false" readonly>
+                  <select class ="form-control"required aria-selected ="false" disabled = "disabled">
                     <option hidden ="hidden"></option>
                     <% for(var i = 0;i < alldispatches.length;i++){%>
                     <option selected="<%= order.dispatchCenter==alldispatches[i]?"selected":""%>"><%=alldispatches[i]%></option>
@@ -103,7 +103,9 @@
             </li>
             <li class="list-group-item">
               <strong>快递员：</strong>
-                 <span><%= (order.shipStaff && order.shipStaff.length > 0) ? order.shipStaff : "未知"  %></span>
+                 <span><%= (order.shipStaff&&order.shipStaff.name&& order.shipStaff.name.length > 0) ? order.shipStaff.name : "未知"  %></span>
+              <strong>号码：</strong>
+              <span><%= (order.shipStaff&&order.shipStaff.tel&& order.shipStaff.tel.length > 0) ? order.shipStaff.tel : "未知"  %></span>
             </li>
           </ul>
       </div>    <!-- Commodity Info Ends-->

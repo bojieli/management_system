@@ -2,6 +2,7 @@ var congfig = require('../config');
 var models = require('../models');
 var Order = models.Order;
 var DispatchCenter = models.DispatchCenter;
+var ShipStaff = models.ShipStaff;
 var async = require('async');
 var Wine = require('./wine');
 var config = require('../config');
@@ -199,9 +200,15 @@ exports.generateDetail = function (order, cb){
   data.voucher = order.voucherUse;
   data.shopOnce = order.shopOnce;
   data.dispatchCenter = order.dispatchCenter;
-  data.shipStaff = order.shipStaff;
   data.customerService = order.customerService;
-  cb(null, data);
+  ShipStaff.findOne({openID : order.shipStaff},function(err,ship_staff){
+    if(err){
+      return cb(err);
+    }
+    data.shipStaff = ship_staff;
+    cb(null, data);  
+  });
+  
 }
 
 
