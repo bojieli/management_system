@@ -23,6 +23,6 @@ require('./ship_staff');
 exports.Wine = mongoose.model('Wine');
 exports.Order = mongoose.model('Order');
 exports.ServiceStaff = mongoose.model('ServiceStaff');
-exports.AccessToken = mongoose.model(config.accessToken);
+exports.AccessToken = mongoose.model('AccessToken');
 exports.DispatchCenter = mongoose.model('DispatchCenter');
 exports.ShipStaff = mongoose.model('ShipStaff');

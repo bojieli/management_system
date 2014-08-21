@@ -1,6 +1,5 @@
 var config = require('../config')
 var models = require('../models');
-var AccessToken = models.AccessToken;
 exports.getAccessToken = function(cb){
   AccessToken.findOne({id: 1919},function(err,doc){
     if(err){
