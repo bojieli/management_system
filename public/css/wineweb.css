@@ -247,6 +247,9 @@ input.winewechatprice,input.winenumber{
 select.winedescribe,select.winewechatprice{
   height: 25px;
 }
+select.winedescribe{
+  width:250px;
+}
 
 textarea.address_detail{
   margin-top:10px;
