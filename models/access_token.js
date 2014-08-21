@@ -7,4 +7,4 @@ var config = require('../config');
   accessToken : {type:String,default : ""}
  });
 
-mongoose.model(config.accessToken,AccessTokenSchema);
+mongoose.model('AccessToken',AccessTokenSchema);
