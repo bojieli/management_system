@@ -3,6 +3,7 @@ var Order = require('../proxy').Order;
 var ServiceStaff = require('../proxy').ServiceStaff;
 var DispatchCenter = require('../proxy').DispatchCenter;
 var Wine = require('../proxy').Wine;
+var config = require('../config');
 var wechatAPI = require('../common/api');
 var config = require('../config');
 
@@ -23,7 +24,7 @@ exports.load = function(req,res,next){
         DispatchCenter.getAllCenterInfo(callback);
       },
       _order : function(callback){
-        Order.findOneOrder(req.session.user, callback);
+        Order.findOneUnprocessOrder(req.session.user, callback);
       },
       _generateOrder : ['_order', function(callback, results) {
         if(!results._order)
@@ -101,7 +102,7 @@ exports.unprocessedOperate = function(req,res,next) {
             var article = {
               "title" : dispatchDetail.orderNumToday,
               "description" : message,
-              "url" : config.host519 + '/orderaction?orderID=' + orderDetail.orderID,
+              "url" : config.host_519+"/orderaction?orderID=" + orderDetail.orderID,
               "picurl" : ''
             }
             wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){

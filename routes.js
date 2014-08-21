@@ -10,7 +10,7 @@ var neworder = require('./controllers/neworder');
 var orderdetail = require('./controllers/orderdetail');
 var refresh = require('./controllers/refresh');
 var Delete = require('./controllers/delete');
-var OrderAction = require('./controllers/orderaction');
+
 
 module.exports = function (app) {
 
@@ -50,7 +50,4 @@ module.exports = function (app) {
 
 	app.post('/orderdelete',Delete.orderDelete);
 
-	// app.get('/orderaction', OrderAction.load);//快递点击订单链接进入
-
-	// app.post('/orderaction',OrderAction.operate);
 }

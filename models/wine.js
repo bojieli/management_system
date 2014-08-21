@@ -8,24 +8,25 @@ var Schema = mongoose.Schema;
 */
 
  var WineSchema = new Schema({
-  id : String,
-  name : String,
-  describe : String,
-  marketPrice : Number,
-  wechatPrice : Number,
-  littlePic : String,
-  details : {
-  	degree : Number,
-  	volume : Number,
-  	place : String
-  },
-  bigPic : [String],
+  id : {type:String,default:""},
+  name : {type:String,default:""},
+  describe : {type:String,default:""},
+  marketPrice : {type:Number,default:0},
+  wechatPrice : {type:Number,default:0},
+  littlePic : {type:String,default:""},
+  details :  {
+      degree : {type:String,default:""},
+      volume : {type:String,default:""},
+      place : {type:String,default:""}
+    },
+  detail : {type:String,default:""},
+  bigPic : {type:[String],default:[]},
   tag : {
-  	type : String,
-  	isRecommend : Boolean
+    winetype : {type:String,default:""},
+    isRecommend : {type:Boolean,default:false}
   },
-  visitNum : Number,
-  purchaseNum : Number
+  visitNum : {type:Number,default:0},
+  purchaseNum : {type:Number,default:0}
  });
 
 mongoose.model('Wine',WineSchema);

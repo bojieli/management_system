@@ -13,7 +13,7 @@ exports.load = function (req, res, next){
       },
       _orders : function(callback){
         Order.findByStatus(req.session.user, 5, callback);
-      } 
+      }
       },function(err, results){
         if(err){
           console.log(err);

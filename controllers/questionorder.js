@@ -22,8 +22,6 @@ exports.load =  function (req, res, next){
         }
         data.numberUnprocessed = results._getnumberUnprocessed;
         data.numberQuestion = results._getnumberQuestion;
-        var questionorders = [];
-
         data.orders = results._orders.concat(results._orders4);
         data.urgentprocess = [];
         data.urgentprocessed = [];

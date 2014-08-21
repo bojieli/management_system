@@ -1,3 +1,7 @@
+/*
+处理在未发货或者已发货的订单
+*/
+
 var async = require('async');
 var Order = require('../proxy').Order;
 

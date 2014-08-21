@@ -5,10 +5,10 @@ var Schema = mongoose.Schema;
 
 
 var ServiceStaffSchema = new Schema({
-  account : String,
-  password : String,
-  orderNumberTotal : Number,
-  orderNumberToday : Number
+  account : {type:String,default:""},
+  password : {type:String,default:""},
+  orderNumberTotal : {type:Number,default : 0},
+  orderNumberToday : {type:Number,default : 0}
 },{autoindex :  false});
 
 
