@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var config = require('../config');
 
-mongoose.connectSet(config.db, function dberr(err){
+mongoose.connect(config.db, function dberr(err){
   if(err){
     console.error('connect to %s error',config.db,err.message);
     process.exit(1);

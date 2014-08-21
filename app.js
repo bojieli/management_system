@@ -9,6 +9,7 @@ var routes = require('./routes');
 var config = require('./config');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var fs = require('fs');
 
 var app = express();
 global.orderID_increment = 0;
@@ -30,14 +31,16 @@ global.formatDate = function(date){
   + leftPadString(date.getDay(),2) + '  ' + leftPadString(date.getHours(),2) + ':'
   + leftPadString(date.getMinutes(), 2);
 }
+Error.stackTraceLimit = Infinity;
+var errorLogfile = fs.createWriteStream('../manage_log/error.log',{flags : 'a'});
+var exceptionLogfile = fs.createWriteStream('../manage_log/exception_error.log',{flags : 'a'});
+process.on('uncaughtException', function(err) {
+  err.Time = new Date().toUTCString();
+  err.Stack = err.stack;
+  exceptionLogfile.write(JSON.stringify(err) + ',\n');
 
-var bunyan = require("bunyan");
-var errlog = bunyan.createLogger({
-  name : "kf-519-today",
-  level : "error",
-  path : '../log/error-management.log'
+  console.log(err);
 });
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -80,6 +83,36 @@ MongoClient.connect(config.db_native, function(err, session_store) {
       err.status = 404;
       next(err);
   });
+  /// error handlers
+
+// development error handler
+// will print stacktrace
+  if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+     var errinfo = {
+      date : new Date().toLocaleString(),
+      err : err,
+      session : req.session,
+      path : req.path,
+      body : req.body,
+      query : req.query
+     }
+     console.log('-----------------------error-----------------------------');
+     console.log(JSON.stringify(errinfo));
+     console.log(err.stack);
+
+     errorLogfile.write('\r\n-----------------------error-----------------------------\r\n');
+     errorLogfile.write(JSON.stringify(errinfo) + '\r\n');
+     errorLogfile.write(err.stack + '\r\n');
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+
+});
+
 
   /// listen after everything is ready...
   /// do not expose inconsistent startup states to user
@@ -92,27 +125,6 @@ MongoClient.connect(config.db_native, function(err, session_store) {
 });
 
 require('./proxy/setinteral')();//每天定时更新数据库数据
-/// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-      console.log(err);
-      console.log(err.stack);
-      errlog.error(err);
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
-});
 
 
 module.exports = app;
