@@ -1,8 +1,8 @@
 $(function(){
 
   // var modify_flag = false;
-  var username_maxLength = 5;
-  var addressDetail_maxLength = 50;
+  var username_maxLength = 10;
+  var addressDetail_maxLength = 40;
   var notes_maxLength = 50;
   var searchorder_inputnum_maxLength = 16;
 
@@ -436,14 +436,14 @@ $(document).on('click',"button#ship_order_delete_confirm",function(){
 
 
 /*=============vertifymethod begin=======================*/
- function usernameVertify(username){
+  function usernameVertify(username){
     return username.length == 0 ? -1 :(username.length <= username_maxLength ? 0 : 1);
   }
 
   function usertelVertify(usertel){
-    var phoneregex = /^0?(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$/;
-    var landlineregex = /^(\d{3}-\d{7,8})|(\d{4}-\d{7,8})$/;
-    return usertel.length == 0 ? -1:((phoneregex.test(usertel) || landlineregex.test(usertel)) ? 0 :1);
+    var phoneregex = /^0?1[3|4|5|7|8][0-9]{9}$/;
+    //var landlineregex = /^(\d{3}-\d{7,8})|(\d{4}-\d{7,8})$/;
+    return usertel.length == 0 ? -1:(phoneregex.test(usertel) ? 0 :1);
   }
 
   function addressDetailVertify(detail){

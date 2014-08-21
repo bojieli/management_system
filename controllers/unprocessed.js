@@ -4,6 +4,7 @@ var ServiceStaff = require('../proxy').ServiceStaff;
 var DispatchCenter = require('../proxy').DispatchCenter;
 var Wine = require('../proxy').Wine;
 var wechatAPI = require('../common/api');
+var config = require('../config');
 
 exports.load = function(req,res,next){
 
@@ -100,7 +101,7 @@ exports.unprocessedOperate = function(req,res,next) {
             var article = {
               "title" : dispatchDetail.orderNumToday,
               "description" : message,
-              "url" : 'http://519.today/orderaction?orderID=' + orderDetail.orderID,
+              "url" : config.host519 + '/orderaction?orderID=' + orderDetail.orderID,
               "picurl" : ''
             }
             wechatAPI.sendNews(dispatchDetail.shipHeadID,[article],function(err, message){
