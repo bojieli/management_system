@@ -68,6 +68,7 @@ MongoClient.connect(config.db_native, function(err, session_store) {
     secret: config.session_secret,
     key: 'sid',
     store: new MongoStore({ db: session_store }),
+    cookie:{maxAge:1800000},
     resave: true,
     rolling: true,
     saveUninitialized: true,
