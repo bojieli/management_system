@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo -n "==== BEGIN "
+date
+
 cd $(dirname $0)
 git pull origin master
 
@@ -9,3 +12,5 @@ pid=$(netstat -lntp 2>/dev/null | awk "{if(\$4==\"0.0.0.0:$port\")print \$7}" | 
 pkill -f management-runner
 
 nohup ./management-runner.sh >/dev/null 2>&1 &
+echo -n "===== END "
+date
